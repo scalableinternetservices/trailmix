@@ -2,6 +2,8 @@
 
 Welcome to Cloud City!
 
+## Team Members
+Shikha Mody 
 ## Dependencies
 
 For the [Quickstart](https://github.com/rothfels/trailmix#Quickstart), you will need:
