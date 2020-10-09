@@ -7,6 +7,9 @@ Shikha Mody
 
 Armaan Singh 
 ![image](https://avatars3.githubusercontent.com/u/10168472?s=460&u=0e1346c353b3c1b5449ccd0f21bac89279a63cde&v=4)
+
+Jivan Gubbi
+![image](https://avatars2.githubusercontent.com/u/42520224?s=460&u=8947c5a4689c08d7d496d3750a42ac78d9fb8ea8&v=4)
 ## Dependencies
 
 For the [Quickstart](https://github.com/rothfels/trailmix#Quickstart), you will need:
