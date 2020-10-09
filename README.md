@@ -10,6 +10,9 @@ Armaan Singh
 
 Jivan Gubbi
 ![image](https://avatars2.githubusercontent.com/u/42520224?s=460&u=8947c5a4689c08d7d496d3750a42ac78d9fb8ea8&v=4)
+
+Hayley Martinez
+![image](https://avatars2.githubusercontent.com/u/38091293?s=460&u=143343fbefce138e488191e22569fe1d88529d72&v=4)
 ## Dependencies
 
 For the [Quickstart](https://github.com/rothfels/trailmix#Quickstart), you will need:
