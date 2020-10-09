@@ -7,7 +7,7 @@ Shikha Mody
 ![image](https://avatars0.githubusercontent.com/u/43181799?s=400&u=4c9690cbc75def031b9530aaf8c1d283026a382f&v=4)
 
 Armaan Singh 
-![image](https://avatars3.githubusercontent.com/u/10168472?s=460&u=0e1346c353b3c1b5449ccd0f21bac89279a63cde&v=4)
+<img src="https://avatars3.githubusercontent.com/u/10168472?s=460&u=0e1346c353b3c1b5449ccd0f21bac89279a63cde&v=4" width=20% height=20%>
 
 Jivan Gubbi
 ![image](https://avatars2.githubusercontent.com/u/42520224?s=460&u=8947c5a4689c08d7d496d3750a42ac78d9fb8ea8&v=4)
