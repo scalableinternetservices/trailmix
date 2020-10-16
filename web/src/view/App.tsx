@@ -10,8 +10,8 @@ import { style } from '../style/styled'
 import { fetchUser } from './auth/fetchUser'
 import { UserContext, UserCtx } from './auth/user'
 import { Route } from './nav/route'
+import HikingPage from './page/HikingPage'
 import { HomePage } from './page/HomePage'
-import { LecturesPage } from './page/LecturesPage'
 import { PlaygroundPage } from './page/PlaygroundPage'
 import { ProjectsPage } from './page/ProjectsPage'
 
@@ -53,7 +53,7 @@ export function AppBody() {
         <Redirect noThrow from="app" to="index" />
         <Redirect noThrow from="app/playground" to="surveys" />
         <HomePage path={Route.HOME} />
-        <LecturesPage path={Route.LECTURES} />
+        <HikingPage path={Route.LECTURES} />
         <ProjectsPage path={Route.PROJECTS} />
         <PlaygroundPage path={Route.PLAYGROUND} />
         <PlaygroundPage path={Route.PLAYGROUND_APP} />
