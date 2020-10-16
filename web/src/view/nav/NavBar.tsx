@@ -19,16 +19,12 @@ const title = {
 
 const otherTabs = [
   {
-    name: 'lectures',
-    path: getPath(Route.LECTURES),
+    name: 'hiking',
+    path: getPath(Route.HIKING),
   },
   {
-    name: 'projects',
+    name: 'team info',
     path: getPath(Route.PROJECTS),
-  },
-  {
-    name: 'playground',
-    path: getPath(Route.PLAYGROUND),
   },
 ]
 
