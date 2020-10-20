@@ -1,51 +1,13 @@
 import { Meta, Story } from '@storybook/react'
 import * as React from 'react'
 import mapIcon from '../public/assets/map-pin.svg'
-import { TrailDesc, TrailTitle } from '../web/src/style/header'
+import { TrailInfoCard } from '../web/src/view/page/TrailInfo'
 
 export default {
   title: 'Trail',
 } as Meta
 
-interface trailInfo {
-  title?: string
-  description?: string
-  icon?: HTMLImageElement
-  onClick: () => void | undefined
-}
-
-interface trailStyle {
-  background?: string
-  outline: string
-  width: string
-  borderRadius: string
-  opacity: number
-}
-
-var buttonStyle: trailStyle = {
-  outline: 'none',
-  width: '40%',
-  borderRadius: '25px',
-  opacity: 1,
-}
-
-function MakeTrail(args: trailInfo) {
-  return (
-    <div
-      id="trailInfo"
-      className="flex items-center pa2 hover-bg-light-green bg-washed-green"
-      style={buttonStyle}
-      onClick={() => console.log('CLICKED TRAIL')}
-    >
-      <img src={mapIcon} className="ph3" />
-      <div className="flex flex-column">
-        <TrailTitle className="pv2">{args.title}</TrailTitle>
-        <TrailDesc className="pb2">{args.description} </TrailDesc>
-      </div>
-    </div>
-  )
-}
-const TrailTemplate: Story = args => <MakeTrail {...args} />
+const TrailTemplate: Story = args => <TrailInfoCard {...args} />
 
 export const Trail = TrailTemplate.bind({})
 Trail.args = {
