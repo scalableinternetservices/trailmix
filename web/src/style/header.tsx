@@ -13,6 +13,8 @@ export const H2 = style<'h2', HeaderProps>('h2', p => headerStyle(2, p))
 export const H3 = style<'h3', HeaderProps>('h3', 'i', p => headerStyle(3, p))
 export const H4 = style<'h4', HeaderProps>('h4', p => headerStyle(4, p))
 export const H5 = style<'h5', HeaderProps>('h5', p => headerStyle(5, p))
+export const TrailTitle = style<'b', HeaderProps>('b', p => headerStyle(6, p))
+export const TrailDesc = style<'b', HeaderProps>('b', p => headerStyle(7, p))
 
 function headerStyle(level: number, p: HeaderProps & { $theme: Theme }): StyleObject {
   return {
@@ -46,6 +48,10 @@ function fontWeight(level: number) {
       return 600
     case 3:
       return 400
+    case 6:
+      return 500
+    case 7:
+      return 300
     default:
       return 'normal'
   }
