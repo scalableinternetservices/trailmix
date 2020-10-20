@@ -18,7 +18,7 @@ interface trailStyle {
 
 var buttonStyle: trailStyle = {
   outline: 'none',
-  width: '40%',
+  width: '70%',
   borderRadius: '25px',
   opacity: 1,
 }
