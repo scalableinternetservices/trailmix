@@ -5,30 +5,10 @@ import { H2 } from '../../style/header'
 import { Spacer } from '../../style/spacer'
 import { IntroText } from '../../style/text'
 import { AppRouteParams } from '../nav/route'
-import HikeList from './HikeList'
+import { default as HikeList, Trail } from './HikeList'
 import { Page } from './Page'
 
 interface HikesPageProps extends RouteComponentProps, AppRouteParams {}
-interface Trail {
-  id: string
-  name: string
-  length: number
-  description: string
-  difficulty: string
-  stars: number
-  starVotes: number
-  location: string
-  conditionStatus: string
-  conditionDetails: string
-  conditionDate: string
-  lat: number,
-  lon: number,
-}
-
-// const Section = style('div', 'mb4 mid-gray ba b--mid-gray br2 pa3', (p: { $color?: ColorName }) => ({
-//   borderLeftColor: Colors[p.$color || 'lemon'] + '!important',
-//   borderLeftWidth: '3px',
-// }))
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default class HikingPage extends Component<HikesPageProps> {
@@ -41,8 +21,8 @@ export default class HikingPage extends Component<HikesPageProps> {
   }
   state = {
     trails: [],
-    lat: '40.0274',
-    lon: '-105.2519',
+    lat: '',
+    lon: '',
   }
   async getHikes(event: any){
     event.preventDefault();
