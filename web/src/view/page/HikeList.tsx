@@ -10,7 +10,7 @@ import { TrailInfoCard } from './TrailInfo';
 interface HikingListProps extends RouteComponentProps, AppRouteParams {
   allHikes: Trail[];
 }
-interface Trail {
+export interface Trail {
   id: string
   name: string
   length: number
