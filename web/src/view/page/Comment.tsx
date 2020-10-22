@@ -15,7 +15,7 @@ const buttonStyle: commentStyle = {
 
 export function CommentCard(args: commentInfo) {
   return (
-    <div className="d-flex aligh-items-start pa3 bg-light-blue" style={buttonStyle}>
+    <div className="d-flex align-items-start pa3 bg-light-blue" style={buttonStyle}>
       <div className="mr-3 bg-light rounded">{args.name}</div>
       {/* <img
         className="mr-3 bg-light rounded"
