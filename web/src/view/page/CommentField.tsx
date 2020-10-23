@@ -20,6 +20,17 @@ export interface IFieldProps {
   value?: any
 }
 
+interface labelStyle {
+  fontSize: number
+}
+
+interface commentBox {
+  outline: string
+  width: string
+  borderRadius: string
+  opacity: number
+}
+
 const labelStyle: labelStyle = {
   fontSize: 10,
 }

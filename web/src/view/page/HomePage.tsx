@@ -7,12 +7,27 @@ import { style } from '../../style/styled'
 import { BodyText } from '../../style/text'
 import { Link } from '../nav/Link'
 import { AppRouteParams } from '../nav/route'
+import { AuthorComment } from './AuthorComment'
+import CommentCard from './Comment'
+import CommentList from './CommentList'
 import { Page } from './Page'
 
 interface HomePageProps extends RouteComponentProps, AppRouteParams {}
 
+type CommentCardType = typeof CommentCard
+
+interface CommentListProps {
+  comments: CommentCardType[]
+  loading: boolean
+}
+
+const listProps: CommentListProps = {
+  comments: [],
+  loading: false,
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function HomePage(props: HomePageProps) {
+export function HomePage(this: any, props: HomePageProps) {
   return (
     <Page>
       <Hero>
@@ -30,6 +45,15 @@ export function HomePage(props: HomePageProps) {
             <BodyText>
               Instructions: Input zip code -- get hikes nearby -- go on hikes! -- leave comments with your feedback!
             </BodyText>
+          </Section>
+          <Section>
+            <div>
+              <h6>Test Comment Section</h6>
+              <AuthorComment />
+            </div>
+            <div>
+              <CommentList loading={listProps.loading} comments={listProps.comments} />
+            </div>
           </Section>
         </LContent>
         <RContent>
