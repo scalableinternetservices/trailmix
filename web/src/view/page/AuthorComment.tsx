@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Field } from './CommentField'
-import { CommentForm } from './CommentForm'
+import CommentForm from './CommentForm'
 
 export const AuthorComment: React.SFC = () => {
   return (

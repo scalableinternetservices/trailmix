@@ -28,6 +28,13 @@ export interface IFormState {
   submitSuccess?: boolean
 }
 
+interface submitStyle {
+  outline: string
+  width: string
+  borderRadius: string
+  opacity: number
+}
+
 const buttonStyle: submitStyle = {
   outline: 'none',
   width: '15%',
@@ -35,7 +42,7 @@ const buttonStyle: submitStyle = {
   opacity: 1,
 }
 
-export class CommentForm extends React.Component<IFormProps, IFormState> {
+export default class CommentForm extends React.Component<IFormProps, IFormState> {
   constructor(props: IFormProps) {
     super(props)
 

@@ -6,6 +6,13 @@ interface commentInfo {
   time?: string
 }
 
+interface commentStyle {
+  outline: string
+  width: string
+  borderRadius: string
+  opacity: number
+}
+
 const buttonStyle: commentStyle = {
   outline: 'none',
   width: '40%',
@@ -13,7 +20,7 @@ const buttonStyle: commentStyle = {
   opacity: 1,
 }
 
-export function CommentCard(args: commentInfo) {
+export default function CommentCard(args: commentInfo) {
   return (
     <div className="d-flex align-items-start pa3 bg-light-blue" style={buttonStyle}>
       <div className="mr-3 bg-light rounded">{args.name}</div>

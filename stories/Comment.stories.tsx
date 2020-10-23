@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/react'
 import * as React from 'react'
 import { AuthorComment } from '../web/src/view/page/AuthorComment'
-import { CommentCard } from '../web/src/view/page/Comment'
+import CommentCard from '../web/src/view/page/Comment'
 
 export default {
   title: 'Comment',
