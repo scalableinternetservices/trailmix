@@ -9,32 +9,6 @@ import { default as HikeList, Trail } from './HikeList'
 import { Page } from './Page'
 
 interface HikesPageProps extends RouteComponentProps, AppRouteParams {}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-interface Trail {
-  id: string
-  name: string
-  length: number
-  description: string
-  difficulty: string
-  stars: number
-  starVotes: number
-  location: string
-  conditionStatus: string
-  conditionDetails: string
-  conditionDate: string
-  lat: number,
-  lon: number,
-}
-
-// const Section = style('div', 'mb4 mid-gray ba b--mid-gray br2 pa3', (p: { $color?: ColorName }) => ({
-//   borderLeftColor: Colors[p.$color || 'lemon'] + '!important',
-//   borderLeftWidth: '3px',
-// }))
->>>>>>> 1ae13e4... Added basic functionality given lat and lon
-=======
->>>>>>> 95e41fe... Fixed links
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default class HikingPage extends Component<HikesPageProps> {
