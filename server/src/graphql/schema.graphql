@@ -19,19 +19,20 @@ type Query {
   self: User
 
   surveys: [Survey!]!
-  survey (surveyId: Int!): Survey
+  survey(surveyId: Int!): Survey
+  coordinates(zipcode: Int!): Coordinates
 }
 
 type Mutation {
   # Records an answer to a survey question presented in class.
-  answerSurvey (input: SurveyInput!): Boolean!
+  answerSurvey(input: SurveyInput!): Boolean!
 
   # Moves the survey to the next question (or starts it if it hasn't started). ADMIN only.
-  nextSurveyQuestion (surveyId: Int!): Survey
+  nextSurveyQuestion(surveyId: Int!): Survey
 }
 
 type Subscription {
-  surveyUpdates (surveyId: Int!): Survey
+  surveyUpdates(surveyId: Int!): Survey
 }
 
 type User {
@@ -41,7 +42,10 @@ type User {
   name: String!
 }
 
-enum UserType { ADMIN, USER }
+enum UserType {
+  ADMIN
+  USER
+}
 
 type Survey {
   id: Int!
@@ -89,3 +93,8 @@ input SurveyInput {
   answer: String!
 }
 
+type Coordinates {
+  zipcode: Int!
+  lat: Float!
+  lon: Float!
+}
