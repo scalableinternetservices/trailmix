@@ -33,13 +33,11 @@ export default class HikeList extends Component<HikingListProps> {
   render() {
     return (
       this.props.allHikes.map(item => {
-        return TrailInfoCard(
-          {
+        return TrailInfoCard({
             title: item.name,
             description: item.description,
-          })
-        }
-      )
+        })
+      })
     )
   }
 }
