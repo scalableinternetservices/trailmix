@@ -1,3 +1,5 @@
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
 import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
 import { Component } from 'react'
@@ -14,21 +16,22 @@ interface HikesPageProps extends RouteComponentProps, AppRouteParams {}
 export default class HikingPage extends Component<HikesPageProps> {
   constructor(props: HikesPageProps) {
     super(props);
-    this.state = {trails: [], lat: '', lon: ''};
+    this.state = {trails: [], zip: ''};
     this.getHikes = this.getHikes.bind(this);
-    this.handleLatChange = this.handleLatChange.bind(this);
-    this.handleLonChange = this.handleLonChange.bind(this);
+    this.handleZipChange = this.handleZipChange.bind(this);
   }
   state = {
     trails: [],
-    lat: '',
-    lon: '',
+    zip: '',
   }
   async getHikes(event: any){
     event.preventDefault();
     const key = '200944544-1e585b592713e202989908ebc84f8478'
-    const lat = this.state.lat
-    const lon = this.state.lon
+    //TODO: CONVERT FROM ZIP CODE TO LAT LON
+    console.log(this.state.zip);
+    const lat = 38;
+    const lon = -122;
+    //END TODO
     await fetch('https://www.hikingproject.com/data/get-trails?lat='+lat+'&lon='+lon+'&maxDistance=10&key='+key)
       .then(response => {
         return response.text();
@@ -61,11 +64,8 @@ export default class HikingPage extends Component<HikesPageProps> {
       })
       .catch(() => console.log("Can’t access hiking api response. Blocked by browser?"))
   }
-  handleLatChange(event: any) {
-    this.setState({lat: event.target.value});
-  }
-  handleLonChange(event: any) {
-    this.setState({lon: event.target.value});
+  handleZipChange(event: any) {
+    this.setState({zip: event.target.value});
   }
   render(){
     const hikes = this.state.trails;
@@ -73,18 +73,21 @@ export default class HikingPage extends Component<HikesPageProps> {
     <Page>
         <H2>Get Hikes Near You!</H2>
         <Spacer $h4 />
-        <IntroText>Enter your Latitude and Longitude and get nearest hikes!</IntroText>
+        <IntroText>Enter your location and get nearest hikes!</IntroText>
         <Spacer $h4 />
         <form onSubmit={this.getHikes}>
-          <label>
-            Latitude:
-            <input value={this.state.lat} onChange={this.handleLatChange} />
-          </label>
-          <label>
-            Longitude:
-            <input value={this.state.lon} onChange={this.handleLonChange} />
-          </label>
-          <button onClick={this.getHikes}>Find Hikes</button>
+          <div>
+            <TextField id="filled-number"
+              placeholder="90024"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="outlined"
+              label="Zipcode"
+              value={this.state.zip}
+              onChange={this.handleZipChange} />
+            <Button onClick={this.getHikes}>Find Hikes</Button>
+          </div>
         </form>
         <HikeList allHikes={hikes} />
     </Page>
