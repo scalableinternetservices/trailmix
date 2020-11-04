@@ -1,3 +1,4 @@
+import { LinearProgress } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import { RouteComponentProps } from '@reach/router'
@@ -16,16 +17,18 @@ interface HikesPageProps extends RouteComponentProps, AppRouteParams {}
 export default class HikingPage extends Component<HikesPageProps> {
   constructor(props: HikesPageProps) {
     super(props);
-    this.state = {trails: [], zip: ''};
+    this.state = {trails: [], zip: '', loading: false};
     this.getHikes = this.getHikes.bind(this);
     this.handleZipChange = this.handleZipChange.bind(this);
   }
   state = {
     trails: [],
     zip: '',
+    loading: false,
   }
   async getHikes(event: any){
     event.preventDefault();
+    this.setState({loading: true});
     const key = '200944544-1e585b592713e202989908ebc84f8478'
     //TODO: CONVERT FROM ZIP CODE TO LAT LON
     console.log(this.state.zip);
@@ -59,6 +62,7 @@ export default class HikingPage extends Component<HikesPageProps> {
         }
         this.setState({
           trails: array,
+          loading: false,
         })
         console.log(hikes);
       })
@@ -69,6 +73,10 @@ export default class HikingPage extends Component<HikesPageProps> {
   }
   render(){
     const hikes = this.state.trails;
+    let progress = null;
+    if(this.state.loading){
+      progress = <LinearProgress/>
+    }
     return (
     <Page>
         <H2>Get Hikes Near You!</H2>
@@ -85,10 +93,12 @@ export default class HikingPage extends Component<HikesPageProps> {
               variant="outlined"
               label="Zipcode"
               value={this.state.zip}
+              error={this.state.zip.length !== 5 && this.state.zip.length !== 0}
               onChange={this.handleZipChange} />
-            <Button onClick={this.getHikes}>Find Hikes</Button>
+            <Button disabled={this.state.zip.length !== 5} onClick={this.getHikes}>Find Hikes</Button>
           </div>
         </form>
+        {progress}
         <HikeList allHikes={hikes} />
     </Page>
   )

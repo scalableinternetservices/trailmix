@@ -11,7 +11,7 @@ interface HikingListProps extends RouteComponentProps, AppRouteParams {
 export interface Trail {
   id: string
   name: string
-  length: number
+  length: string
   description: string
   difficulty: string
   stars: number
@@ -34,6 +34,9 @@ export default class HikeList extends Component<HikingListProps> {
         return TrailInfoCard({
             title: item.name,
             description: item.description,
+            distance: item.length,
+            difficulty: item.difficulty,
+            stars: item.stars,
         })
       })
     )

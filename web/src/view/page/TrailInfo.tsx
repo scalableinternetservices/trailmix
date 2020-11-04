@@ -1,9 +1,12 @@
-import * as React from 'react'
-import { TrailDesc, TrailTitle } from '../../style/header'
+import * as React from 'react';
+import { TrailDesc, TrailTitle } from '../../style/header';
 
 interface trailInfo {
   title?: string
   description?: string
+  distance?: string
+  difficulty?: string
+  stars?: number
   icon?: undefined | string
   onClick?: () => void | undefined
 }
@@ -23,6 +26,19 @@ var buttonStyle: trailStyle = {
   opacity: 1,
 }
 
+function getStars(args: number|undefined) {
+  if(args == undefined){
+    return "";
+  }
+  let str = " ";
+  for(let i = 0; i < args; i++){
+    str += "☆";
+  }
+  console.log(str);
+  return str;
+}
+
+
 export function TrailInfoCard(args: trailInfo) {
   return (
     <div
@@ -33,7 +49,11 @@ export function TrailInfoCard(args: trailInfo) {
     >
       <img src={args.icon ? args.icon : undefined} className="ph3" />
       <div className="flex flex-column">
-        <TrailTitle className="pv2">{args.title}</TrailTitle>
+        <div>
+          <TrailTitle className="pv2">{args.title}</TrailTitle>
+          <TrailTitle className="pv2">{getStars(args.stars)}</TrailTitle>
+        </div>
+        <TrailTitle className="pv2">{"Trail Length: " + args.distance + " miles Difficulty: " + args.difficulty}</TrailTitle>
         <TrailDesc className="pb2">{args.description} </TrailDesc>
       </div>
     </div>
