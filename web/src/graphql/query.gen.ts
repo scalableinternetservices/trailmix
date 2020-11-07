@@ -160,6 +160,23 @@ export interface FetchSurveyVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: AddHike
+// ====================================================
+
+export interface AddHike {
+  addHike: boolean;
+}
+
+export interface AddHikeVariables {
+  input: AddHikeInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: AnswerSurveyQuestion
 // ====================================================
 
@@ -275,6 +292,16 @@ export interface SurveyQuestion {
 export enum UserType {
   ADMIN = "ADMIN",
   USER = "USER",
+}
+
+export interface AddHikeInput {
+  id: number;
+  name: string;
+  summary: string;
+  stars: number;
+  difficulty: string;
+  location: string;
+  length: number;
 }
 
 export interface SurveyInput {
