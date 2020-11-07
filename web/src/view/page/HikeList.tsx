@@ -12,7 +12,7 @@ export interface Trail {
   id: string
   name: string
   length: string
-  description: string
+  summary: string
   difficulty: string
   stars: number
   starVotes: number
@@ -33,7 +33,7 @@ export default class HikeList extends Component<HikingListProps> {
       this.props.allHikes.map(item => {
         return TrailInfoCard({
             title: item.name,
-            description: item.description,
+            description: item.summary,
             distance: item.length,
             difficulty: item.difficulty,
             stars: item.stars,

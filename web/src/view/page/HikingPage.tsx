@@ -4,10 +4,12 @@ import TextField from '@material-ui/core/TextField'
 import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
 import { Component } from 'react'
+import { getApolloClient } from '../../graphql/apolloClient'
 import { H2 } from '../../style/header'
 import { Spacer } from '../../style/spacer'
 import { IntroText } from '../../style/text'
 import { AppRouteParams } from '../nav/route'
+import { addHikeToDB } from '../playground/mutateHikes'
 import { default as HikeList, Trail } from './HikeList'
 import { Page } from './Page'
 
@@ -26,6 +28,21 @@ export default class HikingPage extends Component<HikesPageProps> {
     zip: '',
     loading: false,
   }
+  async addHikeInformation(hike: Trail) {
+    //call Query somehow
+
+    addHikeToDB(getApolloClient(),{
+      id: parseInt(hike.id),
+      name: hike.name,
+      stars: hike.stars,
+      summary: hike.summary,
+      location: hike.location,
+      difficulty: hike.difficulty,
+      length: parseFloat(hike.length),
+
+    })
+  }
+
   async getHikes(event: any){
     event.preventDefault();
     this.setState({loading: true});
@@ -47,7 +64,7 @@ export default class HikingPage extends Component<HikesPageProps> {
             id: entry.id,
             name: entry.name,
             length: entry.length,
-            description: entry.summary,
+            summary: entry.summary,
             difficulty: entry.difficulty,
             stars: entry.stars,
             starVotes: entry.starVotes,
@@ -58,6 +75,7 @@ export default class HikingPage extends Component<HikesPageProps> {
             lat: entry.latitude,
             lon: entry.longitude,
           }
+          this.addHikeInformation(a);
           array.push(a);
         }
         this.setState({

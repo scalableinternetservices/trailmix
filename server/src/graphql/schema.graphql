@@ -19,10 +19,14 @@ type Query {
   self: User
 
   surveys: [Survey!]!
+  hike (id: Int!): Hike
   survey (surveyId: Int!): Survey
 }
 
 type Mutation {
+  # Adds a hike to the database
+  addHike (input: AddHikeInput!): Boolean!
+
   # Records an answer to a survey question presented in class.
   answerSurvey (input: SurveyInput!): Boolean!
 
@@ -78,6 +82,16 @@ type SurveyQuestion {
   survey: Survey!
 }
 
+type Hike {
+  id: Int!
+  name: String!
+  summary: String!
+  stars: Float!
+  difficulty: String!
+  location: String!
+  length: Float!
+}
+
 type SurveyAnswer {
   id: Int!
   answer: String!
@@ -89,3 +103,12 @@ input SurveyInput {
   answer: String!
 }
 
+input AddHikeInput {
+  id: Int!
+  name: String!
+  summary: String!
+  stars: Float!
+  difficulty: String!
+  location: String!
+  length: Float!
+}
