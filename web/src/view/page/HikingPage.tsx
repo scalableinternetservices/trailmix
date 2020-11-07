@@ -1,25 +1,61 @@
+import { useQuery } from '@apollo/client'
 import { LinearProgress } from '@material-ui/core'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
 import { Component } from 'react'
+import { FetchLatLon, FetchLatLonVariables } from '../../graphql/query.gen'
 import { H2 } from '../../style/header'
 import { Spacer } from '../../style/spacer'
 import { IntroText } from '../../style/text'
 import { AppRouteParams } from '../nav/route'
+import { fetchLatLon } from './fetchLatLon'
 import { default as HikeList, Trail } from './HikeList'
 import { Page } from './Page'
 
 interface HikesPageProps extends RouteComponentProps, AppRouteParams {}
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+let zipcode: number
+let lat: number
+let lon: number
+let getHikesButton: boolean = false
+
+function GetLatLon({ children }: any) {
+  if (zipcode) {
+    const { data, error, loading } = useQuery<FetchLatLon, FetchLatLonVariables>(fetchLatLon, {
+      variables: { zipcode },
+    })
+    if (data && data.coordinates) {
+      lat = data.coordinates.lat
+      lon = data.coordinates.lon
+      getHikesButton = true
+    } else if (loading) {
+      return null
+    } else if (error) {
+      return null
+    }
+    return (
+      <div>
+        <Spacer $h4 />
+        <IntroText>
+          You are near latitude {lat} and longitude {lon}.
+        </IntroText>
+      </div>
+    )
+  } else {
+    return null
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint
 export default class HikingPage extends Component<HikesPageProps> {
   constructor(props: HikesPageProps) {
     super(props)
     this.state = { trails: [], zip: '', loading: false }
     this.getHikes = this.getHikes.bind(this)
     this.handleZipChange = this.handleZipChange.bind(this)
+    this.handleLatLonChange = this.handleLatLonChange.bind(this)
   }
   state = {
     trails: [],
@@ -30,48 +66,56 @@ export default class HikingPage extends Component<HikesPageProps> {
     event.preventDefault()
     this.setState({ loading: true })
     const key = '200944544-1e585b592713e202989908ebc84f8478'
-    //TODO: CONVERT FROM ZIP CODE TO LAT LON
-    console.log(this.state.zip)
-    const lat = 38
-    const lon = -122
-    //END TODO
-    await fetch(
-      'https://www.hikingproject.com/data/get-trails?lat=' + lat + '&lon=' + lon + '&maxDistance=10&key=' + key
-    )
-      .then(response => {
-        return response.text()
-      })
-      .then(hikes => {
-        let jsonObj = JSON.parse(hikes)
-        let array: Trail[] = []
-        for (let entry of jsonObj.trails) {
-          let a: Trail = {
-            id: entry.id,
-            name: entry.name,
-            length: entry.length,
-            description: entry.summary,
-            difficulty: entry.difficulty,
-            stars: entry.stars,
-            starVotes: entry.starVotes,
-            location: entry.location,
-            conditionStatus: entry.conditionStatus,
-            conditionDetails: entry.conditionDetails,
-            conditionDate: entry.conditionDate,
-            lat: entry.latitude,
-            lon: entry.longitude,
-          }
-          array.push(a)
-        }
-        this.setState({
-          trails: array,
-          loading: false,
+
+    if (lat && lon) {
+      await fetch(
+        'https://www.hikingproject.com/data/get-trails?lat=' + lat + '&lon=' + lon + '&maxDistance=10&key=' + key
+      )
+        .then(response => {
+          return response.text()
         })
-        console.log(hikes)
-      })
-      .catch(() => console.log('Can’t access hiking api response. Blocked by browser?'))
+        .then(hikes => {
+          let jsonObj = JSON.parse(hikes)
+          let array: Trail[] = []
+          for (let entry of jsonObj.trails) {
+            let a: Trail = {
+              id: entry.id,
+              name: entry.name,
+              length: entry.length,
+              description: entry.summary,
+              difficulty: entry.difficulty,
+              stars: entry.stars,
+              starVotes: entry.starVotes,
+              location: entry.location,
+              conditionStatus: entry.conditionStatus,
+              conditionDetails: entry.conditionDetails,
+              conditionDate: entry.conditionDate,
+              lat: entry.latitude,
+              lon: entry.longitude,
+            }
+            array.push(a)
+          }
+          this.setState({
+            trails: array,
+            loading: false,
+          })
+          console.log(hikes)
+        })
+        .catch(() => console.log('Can’t access hiking api response. Blocked by browser?'))
+    }
   }
   handleZipChange(event: any) {
     this.setState({ zip: event.target.value })
+  }
+  handleLatLonChange() {
+    getHikesButton = true
+    return (
+      <div>
+        {(zipcode = Number(this.state.zip))}
+        <GetLatLon>{({ data, error, loading }: any) => console.log(data)}</GetLatLon>
+        {this.setState({ lat: lat, lon: lon })}
+      </div>
+    )
   }
   render() {
     const hikes = this.state.trails
@@ -85,7 +129,7 @@ export default class HikingPage extends Component<HikesPageProps> {
         <Spacer $h4 />
         <IntroText>Enter your location and get nearest hikes!</IntroText>
         <Spacer $h4 />
-        <form onSubmit={this.getHikes}>
+        <form onSubmit={this.handleLatLonChange}>
           <div>
             <TextField
               id="filled-number"
@@ -99,9 +143,19 @@ export default class HikingPage extends Component<HikesPageProps> {
               error={this.state.zip.length !== 5 && this.state.zip.length !== 0}
               onChange={this.handleZipChange}
             />
-            <Button disabled={this.state.zip.length !== 5} onClick={this.getHikes}>
-              Find Hikes
+            <Button disabled={this.state.zip.length !== 5} onClick={this.handleLatLonChange}>
+              Submit
             </Button>
+            <GetLatLon>{({ data, error, loading }: any) => console.log(data)}</GetLatLon>
+            {console.log(getHikesButton)}
+            {getHikesButton ? (
+              <div className="v-mid">
+                <Spacer $h4 />
+                <Button variant="contained" color="primary" size="medium" onClick={this.getHikes}>
+                  Get Hikes
+                </Button>
+              </div>
+            ) : null}
           </div>
         </form>
         {progress}
