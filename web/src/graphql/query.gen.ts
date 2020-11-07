@@ -24,6 +24,29 @@ export interface FetchUserContext {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: FetchLatLon
+// ====================================================
+
+export interface FetchLatLon_coordinates {
+  __typename: "Coordinates";
+  lat: number;
+  lon: number;
+}
+
+export interface FetchLatLon {
+  coordinates: FetchLatLon_coordinates | null;
+}
+
+export interface FetchLatLonVariables {
+  zipcode: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FetchSurveys
 // ====================================================
 

@@ -7,6 +7,7 @@ import { Survey } from '../entities/Survey'
 import { SurveyAnswer } from '../entities/SurveyAnswer'
 import { SurveyQuestion } from '../entities/SurveyQuestion'
 import { User } from '../entities/User'
+import { zip_code } from '../entities/ZipCode'
 import { Resolvers } from './schema.types'
 
 export const pubsub = new PubSub()
@@ -16,6 +17,9 @@ export function getSchema() {
   return schema.toString()
 }
 
+async function coordinateQuery(zip: number) {
+  return (await zip_code.findOne({ where: { zipcode: zip } })) || null
+}
 interface Context {
   user: User | null
   request: Request
@@ -29,6 +33,7 @@ export const graphqlRoot: Resolvers<Context> = {
     hike: async (_, hikeId ) => (await Hike.findOne({ where: { id: hikeId } })) || null,
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
+    coordinates: (_, { zipcode }) => coordinateQuery(zipcode),
   },
   Mutation: {
     answerSurvey: async (_, { input }, ctx) => {

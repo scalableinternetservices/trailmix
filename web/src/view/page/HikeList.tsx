@@ -1,12 +1,12 @@
-import { RouteComponentProps } from '@reach/router';
-import { Component } from 'react';
-import { AppRouteParams } from '../nav/route';
-import { TrailInfoCard } from './TrailInfo';
+import { RouteComponentProps } from '@reach/router'
+import { Component } from 'react'
+import { AppRouteParams } from '../nav/route'
+import { TrailInfoCard } from './TrailInfo'
 
 //const TD = style('td', 'mid-gray pa3 v-mid', { minWidth: '7em' })
 
 interface HikingListProps extends RouteComponentProps, AppRouteParams {
-  allHikes: Trail[];
+  allHikes: Trail[]
 }
 export interface Trail {
   id: string
@@ -20,25 +20,23 @@ export interface Trail {
   conditionStatus: string
   conditionDetails: string
   conditionDate: string
-  lat: number,
-  lon: number,
+  lat: number
+  lon: number
 }
 
 export default class HikeList extends Component<HikingListProps> {
-  constructor(props: HikingListProps){
-    super(props);
+  constructor(props: HikingListProps) {
+    super(props)
   }
   render() {
-    return (
-      this.props.allHikes.map(item => {
-        return TrailInfoCard({
-            title: item.name,
-            description: item.summary,
-            distance: item.length,
-            difficulty: item.difficulty,
-            stars: item.stars,
-        })
+    return this.props.allHikes.map(item => {
+      return TrailInfoCard({
+        title: item.name,
+        description: item.summary,
+        distance: item.length,
+        difficulty: item.difficulty,
+        stars: item.stars,
       })
-    )
+    })
   }
 }

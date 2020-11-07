@@ -22,6 +22,13 @@ export interface AddHikeInput {
   length: Scalars['Float']
 }
 
+export interface Coordinates {
+  __typename?: 'Coordinates'
+  zipcode: Scalars['Int']
+  lat: Scalars['Float']
+  lon: Scalars['Float']
+}
+
 export interface Hike {
   __typename?: 'Hike'
   id: Scalars['Int']
@@ -56,16 +63,21 @@ export interface Query {
   __typename?: 'Query'
   self?: Maybe<User>
   surveys: Array<Survey>
-  hike?: Maybe<Hike>
   survey?: Maybe<Survey>
-}
-
-export interface QueryHikeArgs {
-  id: Scalars['Int']
+  coordinates?: Maybe<Coordinates>
+  hike?: Maybe<Hike>
 }
 
 export interface QuerySurveyArgs {
   surveyId: Scalars['Int']
+}
+
+export interface QueryCoordinatesArgs {
+  zipcode: Scalars['Int']
+}
+
+export interface QueryHikeArgs {
+  id: Scalars['Int']
 }
 
 export interface Subscription {
@@ -211,8 +223,9 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   SurveyQuestion: ResolverTypeWrapper<SurveyQuestion>
   SurveyAnswer: ResolverTypeWrapper<SurveyAnswer>
-  Hike: ResolverTypeWrapper<Hike>
+  Coordinates: ResolverTypeWrapper<Coordinates>
   Float: ResolverTypeWrapper<Scalars['Float']>
+  Hike: ResolverTypeWrapper<Hike>
   Mutation: ResolverTypeWrapper<{}>
   AddHikeInput: AddHikeInput
   SurveyInput: SurveyInput
@@ -229,12 +242,23 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']
   SurveyQuestion: SurveyQuestion
   SurveyAnswer: SurveyAnswer
-  Hike: Hike
+  Coordinates: Coordinates
   Float: Scalars['Float']
+  Hike: Hike
   Mutation: {}
   AddHikeInput: AddHikeInput
   SurveyInput: SurveyInput
   Subscription: {}
+}
+
+export type CoordinatesResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Coordinates'] = ResolversParentTypes['Coordinates']
+> = {
+  zipcode?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  lat?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
+  lon?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type HikeResolvers<
@@ -255,12 +279,7 @@ export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
-  addHike?: Resolver<
-    ResolversTypes['Boolean'],
-    ParentType, ContextType,
-    RequireFields<MutationAddHikeArgs,
-    'input'>
-  >
+  addHike?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationAddHikeArgs, 'input'>>
   answerSurvey?: Resolver<
     ResolversTypes['Boolean'],
     ParentType,
@@ -281,13 +300,19 @@ export type QueryResolvers<
 > = {
   self?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>
   surveys?: Resolver<Array<ResolversTypes['Survey']>, ParentType, ContextType>
-  hike?: Resolver<Maybe<ResolversTypes['Hike']>, ParentType, ContextType, RequireFields<QueryHikeArgs, 'id'>>
   survey?: Resolver<
     Maybe<ResolversTypes['Survey']>,
     ParentType,
     ContextType,
     RequireFields<QuerySurveyArgs, 'surveyId'>
   >
+  coordinates?: Resolver<
+    Maybe<ResolversTypes['Coordinates']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryCoordinatesArgs, 'zipcode'>
+  >
+  hike?: Resolver<Maybe<ResolversTypes['Hike']>, ParentType, ContextType, RequireFields<QueryHikeArgs, 'id'>>
 }
 
 export type SubscriptionResolvers<
@@ -350,6 +375,7 @@ export type UserResolvers<
 }
 
 export type Resolvers<ContextType = any> = {
+  Coordinates?: CoordinatesResolvers<ContextType>
   Hike?: HikeResolvers<ContextType>
   Mutation?: MutationResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
