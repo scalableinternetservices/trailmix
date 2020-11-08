@@ -6,7 +6,7 @@
  */
 export enum Route {
   HOME = 'app/index',
-  LECTURES = 'app/lectures',
+  HIKING = 'app/hiking',
   PROJECTS = 'app/projects',
   PLAYGROUND = 'app/playground',
   PLAYGROUND_APP = 'app/playground/:app',
@@ -39,7 +39,7 @@ export function getPath(route: Route, arg?: Partial<ReturnType<typeof routeParam
   const routes = [route] as Route[]
 
   for (const r of routes) {
-    const params = r.split('/').filter(t => t.startsWith(':'))
+    const params = r.split("/").filter(t => t.startsWith(':'))
     const keys = arg ? Object.keys(arg) : []
     const paramMatches = params.map(p => keys.includes(p.replace(':', ''))).filter(m => m)
     if (keys.length !== params.length || paramMatches.length < params.length) {

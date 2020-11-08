@@ -53,9 +53,9 @@ export class Theme implements ITheme {
 
 export const defaultTheme = new Theme(
   {
-    primary: Color.blue,
+    primary: Color.green,
     secondary: Color.gray,
-    success: Color.green,
+    success: Color.blue,
     danger: Color.red,
     warning: Color.yellow,
     info: Color.blue,

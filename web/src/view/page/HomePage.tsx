@@ -6,100 +6,50 @@ import { Spacer } from '../../style/spacer'
 import { style } from '../../style/styled'
 import { BodyText } from '../../style/text'
 import { Link } from '../nav/Link'
-import { AppRouteParams, getPath, Route } from '../nav/route'
+import { AppRouteParams } from '../nav/route'
 import { Page } from './Page'
 
-interface HomePageProps extends RouteComponentProps, AppRouteParams { }
+interface HomePageProps extends RouteComponentProps, AppRouteParams {}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function HomePage(props: HomePageProps) {
   return (
     <Page>
       <Hero>
-        <H1>CS 188</H1>
-        <H3>Scalable Internet Services</H3>
+        <H1>Trailmix</H1>
+        <H3>Scalable Internet Services Project</H3>
         <H3>UCLA, Fall 2020</H3>
       </Hero>
       <Content>
         <LContent>
           <Section>
-            <H2>About CS 188</H2>
+            <H2>About Trailmix</H2>
+            <Spacer $h4 />
+            <BodyText>A hiking application to make finding hikes easier and fun!</BodyText>
             <Spacer $h4 />
             <BodyText>
-              ☝️ This course explores advanced topics in highly scalable internet services and their underlying
-              architecture.
-            </BodyText>
-            <Spacer $h4 />
-            <BodyText>
-              Software today is increasingly delivered as a service: accessible globally via web browsers and mobile
-              applications and backed by millions of servers. Modern technologies and platforms are making it easier to
-              build and deploy these systems. Yet despite these advances, some concerns just don't go away. Building
-              scalable services today still requires an understanding of topics like concurrency, caching, load
-              balancing, and observability. In this course we will examine the state of the art.
-            </BodyText>
-          </Section>
-          <Section>
-            <H2>Getting Started</H2>
-            <Spacer $h4 />
-            <BodyText>In the first week of class, please complete the following:</BodyText>
-            <Spacer $h4 />
-            <BodyText>
-              <ul className="pl4">
-                <li>
-                  Follow the <Link href="https://github.com/rothfels/trailmix#quickstart">project Quickstart</Link> to
-                  configure your dev environment.
-                </li>
-                <li>
-                  Find a project team. See <Link to={getPath(Route.PROJECTS)}>Projects</Link> for details.
-                </li>
-                <li>
-                  Join the <Link href="https://piazza.com/ucla/fall2020/cs188">CS188 Piazza</Link>.
-                </li>
-              </ul>
+              Instructions: Input zip code -- get hikes nearby -- go on hikes! -- leave comments with your feedback!
             </BodyText>
           </Section>
         </LContent>
         <RContent>
           <Section>
-            <H2>Course Information</H2>
+            <H2>Team Information</H2>
             <Spacer $h4 />
             <BodyText>
               <table>
                 <tbody>
                   <tr>
-                    <TD>👨‍🏫</TD>
-                    <TD>John Rothfels</TD>
+                    <TD>👨‍💻</TD>
+                    <TD>Jivan Gubbi</TD>
+                    <TD>👩‍💻</TD>
+                    <TD>Hayley Martinez</TD>
                   </tr>
                   <tr>
-                    <TD>✉️</TD>
-                    <TD>
-                      <Link href="mailto://rothfels@cs.ucla.edu">rothfels@cs.ucla.edu</Link>
-                    </TD>
-                  </tr>
-                  <tr>
-                    <TD>⏯</TD>
-                    <TD>
-                      <Link href="https://ucla.zoom.us/j/92470409406?pwd=eFpyYWFQZGRtcVUzWC9HYlhSakRxZz09">Zoom</Link>
-                    </TD>
-                  </tr>
-                  <tr>
-                    <TD>🕒</TD>
-                    <TD>
-                      <div>
-                        <b>Tue, Thu</b> · 8:00 - 9:50am
-                      </div>
-                    </TD>
-                  </tr>
-                  <tr>
-                    <TD></TD>
-                    <TD>
-                      <div>
-                        <b>Fri</b> · 12:00 - 1:50pm
-                      </div>
-                      <div>
-                        <b>Fri</b> · 2:00 - 3:50pm
-                      </div>
-                    </TD>
+                    <TD>👩‍💻</TD>
+                    <TD>Shikha Mody</TD>
+                    <TD>👨‍💻</TD>
+                    <TD>Armaan Singh</TD>
                   </tr>
                 </tbody>
               </table>
@@ -158,8 +108,8 @@ export function HomePage(props: HomePageProps) {
 }
 
 const Hero = style('div', 'mb4 w-100 ba b--mid-gray br2 pa3 tc', {
-  borderLeftColor: Colors.lemon + '!important',
-  borderRightColor: Colors.lemon + '!important',
+  borderLeftColor: Colors.mint + '!important',
+  borderRightColor: Colors.mint + '!important',
   borderLeftWidth: '4px',
   borderRightWidth: '4px',
 })
@@ -171,7 +121,7 @@ const LContent = style('div', 'flex-grow-0 w-70-l mr4-l')
 const RContent = style('div', 'flex-grow-0  w-30-l')
 
 const Section = style('div', 'mb4 mid-gray ba b--mid-gray br2 pa3', (p: { $color?: ColorName }) => ({
-  borderLeftColor: Colors[p.$color || 'lemon'] + '!important',
+  borderLeftColor: Colors[p.$color || 'mint'] + '!important',
   borderLeftWidth: '3px',
 }))
 

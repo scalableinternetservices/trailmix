@@ -1,6 +1,6 @@
 # trailmix
 
-Welcome to Cloud City!
+Welcome to Trailmix!
 
 ## Team Members
 Shikha Mody
@@ -47,6 +47,8 @@ First, install [the Quickstart dependencies](https://github.com/rothfels/trailmi
 
 Choose a short, alphanumeric [*slug*](https://en.wikipedia.org/wiki/Clean_URL#Slug) for your project. This will be used to identify all the AWS resources created for your project, as well as the public URL for your project. Once you finish the Quickstart, your app will be available at https://**yourteamslug**.cloudcity.computer. **Your slug should be only letters and digits.**
 
+Team Slug: ***trailmix***
+
 ### Get the starter project
 
 Clone and initialize the starter project. You'll need to have `node` and `npm` installed first. See [dependencies](https://github.com/rothfels/trailmix#dependencies).
@@ -61,9 +63,9 @@ If you run into an error sourcing the init script above, you may run the steps m
 
 ```
 git clone https://github.com/rothfels/trailmix.git <your project slug>
-cd <your project slug>
+cd trailmix
 rm -rf .git
-<find/replace "trailmix" with your project slug>
+<use project slug "trailmix" throughout>
 git init
 npm install
 ```
