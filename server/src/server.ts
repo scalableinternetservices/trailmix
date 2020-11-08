@@ -1,10 +1,12 @@
 require('honeycomb-beeline')({
-  writeKey: process.env.HONEYCOMB_KEY || 'd29d5f5ec24178320dae437383480737',
+  writeKey: process.env.HONEYCOMB_KEY || 'd43d03acae92e89c5c79dc0e7804f844',
   dataset: process.env.APP_NAME || 'trailmix',
   serviceName: process.env.APPSERVER_TAG || 'local',
   enabledInstrumentations: ['express', 'mysql2', 'react-dom/server'],
   sampleRate: 10,
 })
+
+const beeline = require('honeycomb-beeline')
 
 import assert from 'assert'
 import cookieParser from 'cookie-parser'
@@ -43,6 +45,8 @@ const asyncRoute = (fn: RequestHandler) => (...args: Parameters<RequestHandler>)
   fn(args[0], args[1], args[2]).catch(args[2])
 
 server.express.get('/', (req, res) => {
+  //honeycomb instrumentation
+  beeline.customContext.add('app')
   console.log('GET /')
   res.redirect('/app')
 })
