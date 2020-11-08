@@ -1,5 +1,6 @@
 import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
+import { useState } from 'react'
 import { ColorName, Colors } from '../../../../common/src/colors'
 import { H1, H2, H3 } from '../../style/header'
 import { Spacer } from '../../style/spacer'
@@ -8,26 +9,20 @@ import { BodyText } from '../../style/text'
 import { Link } from '../nav/Link'
 import { AppRouteParams } from '../nav/route'
 import { AuthorComment } from './AuthorComment'
-import CommentCard from './Comment'
-import CommentList from './CommentList'
+import { CommentCard } from './Comment'
 import { Page } from './Page'
 
-interface HomePageProps extends RouteComponentProps, AppRouteParams {}
-
-type CommentCardType = typeof CommentCard
-
-interface CommentListProps {
-  comments: CommentCardType[]
-  loading: boolean
-}
-
-const listProps: CommentListProps = {
-  comments: [],
-  loading: false,
+interface HomePageProps extends RouteComponentProps, AppRouteParams {
+  comments: string[]
+  names: string[]
+  dates: string[]
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function HomePage(this: any, props: HomePageProps) {
+export function HomePage(props: HomePageProps) {
+  const [comments, setComments] = useState<string[]>(props.comments)
+  const [names, setNames] = useState<string[]>(props.names)
+  const [dates, setDates] = useState<string[]>(props.dates)
   return (
     <Page>
       <Hero>
@@ -47,13 +42,26 @@ export function HomePage(this: any, props: HomePageProps) {
             </BodyText>
           </Section>
           <Section>
+            <H2>Test Comments Section</H2>
+            <Spacer $h4 />
             <div>
-              <h6>Test Comment Section</h6>
-              <AuthorComment />
+              <AuthorComment
+                comments={comments}
+                names={names}
+                dates={dates}
+                setCommentsCallback={setComments}
+                setNamesCallback={setNames}
+                setDatesCallback={setDates}
+              />
             </div>
+            <Spacer $h4 />
             <div>
-              <CommentList loading={listProps.loading} comments={listProps.comments} />
+              {comments.map((comment, index) => (
+                // eslint-disable-next-line react/jsx-key
+                <CommentCard message={comment} name={names[index]} time={dates[index]} />
+              ))}
             </div>
+            <Spacer $h4 />
           </Section>
         </LContent>
         <RContent>
