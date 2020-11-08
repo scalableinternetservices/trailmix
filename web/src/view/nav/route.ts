@@ -10,20 +10,26 @@ export enum Route {
   PROJECTS = 'app/projects',
   PLAYGROUND = 'app/playground',
   PLAYGROUND_APP = 'app/playground/:app',
+  // SIGNUP = 'signup',
 }
 
 export enum PlaygroundApp {
-  SURVEYS = 'surveys',
+  // SURVEYS = 'surveys',
   LOGIN = 'login',
+  SIGNUP = 'signup',
 }
 
-export function getSurveyPath(surveyId?: number) {
-  const path = getPath(Route.PLAYGROUND_APP, { app: PlaygroundApp.SURVEYS })
-  return path + (surveyId ? `?surveyId=${surveyId}` : '')
-}
+// export function getSurveyPath(surveyId?: number) {
+//   const path = getPath(Route.PLAYGROUND_APP, { app: PlaygroundApp.SURVEYS })
+//   return path + (surveyId ? `?surveyId=${surveyId}` : '')
+// }
 
 export function getLoginPath() {
   return getPath(Route.PLAYGROUND_APP, { app: PlaygroundApp.LOGIN })
+}
+
+export function getSignupPath() {
+  return getPath(Route.PLAYGROUND_APP, { app: PlaygroundApp.SIGNUP })
 }
 
 export function getPlaygroundPath() {
@@ -39,7 +45,7 @@ export function getPath(route: Route, arg?: Partial<ReturnType<typeof routeParam
   const routes = [route] as Route[]
 
   for (const r of routes) {
-    const params = r.split("/").filter(t => t.startsWith(':'))
+    const params = r.split('/').filter(t => t.startsWith(':'))
     const keys = arg ? Object.keys(arg) : []
     const paramMatches = params.map(p => keys.includes(p.replace(':', ''))).filter(m => m)
     if (keys.length !== params.length || paramMatches.length < params.length) {
