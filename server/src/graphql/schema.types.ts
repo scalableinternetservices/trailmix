@@ -12,10 +12,43 @@ export interface Scalars {
   Float: number
 }
 
+export interface AddHikeInput {
+  id: Scalars['Int']
+  name: Scalars['String']
+  summary: Scalars['String']
+  stars: Scalars['Float']
+  difficulty: Scalars['String']
+  location: Scalars['String']
+  length: Scalars['Float']
+}
+
+export interface Coordinates {
+  __typename?: 'Coordinates'
+  zipcode: Scalars['Int']
+  lat: Scalars['Float']
+  lon: Scalars['Float']
+}
+
+export interface Hike {
+  __typename?: 'Hike'
+  id: Scalars['Int']
+  name: Scalars['String']
+  summary: Scalars['String']
+  stars: Scalars['Float']
+  difficulty: Scalars['String']
+  location: Scalars['String']
+  length: Scalars['Float']
+}
+
 export interface Mutation {
   __typename?: 'Mutation'
+  addHike: Scalars['Boolean']
   answerSurvey: Scalars['Boolean']
   nextSurveyQuestion?: Maybe<Survey>
+}
+
+export interface MutationAddHikeArgs {
+  input: AddHikeInput
 }
 
 export interface MutationAnswerSurveyArgs {
@@ -31,10 +64,20 @@ export interface Query {
   self?: Maybe<User>
   surveys: Array<Survey>
   survey?: Maybe<Survey>
+  coordinates?: Maybe<Coordinates>
+  hike?: Maybe<Hike>
 }
 
 export interface QuerySurveyArgs {
   surveyId: Scalars['Int']
+}
+
+export interface QueryCoordinatesArgs {
+  zipcode: Scalars['Int']
+}
+
+export interface QueryHikeArgs {
+  id: Scalars['Int']
 }
 
 export interface Subscription {
@@ -153,7 +196,11 @@ export type TypeResolveFn<TTypes, TParent = {}, TContext = {}> = (
   info: GraphQLResolveInfo
 ) => Maybe<TTypes> | Promise<Maybe<TTypes>>
 
-export type IsTypeOfResolverFn<T = {}> = (obj: T, info: GraphQLResolveInfo) => boolean | Promise<boolean>
+export type IsTypeOfResolverFn<T = {}, TContext = {}> = (
+  obj: T,
+  context: TContext,
+  info: GraphQLResolveInfo
+) => boolean | Promise<boolean>
 
 export type NextResolverFn<T> = () => Promise<T>
 
@@ -176,7 +223,11 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   SurveyQuestion: ResolverTypeWrapper<SurveyQuestion>
   SurveyAnswer: ResolverTypeWrapper<SurveyAnswer>
+  Coordinates: ResolverTypeWrapper<Coordinates>
+  Float: ResolverTypeWrapper<Scalars['Float']>
+  Hike: ResolverTypeWrapper<Hike>
   Mutation: ResolverTypeWrapper<{}>
+  AddHikeInput: AddHikeInput
   SurveyInput: SurveyInput
   Subscription: ResolverTypeWrapper<{}>
 }
@@ -191,15 +242,44 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']
   SurveyQuestion: SurveyQuestion
   SurveyAnswer: SurveyAnswer
+  Coordinates: Coordinates
+  Float: Scalars['Float']
+  Hike: Hike
   Mutation: {}
+  AddHikeInput: AddHikeInput
   SurveyInput: SurveyInput
   Subscription: {}
+}
+
+export type CoordinatesResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Coordinates'] = ResolversParentTypes['Coordinates']
+> = {
+  zipcode?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  lat?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
+  lon?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
+}
+
+export type HikeResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['Hike'] = ResolversParentTypes['Hike']
+> = {
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  summary?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  stars?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
+  difficulty?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  location?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  length?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type MutationResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
+  addHike?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationAddHikeArgs, 'input'>>
   answerSurvey?: Resolver<
     ResolversTypes['Boolean'],
     ParentType,
@@ -226,6 +306,13 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QuerySurveyArgs, 'surveyId'>
   >
+  coordinates?: Resolver<
+    Maybe<ResolversTypes['Coordinates']>,
+    ParentType,
+    ContextType,
+    RequireFields<QueryCoordinatesArgs, 'zipcode'>
+  >
+  hike?: Resolver<Maybe<ResolversTypes['Hike']>, ParentType, ContextType, RequireFields<QueryHikeArgs, 'id'>>
 }
 
 export type SubscriptionResolvers<
@@ -251,7 +338,7 @@ export type SurveyResolvers<
   isCompleted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
   currentQuestion?: Resolver<Maybe<ResolversTypes['SurveyQuestion']>, ParentType, ContextType>
   questions?: Resolver<Array<Maybe<ResolversTypes['SurveyQuestion']>>, ParentType, ContextType>
-  __isTypeOf?: IsTypeOfResolverFn<ParentType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type SurveyAnswerResolvers<
@@ -261,7 +348,7 @@ export type SurveyAnswerResolvers<
   id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   answer?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   question?: Resolver<ResolversTypes['SurveyQuestion'], ParentType, ContextType>
-  __isTypeOf?: IsTypeOfResolverFn<ParentType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type SurveyQuestionResolvers<
@@ -273,7 +360,7 @@ export type SurveyQuestionResolvers<
   choices?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>
   answers?: Resolver<Array<ResolversTypes['SurveyAnswer']>, ParentType, ContextType>
   survey?: Resolver<ResolversTypes['Survey'], ParentType, ContextType>
-  __isTypeOf?: IsTypeOfResolverFn<ParentType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type UserResolvers<
@@ -284,10 +371,12 @@ export type UserResolvers<
   userType?: Resolver<ResolversTypes['UserType'], ParentType, ContextType>
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  __isTypeOf?: IsTypeOfResolverFn<ParentType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
 export type Resolvers<ContextType = any> = {
+  Coordinates?: CoordinatesResolvers<ContextType>
+  Hike?: HikeResolvers<ContextType>
   Mutation?: MutationResolvers<ContextType>
   Query?: QueryResolvers<ContextType>
   Subscription?: SubscriptionResolvers<ContextType>

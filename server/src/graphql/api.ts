@@ -2,10 +2,12 @@ import { readFileSync } from 'fs'
 import { PubSub } from 'graphql-yoga'
 import path from 'path'
 import { check } from '../../../common/src/util'
+import { Hike } from '../entities/Hike'
 import { Survey } from '../entities/Survey'
 import { SurveyAnswer } from '../entities/SurveyAnswer'
 import { SurveyQuestion } from '../entities/SurveyQuestion'
 import { User } from '../entities/User'
+import { zip_code } from '../entities/ZipCode'
 import { Resolvers } from './schema.types'
 
 export const pubsub = new PubSub()
@@ -15,6 +17,9 @@ export function getSchema() {
   return schema.toString()
 }
 
+async function coordinateQuery(zip: number) {
+  return (await zip_code.findOne({ where: { zipcode: zip } })) || null
+}
 interface Context {
   user: User | null
   request: Request
@@ -25,8 +30,10 @@ interface Context {
 export const graphqlRoot: Resolvers<Context> = {
   Query: {
     self: (_, args, ctx) => ctx.user,
+    hike: async (_, hikeId ) => (await Hike.findOne({ where: { id: hikeId } })) || null,
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
+    coordinates: (_, { zipcode }) => coordinateQuery(zipcode),
   },
   Mutation: {
     answerSurvey: async (_, { input }, ctx) => {
@@ -50,6 +57,23 @@ export const graphqlRoot: Resolvers<Context> = {
       await survey.save()
       ctx.pubsub.publish('SURVEY_UPDATE_' + surveyId, survey)
       return survey
+    },
+    addHike: async(_, { input }, ctx) => {
+      const {id, name, summary, stars, difficulty, location, length} = input
+
+      const newHike = new Hike()
+      newHike.id = id
+      newHike.name = name
+      newHike.summary = summary
+      newHike.stars = stars
+      newHike.difficulty = difficulty
+      newHike.location = location
+      newHike.length = length
+
+      await newHike.save()
+      ctx.pubsub.publish('ADD_HIKE_' + id, newHike)
+
+      return true
     },
   },
   Subscription: {

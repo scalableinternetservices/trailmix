@@ -24,6 +24,29 @@ export interface FetchUserContext {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL query operation: FetchLatLon
+// ====================================================
+
+export interface FetchLatLon_coordinates {
+  __typename: "Coordinates";
+  lat: number;
+  lon: number;
+}
+
+export interface FetchLatLon {
+  coordinates: FetchLatLon_coordinates | null;
+}
+
+export interface FetchLatLonVariables {
+  zipcode: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FetchSurveys
 // ====================================================
 
@@ -129,6 +152,23 @@ export interface FetchSurvey {
 
 export interface FetchSurveyVariables {
   surveyId: number;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: AddHike
+// ====================================================
+
+export interface AddHike {
+  addHike: boolean;
+}
+
+export interface AddHikeVariables {
+  input: AddHikeInput;
 }
 
 /* tslint:disable */
@@ -252,6 +292,16 @@ export interface SurveyQuestion {
 export enum UserType {
   ADMIN = "ADMIN",
   USER = "USER",
+}
+
+export interface AddHikeInput {
+  id: number;
+  name: string;
+  summary: string;
+  stars: number;
+  difficulty: string;
+  location: string;
+  length: number;
 }
 
 export interface SurveyInput {
