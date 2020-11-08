@@ -93,18 +93,21 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
 })
 
 export default class HikeList extends Component<HikingListProps, { open: boolean }> {
+  openTabs: Map<string | undefined, boolean>
   constructor(props: HikingListProps) {
     super(props)
     this.state = { open: false }
+    this.openTabs = new Map<string | undefined, boolean>()
   }
 
-  openPopup() {
+  togglePopup(title: string | undefined) {
     this.setState({ open: true })
-    console.log(this.state.open)
-  }
-
-  closePopup() {
-    this.setState({ open: false })
+    if (!this.openTabs.has(title)) {
+      this.openTabs.set(title, true)
+    } else {
+      this.openTabs.delete(title)
+      this.openTabs.set(title, false)
+    }
   }
 
   TrailInfoCard(args: trailInfo) {
@@ -113,15 +116,15 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
         id="trailInfo"
         className="flex items-center pa2 hover-bg-light-green bg-washed-green"
         style={buttonStyle}
-        onClick={() => this.openPopup()}
+        onClick={() => this.togglePopup(args.title)}
       >
         <img src={args.icon ? args.icon : undefined} className="ph3" />
         <div className="flex flex-column">
           <TrailTitle className="pv2">{args.title}</TrailTitle>
           <TrailDesc className="pb2">{args.description} </TrailDesc>
         </div>
-        <Dialog onClose={() => this.closePopup()} aria-labelledby="customized-dialog-title" open={this.state.open}>
-          <DialogTitle id="customized-dialog-title" onClose={() => this.closePopup()}>
+        <Dialog onClose={args.onClick} aria-labelledby="customized-dialog-title" open={!!this.openTabs.get(args.title)}>
+          <DialogTitle id="customized-dialog-title" onClose={() => this.togglePopup(args.title)}>
             {args.title}
           </DialogTitle>
           <DialogContent dividers>
@@ -129,9 +132,6 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
             <Typography gutterBottom>
               This {args.length}-mile hike, located in {args.location}, has {args.difficulty}-level difficulty and is
               currently rated {args.stars} stars.
-            </Typography>
-            <Typography gutterBottom>
-              Condition Details as of {args.conditionDate}: {args.conditionDetails}
             </Typography>
           </DialogContent>
         </Dialog>
