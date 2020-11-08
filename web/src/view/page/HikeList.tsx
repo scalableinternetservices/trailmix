@@ -17,7 +17,7 @@ export interface Trail {
   id: string
   name: string
   length: number
-  description: string
+  summary: string
   difficulty: string
   stars: number
   starVotes: number
@@ -31,7 +31,7 @@ export interface Trail {
 
 interface trailInfo {
   title?: string
-  description?: string
+  summary?: string
   length?: number
   difficulty?: string
   stars?: number
@@ -128,14 +128,14 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
         <img src={args.icon ? args.icon : undefined} className="ph3" />
         <div className="flex flex-column">
           <TrailTitle className="pv2">{args.title}</TrailTitle>
-          <TrailDesc className="pb2">{args.description} </TrailDesc>
+          <TrailDesc className="pb2">{args.summary} </TrailDesc>
         </div>
         <Dialog onClose={args.onClick} aria-labelledby="customized-dialog-title" open={!!this.openTabs.get(args.title)}>
           <DialogTitle id="customized-dialog-title" onClose={() => this.togglePopup(args.title, 'close')}>
             {args.title}
           </DialogTitle>
           <DialogContent dividers>
-            <Typography gutterBottom>{args.description}</Typography>
+            <Typography gutterBottom>{args.summary}</Typography>
             <Typography gutterBottom>
               This {args.length}-mile hike, located in {args.location}, has {args.difficulty}-level difficulty and is
               currently rated {args.stars} stars.
@@ -150,7 +150,7 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
     return this.props.allHikes.map(item => {
       return this.TrailInfoCard({
         title: item.name,
-        description: item.description,
+        summary: item.summary,
         length: item.length,
         difficulty: item.difficulty,
         stars: item.stars,

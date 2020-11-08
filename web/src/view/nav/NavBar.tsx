@@ -9,7 +9,7 @@ import { style } from '../../style/styled'
 import { UserContext } from '../auth/user'
 import { addToastListener, removeToastListener, Toast, ToastType } from '../toast/toast'
 import { link } from './Link'
-import { getLoginPath, getPath, getSurveyPath, Route } from './route'
+import { getLoginPath, getPath, getSignupPath, Route } from './route'
 
 const title = {
   name: 'trailmix',
@@ -23,8 +23,8 @@ const otherTabs = [
     path: getPath(Route.HIKING),
   },
   {
-    name: 'team info',
-    path: getPath(Route.PROJECTS),
+    name: 'profile',
+    path: getPath(Route.PLAYGROUND),
   },
 ]
 
@@ -105,8 +105,9 @@ function SubNav() {
   }
   return (
     <Nav $isSubNav>
-      <NavItem name="surveys" path={getSurveyPath()} />
+      {/* <NavItem name="surveys" path={getSurveyPath()} /> */}
       <NavItem name={user ? 'logout' : 'login'} path={getLoginPath()} />
+      {!user && <NavItem name="signup" path={getSignupPath()} />}
     </Nav>
   )
 }

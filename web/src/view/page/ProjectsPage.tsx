@@ -5,8 +5,9 @@ import { H2 } from '../../style/header'
 import { Spacer } from '../../style/spacer'
 import { style } from '../../style/styled'
 import { BodyText } from '../../style/text'
+import { Login } from '../auth/Login'
 import { Link } from '../nav/Link'
-import { AppRouteParams, getPlaygroundPath } from '../nav/route'
+import { AppRouteParams } from '../nav/route'
 import { Page } from './Page'
 
 interface ProjectsPageProps extends RouteComponentProps, AppRouteParams {}
@@ -18,7 +19,7 @@ export function ProjectsPage(props: ProjectsPageProps) {
       <Section>
         <ProjectOverview />
         <Spacer $h5 />
-        <ProjectRequirements />
+        <LogIn />
         <Spacer $h5 />
         <ProjectIdeas />
         <Spacer $h5 />
@@ -31,8 +32,8 @@ export function ProjectsPage(props: ProjectsPageProps) {
 function ProjectOverview() {
   return (
     <>
-      <H2>Course Project</H2>
-      <Spacer $h4 />
+      <H2>Log In to Trailmix</H2>
+      {/* <Spacer $h4 />
       <BodyText>
         The goal of the course project is to gain hands-on experience building and deploying a scalable web service on
         the internet. This is a "learn by doing" course so we'll spend time in lectures and lab sessions building
@@ -43,15 +44,15 @@ function ProjectOverview() {
         This class website is built on the framework you'll use for your project. During lectures we'll add new features
         to the <Link to={getPlaygroundPath()}>playground</Link>. The website source code is located{' '}
         <Link href="https://github.com/scalableinternetservices/cs188">here</Link>.
-      </BodyText>
+      </BodyText> */}
     </>
   )
 }
 
-function ProjectRequirements() {
+function LogIn() {
   return (
     <>
-      <H2>Project Requirements</H2>
+      {/* <H2>Project Requirements</H2>
       <Spacer $h4 />
       <BodyText>
         <ul className="pl4">
@@ -67,7 +68,8 @@ function ProjectRequirements() {
           </li>
           <li>Must use at least 1 "background" process running regardless of user activity</li>
         </ul>
-      </BodyText>
+      </BodyText> */}
+      <Login />
     </>
   )
 }
@@ -231,7 +233,7 @@ function Sprint(props: { day: string; title: string; checklist?: string[]; check
 const Table = style('table', 'w-100 ba b--black')
 
 const Section = style('div', 'mb4 mid-gray ba b--mid-gray br2 pa3', (p: { $color?: ColorName }) => ({
-  borderLeftColor: Colors[p.$color || 'lemon'] + '!important',
+  borderLeftColor: Colors[p.$color || 'mint'] + '!important',
   borderLeftWidth: '3px',
 }))
 
