@@ -22,17 +22,11 @@ export function AuthorComment(props: AuthorCommentProps) {
   const [comment, setComment] = useState('')
 
   function submitComment() {
-    console.log('in the submit')
     const d = new Date()
-    console.log(comment)
-    console.log(name)
 
     props.setCommentsCallback([comment, ...props.comments])
     props.setNamesCallback([name, ...props.names])
     props.setDatesCallback([d.toLocaleTimeString() + ', ' + d.toLocaleDateString(), ...props.dates])
-
-    setComment('')
-    setName('')
   }
 
   return (
