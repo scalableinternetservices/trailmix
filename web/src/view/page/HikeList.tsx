@@ -94,20 +94,27 @@ const DialogTitle = withStyles(styles)((props: DialogTitleProps) => {
 
 export default class HikeList extends Component<HikingListProps, { open: boolean }> {
   openTabs: Map<string | undefined, boolean>
+
   constructor(props: HikingListProps) {
     super(props)
     this.state = { open: false }
     this.openTabs = new Map<string | undefined, boolean>()
   }
 
-  togglePopup(title: string | undefined) {
+  togglePopup(title: string | undefined, task: string) {
     this.setState({ open: true })
+    console.log(task)
     if (!this.openTabs.has(title)) {
       this.openTabs.set(title, true)
     } else {
-      this.openTabs.delete(title)
-      this.openTabs.set(title, false)
+      if (task === 'close') {
+        this.openTabs.delete(title)
+        this.openTabs.set(title, false)
+      } else {
+        this.openTabs.delete(title)
+      }
     }
+    console.log(this.openTabs)
   }
 
   TrailInfoCard(args: trailInfo) {
@@ -116,7 +123,7 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
         id="trailInfo"
         className="flex items-center pa2 hover-bg-light-green bg-washed-green"
         style={buttonStyle}
-        onClick={() => this.togglePopup(args.title)}
+        onClick={() => this.togglePopup(args.title, 'open')}
       >
         <img src={args.icon ? args.icon : undefined} className="ph3" />
         <div className="flex flex-column">
@@ -124,7 +131,7 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
           <TrailDesc className="pb2">{args.description} </TrailDesc>
         </div>
         <Dialog onClose={args.onClick} aria-labelledby="customized-dialog-title" open={!!this.openTabs.get(args.title)}>
-          <DialogTitle id="customized-dialog-title" onClose={() => this.togglePopup(args.title)}>
+          <DialogTitle id="customized-dialog-title" onClose={() => this.togglePopup(args.title, 'close')}>
             {args.title}
           </DialogTitle>
           <DialogContent dividers>
