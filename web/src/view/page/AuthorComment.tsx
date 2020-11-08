@@ -1,20 +1,57 @@
 import * as React from 'react'
-import { Field } from './CommentField'
-import CommentForm from './CommentForm'
+import { useState } from 'react'
+import { Button } from '../../style/button'
+import { Input } from '../../style/input'
 
-export const AuthorComment: React.SFC = () => {
+// interface AuthorCommentProps {
+//   comments: JSX.Element[]
+//   updateCommentsCallback: React.Dispatch<React.SetStateAction<JSX.Element>>
+// }
+
+interface AuthorCommentProps {
+  comments: string[]
+  names: string[]
+  dates: string[]
+  setCommentsCallback: React.Dispatch<React.SetStateAction<string[]>>
+  setNamesCallback: React.Dispatch<React.SetStateAction<string[]>>
+  setDatesCallback: React.Dispatch<React.SetStateAction<string[]>>
+}
+
+export function AuthorComment(props: AuthorCommentProps) {
+  const [name, setName] = useState('')
+  const [comment, setComment] = useState('')
+
+  function submitComment() {
+    console.log('in the submit')
+    const d = new Date()
+    console.log(comment)
+    console.log(name)
+
+    props.setCommentsCallback([comment, ...props.comments])
+    props.setNamesCallback([name, ...props.names])
+    props.setDatesCallback([d.toLocaleTimeString() + ', ' + d.toLocaleDateString(), ...props.dates])
+
+    setComment('')
+    setName('')
+  }
+
   return (
-    <CommentForm
-      action="http://localhost:4351/api/contactus"
-      render={() => (
-        <React.Fragment>
-          <div className="alert alert-info" role="alert">
-            Enter your Comment Below
-          </div>
-          <Field id="name" label="Name: " />
-          <Field id="comment" label="Comment: " editor="multilinetextbox" />
-        </React.Fragment>
-      )}
-    />
+    <>
+      <div className="mt3">
+        <label className="db fw4 lh-copy f6" htmlFor="name">
+          Name
+        </label>
+        <Input $onChange={setName} $onSubmit={submitComment} name="name" type="name" />
+      </div>
+      <div className="mt3">
+        <label className="db fw4 lh-copy f6" htmlFor="comment">
+          Comment
+        </label>
+        <Input $onChange={setComment} $onSubmit={submitComment} name="comment" type="comment" />
+      </div>
+      <div className="mt3">
+        <Button onClick={submitComment}>Submit</Button>
+      </div>
+    </>
   )
 }

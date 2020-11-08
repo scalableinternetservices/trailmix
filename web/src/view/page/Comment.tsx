@@ -15,15 +15,15 @@ interface commentStyle {
 
 const buttonStyle: commentStyle = {
   outline: 'none',
-  width: '40%',
+  width: '100%',
   borderRadius: '25px',
   opacity: 1,
 }
 
-export default function CommentCard(args: commentInfo) {
+export function CommentCard(props: commentInfo) {
   return (
     <div className="d-flex align-items-start pa3 bg-light-blue" style={buttonStyle}>
-      <div className="mr-3 bg-light rounded">{args.name}</div>
+      <div className="mr-3 bg-light rounded">{props.name}</div>
       {/* <img
         className="mr-3 bg-light rounded"
         // src={} //TODO: use dog api to get user photos
@@ -31,9 +31,9 @@ export default function CommentCard(args: commentInfo) {
       /> */}
 
       <div className="media-body p-2 shadow-sm rounded bg-light border">
-        <small className="float-right text-muted">{args.time}</small>
+        <small className="float-right text-muted">{props.time}</small>
         <h6 className="mt-0 mb-1 text-muted">{name}</h6>
-        {args.message}
+        {props.message}
       </div>
     </div>
   )
