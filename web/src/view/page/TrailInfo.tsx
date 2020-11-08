@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { TrailDesc, TrailTitle } from '../../style/header';
+import * as React from 'react'
+import { TrailDesc, TrailTitle } from '../../style/header'
 
 interface trailInfo {
   title?: string
@@ -19,25 +19,24 @@ interface trailStyle {
   opacity: number
 }
 
-var buttonStyle: trailStyle = {
+const buttonStyle: trailStyle = {
   outline: 'none',
   width: '70%',
   borderRadius: '25px',
   opacity: 1,
 }
 
-function getStars(args: number|undefined) {
-  if(args == undefined){
-    return "";
+function getStars(args: number | undefined) {
+  if (args == undefined) {
+    return ''
   }
-  let str = " ";
-  for(let i = 0; i < args; i++){
-    str += "☆";
+  let str = ' '
+  for (let i = 0; i < args; i++) {
+    str += '☆'
   }
-  console.log(str);
-  return str;
+  console.log(str)
+  return str
 }
-
 
 export function TrailInfoCard(args: trailInfo) {
   return (
@@ -53,7 +52,9 @@ export function TrailInfoCard(args: trailInfo) {
           <TrailTitle className="pv2">{args.title}</TrailTitle>
           <TrailTitle className="pv2">{getStars(args.stars)}</TrailTitle>
         </div>
-        <TrailTitle className="pv2">{"Trail Length: " + args.distance + " miles Difficulty: " + args.difficulty}</TrailTitle>
+        <TrailTitle className="pv2">
+          {'Trail Length: ' + args.distance + ' miles Difficulty: ' + args.difficulty}
+        </TrailTitle>
         <TrailDesc className="pb2">{args.description} </TrailDesc>
       </div>
     </div>

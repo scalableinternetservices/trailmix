@@ -75,7 +75,7 @@ export default class HikingPage extends Component<HikesPageProps> {
       summary: hike.summary,
       location: hike.location,
       difficulty: hike.difficulty,
-      length: parseFloat(hike.length),
+      length: hike.length,
     })
   }
 

@@ -52,7 +52,7 @@ export function AppBody() {
       <Router className={bodyClass}>
         <Redirect noThrow from="app" to="index" />
         <Redirect noThrow from="app/playground" to="login" />
-        <HomePage path={Route.HOME} />
+        <HomePage path={Route.HOME} comments={[]} names={[]} dates={[]} />
         <HikingPage path={Route.HIKING} />
         <ProjectsPage path={Route.PROJECTS} />
         <PlaygroundPage path={Route.PLAYGROUND} />
