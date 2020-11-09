@@ -1,7 +1,9 @@
 import * as React from 'react'
 import { useState } from 'react'
+import { getApolloClient } from '../../graphql/apolloClient'
 import { Button } from '../../style/button'
 import { Input } from '../../style/input'
+import { addCommentToDB } from '../playground/mutateComments'
 
 // interface AuthorCommentProps {
 //   comments: JSX.Element[]
@@ -16,7 +18,14 @@ interface AuthorCommentProps {
   setNamesCallback: React.Dispatch<React.SetStateAction<string[]>>
   setDatesCallback: React.Dispatch<React.SetStateAction<string[]>>
 }
-
+async function addComment(comment: string, name: string, date: Date) {
+  await addCommentToDB(getApolloClient(), {
+    id: 1,
+    name: name,
+    text: comment,
+    date: date.toLocaleTimeString() + ', ' + date.toLocaleDateString(),
+  })
+}
 export function AuthorComment(props: AuthorCommentProps) {
   const [name, setName] = useState('')
   const [comment, setComment] = useState('')
@@ -27,6 +36,8 @@ export function AuthorComment(props: AuthorCommentProps) {
     props.setCommentsCallback([comment, ...props.comments])
     props.setNamesCallback([name, ...props.names])
     props.setDatesCallback([d.toLocaleTimeString() + ', ' + d.toLocaleDateString(), ...props.dates])
+    void addComment(comment, name, d)
+    console.log('added comment to db')
   }
 
   return (

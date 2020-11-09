@@ -1,7 +1,5 @@
 import { ApolloClient, gql } from '@apollo/client'
-import {
-  AddHike, AddHikeInput, AddHikeVariables
-} from '../../graphql/query.gen'
+import { AddHike, AddHikeInput, AddHikeVariables } from '../../graphql/query.gen'
 
 const addHikeMutation = gql`
   mutation AddHike($input: AddHikeInput!) {

@@ -21,7 +21,7 @@ interface HikesPageProps extends RouteComponentProps, AppRouteParams {}
 let zipcode: number
 let lat: number
 let lon: number
-let getHikesButton: boolean = false
+let getHikesButton = false
 
 function GetLatLon({ children }: any) {
   if (zipcode) {
@@ -66,9 +66,7 @@ export default class HikingPage extends Component<HikesPageProps> {
   }
 
   async addHikeInformation(hike: Trail) {
-    //call Query somehow
-
-    addHikeToDB(getApolloClient(), {
+    await addHikeToDB(getApolloClient(), {
       id: parseInt(hike.id),
       name: hike.name,
       stars: hike.stars,
@@ -92,10 +90,10 @@ export default class HikingPage extends Component<HikesPageProps> {
           return response.text()
         })
         .then(hikes => {
-          let jsonObj = JSON.parse(hikes)
-          let array: Trail[] = []
-          for (let entry of jsonObj.trails) {
-            let a: Trail = {
+          const jsonObj = JSON.parse(hikes)
+          const array: Trail[] = []
+          for (const entry of jsonObj.trails) {
+            const a: Trail = {
               id: entry.id,
               name: entry.name,
               length: entry.length,
@@ -110,7 +108,7 @@ export default class HikingPage extends Component<HikesPageProps> {
               lat: entry.latitude,
               lon: entry.longitude,
             }
-            this.addHikeInformation(a)
+            void this.addHikeInformation(a)
             array.push(a)
           }
           this.setState({

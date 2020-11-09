@@ -2,6 +2,7 @@ import { readFileSync } from 'fs'
 import { PubSub } from 'graphql-yoga'
 import path from 'path'
 import { check } from '../../../common/src/util'
+import { Comment } from '../entities/Comment'
 import { Hike } from '../entities/Hike'
 import { Survey } from '../entities/Survey'
 import { SurveyAnswer } from '../entities/SurveyAnswer'
@@ -30,7 +31,8 @@ interface Context {
 export const graphqlRoot: Resolvers<Context> = {
   Query: {
     self: (_, args, ctx) => ctx.user,
-    hike: async (_, hikeId ) => (await Hike.findOne({ where: { id: hikeId } })) || null,
+    hike: async (_, hikeId) => (await Hike.findOne({ where: { id: hikeId } })) || null,
+    comment: async (_, commentId) => (await Comment.find({ where: { id: commentId } })) || null,
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
     coordinates: (_, { zipcode }) => coordinateQuery(zipcode),
@@ -58,8 +60,22 @@ export const graphqlRoot: Resolvers<Context> = {
       ctx.pubsub.publish('SURVEY_UPDATE_' + surveyId, survey)
       return survey
     },
-    addHike: async(_, { input }, ctx) => {
-      const {id, name, summary, stars, difficulty, location, length} = input
+    addComment: async (_, { input }, ctx) => {
+      const { id, name, text, date } = input
+
+      const newComment = new Comment()
+      newComment.id = id
+      newComment.text = text
+      newComment.date = date
+      newComment.name = name
+
+      await newComment.save()
+      ctx.pubsub.publish('ADD_HIKE_' + id, newComment)
+
+      return true
+    },
+    addHike: async (_, { input }, ctx) => {
+      const { id, name, summary, stars, difficulty, location, length } = input
 
       const newHike = new Hike()
       newHike.id = id

@@ -22,11 +22,26 @@ export interface AddHikeInput {
   length: Scalars['Float']
 }
 
+export interface AddCommentInput {
+  id: Scalars['Int']
+  name: Scalars['String']
+  text: Scalars['String']
+  date: Scalars['String']
+}
+
 export interface Coordinates {
   __typename?: 'Coordinates'
   zipcode: Scalars['Int']
   lat: Scalars['Float']
   lon: Scalars['Float']
+}
+
+export interface Comment {
+  __typename?: 'Comment'
+  id: Scalars['Int']
+  name: Scalars['String']
+  text: Scalars['String']
+  date: Scalars['String']
 }
 
 export interface Hike {
@@ -43,12 +58,17 @@ export interface Hike {
 export interface Mutation {
   __typename?: 'Mutation'
   addHike: Scalars['Boolean']
+  addComment: Scalars['Boolean']
   answerSurvey: Scalars['Boolean']
   nextSurveyQuestion?: Maybe<Survey>
 }
 
 export interface MutationAddHikeArgs {
   input: AddHikeInput
+}
+
+export interface MutationAddCommentArgs {
+  input: AddCommentInput
 }
 
 export interface MutationAnswerSurveyArgs {
@@ -66,6 +86,7 @@ export interface Query {
   survey?: Maybe<Survey>
   coordinates?: Maybe<Coordinates>
   hike?: Maybe<Hike>
+  comment?: Array<Comment>
 }
 
 export interface QuerySurveyArgs {
@@ -225,8 +246,10 @@ export type ResolversTypes = {
   SurveyAnswer: ResolverTypeWrapper<SurveyAnswer>
   Coordinates: ResolverTypeWrapper<Coordinates>
   Float: ResolverTypeWrapper<Scalars['Float']>
+  Comment: ResolverTypeWrapper<Comment>
   Hike: ResolverTypeWrapper<Hike>
   Mutation: ResolverTypeWrapper<{}>
+  AddCommentInput: AddCommentInput
   AddHikeInput: AddHikeInput
   SurveyInput: SurveyInput
   Subscription: ResolverTypeWrapper<{}>
@@ -243,10 +266,12 @@ export type ResolversParentTypes = {
   SurveyQuestion: SurveyQuestion
   SurveyAnswer: SurveyAnswer
   Coordinates: Coordinates
+  Comment: Comment
   Float: Scalars['Float']
   Hike: Hike
   Mutation: {}
   AddHikeInput: AddHikeInput
+  AddCommentInput: AddCommentInput
   SurveyInput: SurveyInput
   Subscription: {}
 }
@@ -280,6 +305,12 @@ export type MutationResolvers<
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
   addHike?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationAddHikeArgs, 'input'>>
+  addComment?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddCommentArgs, 'input'>
+  >
   answerSurvey?: Resolver<
     ResolversTypes['Boolean'],
     ParentType,
@@ -312,6 +343,7 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryCoordinatesArgs, 'zipcode'>
   >
+  comment?: Resolver<Array<ResolversTypes['Comment']>, ParentType, ContextType>
   hike?: Resolver<Maybe<ResolversTypes['Hike']>, ParentType, ContextType, RequireFields<QueryHikeArgs, 'id'>>
 }
 

@@ -22,9 +22,13 @@ type Query {
   survey(surveyId: Int!): Survey
   coordinates(zipcode: Int!): Coordinates
   hike(id: Int!): Hike
+  comment(id: Int!): [Comment!]!
 }
 
 type Mutation {
+  # Adds a comment to the database
+  addComment(input: AddCommentInput!): Boolean!
+
   # Adds a hike to the database
   addHike(input: AddHikeInput!): Boolean!
 
@@ -96,6 +100,13 @@ type Hike {
   length: Float!
 }
 
+type Comment {
+  id: Int!
+  text: String!
+  name: String!
+  date: String!
+}
+
 type SurveyAnswer {
   id: Int!
   answer: String!
@@ -112,6 +123,14 @@ type Coordinates {
   lat: Float!
   lon: Float!
 }
+
+input AddCommentInput {
+  id: Int!
+  text: String!
+  name: String!
+  date: String!
+}
+
 input AddHikeInput {
   id: Int!
   name: String!
