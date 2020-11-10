@@ -21,4 +21,7 @@ export class Comment extends BaseEntity {
 
   @ManyToOne(() => Hike, hike => hike.comment)
   hike: Hike
+
+  @Column('integer')
+  likes: number
 }

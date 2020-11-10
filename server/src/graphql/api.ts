@@ -33,9 +33,11 @@ export const graphqlRoot: Resolvers<Context> = {
     self: (_, args, ctx) => ctx.user,
     hike: async (_, hikeId) => (await Hike.findOne({ where: { id: hikeId } })) || null,
     comment: async (_, commentId) => (await Comment.find({ where: { id: commentId } })) || null,
+    comments: () => Comment.find(),
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
     coordinates: (_, { zipcode }) => coordinateQuery(zipcode),
+    hikes: () => Hike.find(),
   },
   Mutation: {
     answerSurvey: async (_, { input }, ctx) => {
@@ -68,9 +70,30 @@ export const graphqlRoot: Resolvers<Context> = {
       newComment.text = text
       newComment.date = date
       newComment.name = name
+      newComment.likes = 0
 
       await newComment.save()
       ctx.pubsub.publish('ADD_HIKE_' + id, newComment)
+
+      return true
+    },
+    upvoteComment: async (_, { input }, ctx) => {
+      const { id, name, text, date } = input
+      const com = check(await Comment.findOne({ where: { id: id, text: text, name: name, date: date } }))
+      com.likes = com.likes + 1
+
+      await com.save()
+      ctx.pubsub.publish('COMMENT_UPDATE_' + com.id, com)
+
+      return true
+    },
+    downvoteComment: async (_, { input }, ctx) => {
+      const { id, name, text, date } = input
+      const com = check(await Comment.findOne({ where: { id: id, text: text, name: name, date: date } }))
+      com.likes = com.likes - 1
+
+      await com.save()
+      ctx.pubsub.publish('COMMENT_UPDATE_' + com.id, com)
 
       return true
     },
