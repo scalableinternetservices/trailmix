@@ -70,9 +70,30 @@ export const graphqlRoot: Resolvers<Context> = {
       newComment.text = text
       newComment.date = date
       newComment.name = name
+      newComment.likes = 0
 
       await newComment.save()
       ctx.pubsub.publish('ADD_HIKE_' + id, newComment)
+
+      return true
+    },
+    upvoteComment: async (_, { input }, ctx) => {
+      const { id, name, text, date } = input
+      const com = check(await Comment.findOne({ where: { id: id, text: text, name: name, date: date } }))
+      com.likes = com.likes + 1
+
+      await com.save()
+      ctx.pubsub.publish('COMMENT_UPDATE_' + com.id, com)
+
+      return true
+    },
+    downvoteComment: async (_, { input }, ctx) => {
+      const { id, name, text, date } = input
+      const com = check(await Comment.findOne({ where: { id: id, text: text, name: name, date: date } }))
+      com.likes = com.likes - 1
+
+      await com.save()
+      ctx.pubsub.publish('COMMENT_UPDATE_' + com.id, com)
 
       return true
     },

@@ -35,6 +35,7 @@ export interface Comment {
   text: Scalars['String']
   name: Scalars['String']
   date: Scalars['String']
+  likes: Scalars['Int']
 }
 
 export interface Coordinates {
@@ -42,6 +43,13 @@ export interface Coordinates {
   zipcode: Scalars['Int']
   lat: Scalars['Float']
   lon: Scalars['Float']
+}
+
+export interface DownvoteInput {
+  id: Scalars['Int']
+  text: Scalars['String']
+  name: Scalars['String']
+  date: Scalars['String']
 }
 
 export interface Hike {
@@ -58,6 +66,8 @@ export interface Hike {
 export interface Mutation {
   __typename?: 'Mutation'
   addComment: Scalars['Boolean']
+  upvoteComment: Scalars['Boolean']
+  downvoteComment: Scalars['Boolean']
   addHike: Scalars['Boolean']
   answerSurvey: Scalars['Boolean']
   nextSurveyQuestion?: Maybe<Survey>
@@ -65,6 +75,14 @@ export interface Mutation {
 
 export interface MutationAddCommentArgs {
   input: AddCommentInput
+}
+
+export interface MutationUpvoteCommentArgs {
+  input: UpvoteInput
+}
+
+export interface MutationDownvoteCommentArgs {
+  input: DownvoteInput
 }
 
 export interface MutationAddHikeArgs {
@@ -145,6 +163,13 @@ export interface SurveyQuestion {
   choices?: Maybe<Array<Scalars['String']>>
   answers: Array<SurveyAnswer>
   survey: Survey
+}
+
+export interface UpvoteInput {
+  id: Scalars['Int']
+  text: Scalars['String']
+  name: Scalars['String']
+  date: Scalars['String']
 }
 
 export interface User {
@@ -256,6 +281,8 @@ export type ResolversTypes = {
   Comment: ResolverTypeWrapper<Comment>
   Mutation: ResolverTypeWrapper<{}>
   AddCommentInput: AddCommentInput
+  UpvoteInput: UpvoteInput
+  DownvoteInput: DownvoteInput
   AddHikeInput: AddHikeInput
   SurveyInput: SurveyInput
   Subscription: ResolverTypeWrapper<{}>
@@ -277,6 +304,8 @@ export type ResolversParentTypes = {
   Comment: Comment
   Mutation: {}
   AddCommentInput: AddCommentInput
+  UpvoteInput: UpvoteInput
+  DownvoteInput: DownvoteInput
   AddHikeInput: AddHikeInput
   SurveyInput: SurveyInput
   Subscription: {}
@@ -290,6 +319,7 @@ export type CommentResolvers<
   text?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   date?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  likes?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
@@ -326,6 +356,18 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationAddCommentArgs, 'input'>
+  >
+  upvoteComment?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpvoteCommentArgs, 'input'>
+  >
+  downvoteComment?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDownvoteCommentArgs, 'input'>
   >
   addHike?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationAddHikeArgs, 'input'>>
   answerSurvey?: Resolver<

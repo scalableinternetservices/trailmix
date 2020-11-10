@@ -31,6 +31,12 @@ type Mutation {
   # Adds a comment to the database
   addComment(input: AddCommentInput!): Boolean!
 
+  # Upvote
+  upvoteComment(input: UpvoteInput!): Boolean!
+
+  # Downvote
+  downvoteComment(input: DownvoteInput!): Boolean!
+
   # Adds a hike to the database
   addHike(input: AddHikeInput!): Boolean!
 
@@ -107,6 +113,7 @@ type Comment {
   text: String!
   name: String!
   date: String!
+  likes: Int!
 }
 
 type SurveyAnswer {
@@ -141,4 +148,18 @@ input AddHikeInput {
   difficulty: String!
   location: String!
   length: Float!
+}
+
+input UpvoteInput {
+  id: Int!
+  text: String!
+  name: String!
+  date: String!
+}
+
+input DownvoteInput {
+  id: Int!
+  text: String!
+  name: String!
+  date: String!
 }

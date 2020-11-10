@@ -13,4 +13,7 @@ export class Comment extends BaseEntity {
 
   @Column('text')
   date: string
+
+  @Column('integer')
+  likes: number
 }
