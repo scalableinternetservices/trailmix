@@ -164,11 +164,45 @@ export interface FetchSurveyVariables {
 // ====================================================
 
 export interface AddComment {
-  addHike: boolean;
+  addComment: boolean;
 }
 
 export interface AddCommentVariables {
   input: AddCommentInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: UpvoteComment
+// ====================================================
+
+export interface UpvoteComment {
+  upvoteComment: boolean;
+}
+
+export interface UpvoteCommentVariables {
+  input: UpvoteInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: DownvoteComment
+// ====================================================
+
+export interface DownvoteComment {
+  downvoteComment: boolean;
+}
+
+export interface DownvoteCommentVariables {
+  input: DownvoteInput;
 }
 
 /* tslint:disable */
@@ -328,9 +362,23 @@ export interface AddHikeInput {
   length: number;
 }
 
+export interface DownvoteInput {
+  id: number;
+  text: string;
+  name: string;
+  date: string;
+}
+
 export interface SurveyInput {
   questionId: number;
   answer: string;
+}
+
+export interface UpvoteInput {
+  id: number;
+  text: string;
+  name: string;
+  date: string;
 }
 
 //==============================================================
