@@ -37,6 +37,9 @@ type Mutation {
   # Downvote
   downvoteComment(input: DownvoteInput!): Boolean!
 
+  # Adds a hike to the user's favorite list
+  addFavorite(input: AddFavoriteInput!): Boolean!
+
   # Adds a hike to the database
   addHike(input: AddHikeInput!): Boolean!
 
@@ -56,6 +59,7 @@ type User {
   userType: UserType!
   email: String!
   name: String!
+  favorites: [Hike]!
 }
 
 enum UserType {
@@ -148,6 +152,10 @@ input AddHikeInput {
   difficulty: String!
   location: String!
   length: Float!
+}
+
+input AddFavoriteInput {
+  hike: AddHikeInput!
 }
 
 input UpvoteInput {

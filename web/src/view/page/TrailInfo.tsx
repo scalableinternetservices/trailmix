@@ -1,7 +1,12 @@
+import Checkbox from '@material-ui/core/Checkbox'
+import HeartIcon from '@material-ui/icons/Favorite'
 import * as React from 'react'
+import { getApolloClient } from '../../graphql/apolloClient'
 import { TrailDesc, TrailTitle } from '../../style/header'
+import { favorite } from '../playground/mutateHikes'
 
 interface trailInfo {
+  id?: number
   title?: string
   description?: string
   distance?: string
@@ -37,7 +42,21 @@ function getStars(args: number | undefined) {
   console.log(str)
   return str
 }
-
+async function addFav(hike: trailInfo) {
+  if (hike.id == null || hike.title == null || hike.difficulty == null || hike.stars == null || hike.description) {
+    return
+  }
+  void favorite(getApolloClient(), {
+    hike: {
+      id: hike.id,
+      name: hike.title,
+      summary: hike.description,
+      distance: hike.distance,
+      difficulty: hike.difficulty,
+      stars: hike.stars,
+    },
+  })
+}
 export function TrailInfoCard(args: trailInfo) {
   return (
     <div
@@ -57,6 +76,7 @@ export function TrailInfoCard(args: trailInfo) {
         </TrailTitle>
         <TrailDesc className="pb2">{args.description} </TrailDesc>
       </div>
+      <Checkbox onClick={() => addFav(args)} icon={<HeartIcon />} checkedIcon={<HeartIcon />} name="checkedH" />
     </div>
   )
 }

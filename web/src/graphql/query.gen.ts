@@ -249,6 +249,23 @@ export interface AddHikeVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: AddFavorite
+// ====================================================
+
+export interface AddFavorite {
+  addFavorite: boolean;
+}
+
+export interface AddFavoriteVariables {
+  input: AddFavoriteInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FetchHikes
 // ====================================================
 
@@ -392,6 +409,10 @@ export interface AddCommentInput {
   text: string;
   name: string;
   date: string;
+}
+
+export interface AddFavoriteInput {
+  hike: AddHikeInput;
 }
 
 export interface AddHikeInput {

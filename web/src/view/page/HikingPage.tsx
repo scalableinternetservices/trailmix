@@ -50,7 +50,6 @@ function GetLatLon({ children }: any) {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint
 export default class HikingPage extends Component<HikesPageProps> {
   constructor(props: HikesPageProps) {
     super(props)

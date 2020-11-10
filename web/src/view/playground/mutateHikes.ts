@@ -1,9 +1,22 @@
 import { ApolloClient, gql } from '@apollo/client'
-import { AddHike, AddHikeInput, AddHikeVariables } from '../../graphql/query.gen'
+import {
+  AddFavorite,
+  AddFavoriteInput,
+  AddFavoriteVariables,
+  AddHike,
+  AddHikeInput,
+  AddHikeVariables
+} from '../../graphql/query.gen'
 
 const addHikeMutation = gql`
   mutation AddHike($input: AddHikeInput!) {
     addHike(input: $input)
+  }
+`
+
+const addFavorite = gql`
+  mutation AddFavorite($input: AddFavoriteInput!) {
+    addFavorite(input: $input)
   }
 `
 
@@ -24,3 +37,9 @@ export const fetchHikes = gql`
     }
   }
 `
+export function favorite(client: ApolloClient<any>, input: AddFavoriteInput) {
+  return client.mutate<AddFavorite, AddFavoriteVariables>({
+    mutation: addFavorite,
+    variables: { input },
+  })
+}

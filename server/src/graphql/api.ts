@@ -66,7 +66,6 @@ export const graphqlRoot: Resolvers<Context> = {
       const { id, name, text, date } = input
 
       const newComment = new Comment()
-      newComment.id = id
       newComment.text = text
       newComment.date = date
       newComment.name = name
@@ -111,6 +110,30 @@ export const graphqlRoot: Resolvers<Context> = {
 
       await newHike.save()
       ctx.pubsub.publish('ADD_HIKE_' + id, newHike)
+
+      return true
+    },
+    addFavorite: async (_, { input }, ctx) => {
+      const { hike } = input
+      const user = ctx.user
+      let found = await Hike.findOne({ where: { id: hike.id } })
+      if (found == null) {
+        const h = new Hike()
+        h.id = hike.id
+        h.name = hike.name
+        h.summary = hike.summary
+        h.stars = hike.stars
+        h.difficulty = hike.difficulty
+        h.location = hike.location
+        h.length = hike.length
+        found = h
+      }
+
+      if (user?.favorites.includes(found)) {
+        return false
+      }
+      user?.favorites.push(found)
+      await user?.save()
 
       return true
     },

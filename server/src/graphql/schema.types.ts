@@ -19,6 +19,10 @@ export interface AddCommentInput {
   date: Scalars['String']
 }
 
+export interface AddFavoriteInput {
+  hike: AddHikeInput
+}
+
 export interface AddHikeInput {
   id: Scalars['Int']
   name: Scalars['String']
@@ -68,6 +72,7 @@ export interface Mutation {
   addComment: Scalars['Boolean']
   upvoteComment: Scalars['Boolean']
   downvoteComment: Scalars['Boolean']
+  addFavorite: Scalars['Boolean']
   addHike: Scalars['Boolean']
   answerSurvey: Scalars['Boolean']
   nextSurveyQuestion?: Maybe<Survey>
@@ -83,6 +88,10 @@ export interface MutationUpvoteCommentArgs {
 
 export interface MutationDownvoteCommentArgs {
   input: DownvoteInput
+}
+
+export interface MutationAddFavoriteArgs {
+  input: AddFavoriteInput
 }
 
 export interface MutationAddHikeArgs {
@@ -178,6 +187,7 @@ export interface User {
   userType: UserType
   email: Scalars['String']
   name: Scalars['String']
+  favorites: Array<Maybe<Hike>>
 }
 
 export enum UserType {
@@ -271,18 +281,19 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']>
   UserType: UserType
   String: ResolverTypeWrapper<Scalars['String']>
+  Hike: ResolverTypeWrapper<Hike>
+  Float: ResolverTypeWrapper<Scalars['Float']>
   Survey: ResolverTypeWrapper<Survey>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   SurveyQuestion: ResolverTypeWrapper<SurveyQuestion>
   SurveyAnswer: ResolverTypeWrapper<SurveyAnswer>
   Coordinates: ResolverTypeWrapper<Coordinates>
-  Float: ResolverTypeWrapper<Scalars['Float']>
-  Hike: ResolverTypeWrapper<Hike>
   Comment: ResolverTypeWrapper<Comment>
   Mutation: ResolverTypeWrapper<{}>
   AddCommentInput: AddCommentInput
   UpvoteInput: UpvoteInput
   DownvoteInput: DownvoteInput
+  AddFavoriteInput: AddFavoriteInput
   AddHikeInput: AddHikeInput
   SurveyInput: SurveyInput
   Subscription: ResolverTypeWrapper<{}>
@@ -294,18 +305,19 @@ export type ResolversParentTypes = {
   User: User
   Int: Scalars['Int']
   String: Scalars['String']
+  Hike: Hike
+  Float: Scalars['Float']
   Survey: Survey
   Boolean: Scalars['Boolean']
   SurveyQuestion: SurveyQuestion
   SurveyAnswer: SurveyAnswer
   Coordinates: Coordinates
-  Float: Scalars['Float']
-  Hike: Hike
   Comment: Comment
   Mutation: {}
   AddCommentInput: AddCommentInput
   UpvoteInput: UpvoteInput
   DownvoteInput: DownvoteInput
+  AddFavoriteInput: AddFavoriteInput
   AddHikeInput: AddHikeInput
   SurveyInput: SurveyInput
   Subscription: {}
@@ -368,6 +380,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationDownvoteCommentArgs, 'input'>
+  >
+  addFavorite?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationAddFavoriteArgs, 'input'>
   >
   addHike?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationAddHikeArgs, 'input'>>
   answerSurvey?: Resolver<
@@ -464,6 +482,7 @@ export type UserResolvers<
   userType?: Resolver<ResolversTypes['UserType'], ParentType, ContextType>
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  favorites?: Resolver<Array<Maybe<ResolversTypes['Hike']>>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
