@@ -33,9 +33,11 @@ export const graphqlRoot: Resolvers<Context> = {
     self: (_, args, ctx) => ctx.user,
     hike: async (_, hikeId) => (await Hike.findOne({ where: { id: hikeId } })) || null,
     comment: async (_, commentId) => (await Comment.find({ where: { id: commentId } })) || null,
+    comments: () => Comment.find(),
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
     coordinates: (_, { zipcode }) => coordinateQuery(zipcode),
+    hikes: () => Hike.find(),
   },
   Mutation: {
     answerSurvey: async (_, { input }, ctx) => {

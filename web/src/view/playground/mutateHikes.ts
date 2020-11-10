@@ -13,3 +13,14 @@ export function addHikeToDB(client: ApolloClient<any>, input: AddHikeInput) {
     variables: { input },
   })
 }
+
+export const fetchHikes = gql`
+  query FetchHikes {
+    hikes {
+      name
+      summary
+      length
+      difficulty
+    }
+  }
+`

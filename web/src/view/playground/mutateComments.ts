@@ -13,3 +13,13 @@ export function addCommentToDB(client: ApolloClient<any>, input: AddCommentInput
     variables: { input },
   })
 }
+
+export const fetchComments = gql`
+  query FetchComments {
+    comments {
+      name
+      text
+      date
+    }
+  }
+`

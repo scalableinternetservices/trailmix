@@ -23,6 +23,8 @@ type Query {
   coordinates(zipcode: Int!): Coordinates
   hike(id: Int!): Hike
   comment(id: Int!): [Comment!]!
+  comments: [Comment!]!
+  hikes: [Hike!]!
 }
 
 type Mutation {
