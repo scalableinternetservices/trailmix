@@ -8,7 +8,7 @@ import {
   DownvoteInput,
   UpvoteComment,
   UpvoteCommentVariables,
-  UpvoteInput
+  UpvoteInput,
 } from '../../graphql/query.gen'
 
 const addCommentMutation = gql`
@@ -24,6 +24,15 @@ export function addCommentToDB(client: ApolloClient<any>, input: AddCommentInput
   })
 }
 
+export const fetchComments = gql`
+  query FetchComments {
+    comments {
+      name
+      text
+      date
+    }
+  }
+`
 const upvoteCommentMutation = gql`
   mutation UpvoteComment($input: UpvoteInput!) {
     upvoteComment(input: $input)

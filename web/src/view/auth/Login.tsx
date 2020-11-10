@@ -4,6 +4,7 @@ import { check } from '../../../../common/src/util'
 import { Button } from '../../style/button'
 import { Input } from '../../style/input'
 import { Spacer } from '../../style/spacer'
+import { Profile } from '../page/Profile'
 import { handleError } from '../toast/error'
 import { toastErr } from '../toast/toast'
 import { UserContext } from './user'
@@ -41,7 +42,13 @@ export function Login() {
   }
 
   if (user) {
-    return <Logout />
+    // TODO: Add profile page here
+    return (
+      <>
+        <Profile user={user} />
+        <Logout />
+      </>
+    )
   }
 
   return (
@@ -82,6 +89,7 @@ function Logout() {
     <>
       <Spacer $h5 />
       <Button onClick={logout}>Logout</Button>
+      <Spacer $h5 />
     </>
   )
 }
