@@ -12,6 +12,7 @@ import { getApolloClient } from '../../graphql/apolloClient'
 import { TrailDesc, TrailTitle } from '../../style/header'
 import { AppRouteParams } from '../nav/route'
 import { favorite } from '../playground/mutateHikes'
+import { CommentsSection } from './CommentSection'
 
 //const TD = style('td', 'mid-gray pa3 v-mid', { minWidth: '7em' })
 
@@ -32,6 +33,9 @@ export interface Trail {
   conditionDate: string
   lat: number
   lon: number
+  comments: string[]
+  names: string[]
+  dates: string[]
 }
 
 interface trailInfo {
@@ -47,6 +51,9 @@ interface trailInfo {
   conditionDate?: string
   icon?: undefined | string
   onClick?: () => void | undefined
+  comments: string[]
+  names: string[]
+  dates: string[]
 }
 
 interface trailStyle {
@@ -178,7 +185,12 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
             />
           </div>
         </div>
-        <Dialog onClose={args.onClick} aria-labelledby="customized-dialog-title" open={!!this.openTabs.get(args.title)}>
+        <Dialog
+          // disableBackdropClick={true}
+          onClose={args.onClick}
+          aria-labelledby="customized-dialog-title"
+          open={!!this.openTabs.get(args.title)}
+        >
           <DialogTitle id="customized-dialog-title" onClose={() => this.togglePopup(args.title, 'close')}>
             {args.title}
           </DialogTitle>
@@ -188,6 +200,7 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
               This {args.length}-mile hike, located in {args.location}, has {args.difficulty}-level difficulty and is
               currently rated {args.stars} stars.
             </Typography>
+            <CommentsSection comments={args.comments} names={args.names} dates={args.dates} />
           </DialogContent>
         </Dialog>
       </div>
@@ -207,6 +220,9 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
         conditionStatus: item.conditionStatus,
         conditionDetails: item.conditionDetails,
         conditionDate: item.conditionDate,
+        comments: item.comments,
+        names: item.names,
+        dates: item.dates,
       })
     })
   }
