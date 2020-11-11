@@ -116,6 +116,9 @@ export const graphqlRoot: Resolvers<Context> = {
     addFavorite: async (_, { input }, ctx) => {
       const { hike } = input
       const user = ctx.user
+      if (user == null) {
+        return false
+      }
       let found = await Hike.findOne({ where: { id: hike.id } })
       if (found == null) {
         const h = new Hike()
@@ -128,11 +131,14 @@ export const graphqlRoot: Resolvers<Context> = {
         h.length = hike.length
         found = h
       }
-
-      if (user?.favorites.includes(found)) {
+      if (user.favorites == undefined || user.favorites == null) {
+        user.favorites = [found]
+        return true
+      }
+      if (user.favorites.includes(found)) {
         return false
       }
-      user?.favorites.push(found)
+      user.favorites.push(found)
       await user?.save()
 
       return true
