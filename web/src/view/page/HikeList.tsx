@@ -109,16 +109,18 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
   }
 
   togglePopup(title: string | undefined, task: string) {
-    this.setState({ open: true })
     console.log(task)
     if (!this.openTabs.has(title)) {
-      this.openTabs.set(title, true)
+      if (!this.state.open) {
+        this.setState({ open: true })
+        this.openTabs.set(title, true)
+      }
     } else {
       if (task === 'close') {
-        this.openTabs.delete(title)
-        this.openTabs.set(title, false)
-      } else {
-        this.openTabs.delete(title)
+        if (this.state.open) {
+          this.setState({ open: false })
+          this.openTabs.delete(title)
+        }
       }
     }
     console.log(this.openTabs)
@@ -137,12 +139,7 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
           <TrailTitle className="pv2">{args.title}</TrailTitle>
           <TrailDesc className="pb2">{args.summary} </TrailDesc>
         </div>
-        <Dialog
-          // disableBackdropClick={true}
-          onClose={args.onClick}
-          aria-labelledby="customized-dialog-title"
-          open={!!this.openTabs.get(args.title)}
-        >
+        <Dialog onClose={args.onClick} aria-labelledby="customized-dialog-title" open={!!this.openTabs.get(args.title)}>
           <DialogTitle id="customized-dialog-title" onClose={() => this.togglePopup(args.title, 'close')}>
             {args.title}
           </DialogTitle>
