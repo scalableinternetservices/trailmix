@@ -92,6 +92,9 @@ export default class HikingPage extends Component<HikesPageProps> {
           const jsonObj = JSON.parse(hikes)
           const array: Trail[] = []
           for (const entry of jsonObj.trails) {
+            const comments_arr: string[] = []
+            const names_arr: string[] = []
+            const dates_arr: string[] = []
             const a: Trail = {
               id: entry.id,
               name: entry.name,
@@ -106,6 +109,9 @@ export default class HikingPage extends Component<HikesPageProps> {
               conditionDate: entry.conditionDate,
               lat: entry.latitude,
               lon: entry.longitude,
+              comments: comments_arr,
+              names: names_arr,
+              dates: dates_arr,
             }
             void this.addHikeInformation(a)
             array.push(a)
