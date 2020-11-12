@@ -82,7 +82,10 @@ export const graphqlRoot: Resolvers<Context> = {
     },
     upvoteComment: async (_, { input }, ctx) => {
       const { id, name, text, date } = input
-      const com = check(await Comment.findOne({ where: { id: id, text: text, name: name, date: date } }))
+      if (id == null) {
+        return false
+      }
+      const com = check(await Comment.findOne({ where: { text: text, name: name, date: date } }))
       com.likes = com.likes + 1
 
       await com.save()
@@ -92,7 +95,10 @@ export const graphqlRoot: Resolvers<Context> = {
     },
     downvoteComment: async (_, { input }, ctx) => {
       const { id, name, text, date } = input
-      const com = check(await Comment.findOne({ where: { id: id, text: text, name: name, date: date } }))
+      if (id == null) {
+        return false
+      }
+      const com = check(await Comment.findOne({ where: { text: text, name: name, date: date } }))
       com.likes = com.likes - 1
 
       await com.save()
