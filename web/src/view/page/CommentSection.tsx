@@ -9,6 +9,7 @@ interface CommentsProps extends RouteComponentProps, AppRouteParams {
   comments: string[]
   names: string[]
   dates: string[]
+  hikeid: number
 }
 
 export function CommentsSection(props: CommentsProps) {
@@ -27,6 +28,7 @@ export function CommentsSection(props: CommentsProps) {
           setCommentsCallback={setComments}
           setNamesCallback={setNames}
           setDatesCallback={setDates}
+          hikeid={props.hikeid}
         />
       </div>
       <Spacer $h4 />

@@ -70,6 +70,10 @@ export const graphqlRoot: Resolvers<Context> = {
       newComment.date = date
       newComment.name = name
       newComment.likes = 0
+      const hike = await Hike.findOne({ where: { id: id } })
+      if (hike != null) {
+        newComment.hike = hike
+      }
 
       await newComment.save()
       ctx.pubsub.publish('ADD_HIKE_' + id, newComment)

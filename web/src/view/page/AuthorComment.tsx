@@ -14,13 +14,14 @@ interface AuthorCommentProps {
   comments: string[]
   names: string[]
   dates: string[]
+  hikeid: number
   setCommentsCallback: React.Dispatch<React.SetStateAction<string[]>>
   setNamesCallback: React.Dispatch<React.SetStateAction<string[]>>
   setDatesCallback: React.Dispatch<React.SetStateAction<string[]>>
 }
-async function addComment(comment: string, name: string, date: Date) {
+async function addComment(comment: string, name: string, date: Date, hikeid: number) {
   await addCommentToDB(getApolloClient(), {
-    id: 1,
+    id: hikeid,
     name: name,
     text: comment,
     date: date.toLocaleTimeString() + ', ' + date.toLocaleDateString(),
@@ -36,7 +37,7 @@ export function AuthorComment(props: AuthorCommentProps) {
     props.setCommentsCallback([comment, ...props.comments])
     props.setNamesCallback([name, ...props.names])
     props.setDatesCallback([d.toLocaleTimeString() + ', ' + d.toLocaleDateString(), ...props.dates])
-    void addComment(comment, name, d)
+    void addComment(comment, name, d, props.hikeid)
     console.log('added comment to db')
   }
 
