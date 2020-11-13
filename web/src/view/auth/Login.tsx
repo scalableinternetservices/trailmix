@@ -42,7 +42,6 @@ export function Login() {
   }
 
   if (user) {
-    // TODO: Add profile page here
     return (
       <>
         <Profile user={user} />
