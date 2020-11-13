@@ -127,15 +127,11 @@ export default class HikingPage extends Component<HikesPageProps> {
   handleZipChange(event: any) {
     this.setState({ zip: event.target.value })
   }
-  handleLatLonChange() {
+  handleLatLonChange(event: any) {
     getHikesButton = true
-    return (
-      <div>
-        {(zipcode = Number(this.state.zip))}
-        <GetLatLon>{({ data, error, loading }: any) => console.log(data)}</GetLatLon>
-        {this.setState({ lat: lat, lon: lon })}
-      </div>
-    )
+    zipcode = Number(this.state.zip)
+    this.setState({ lat: lat, lon: lon })
+    event.preventDefault()
   }
   render() {
     const hikes = this.state.trails
@@ -160,10 +156,15 @@ export default class HikingPage extends Component<HikesPageProps> {
               variant="outlined"
               label="Zipcode"
               value={this.state.zip}
-              error={this.state.zip.length !== 5 && this.state.zip.length !== 0}
+              error={
+                this.state.zip.length !== 0 && (this.state.zip.length !== 5 || /^\d+$/.test(this.state.zip) == false)
+              }
               onChange={this.handleZipChange}
             />
-            <Button disabled={this.state.zip.length !== 5} onClick={this.handleLatLonChange}>
+            <Button
+              disabled={this.state.zip.length !== 5 || /^\d+$/.test(this.state.zip) == false}
+              onClick={this.handleLatLonChange}
+            >
               Submit
             </Button>
             <GetLatLon>{({ data, error, loading }: any) => console.log(data)}</GetLatLon>
