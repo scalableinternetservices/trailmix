@@ -62,7 +62,7 @@ export function CommentCard(props: commentInfo) {
 
       <div className="media-body p-2 shadow-sm rounded bg-light border">
         <small className="float-right text-muted">{props.time}</small>
-        <h6 className="mt-0 mb-1 text-muted">{name}</h6>
+        <h6 className="mt-0 mb-1 text-muted">{props.name}</h6>
         {props.message}
         <Spacer></Spacer>
         <Checkbox
