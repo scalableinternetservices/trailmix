@@ -174,12 +174,12 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
         onClick={() => this.togglePopup(args.title, 'open')}
       >
         <img src={args.icon ? args.icon : undefined} className="ph3" />
-        <div>
+        <div style={{ width: '100%' }}>
           <div className="flex flex-column" style={{ float: 'left', width: '90%' }}>
             <TrailTitle className="pv2">{args.title}</TrailTitle>
             <TrailDesc className="pb2">{args.summary} </TrailDesc>
           </div>
-          <div style={{ float: 'right', width: '10%' }}>
+          <div style={{ float: 'right', width: '10%', marginLeft: 'auto', marginRight: 0 }}>
             <Checkbox
               onClick={e => this.addFav(e, args)}
               icon={<FavoriteBorder />}
