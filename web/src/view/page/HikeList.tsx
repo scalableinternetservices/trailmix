@@ -134,7 +134,8 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
     console.log(this.openTabs)
   }
 
-  async addFav(hike: trailInfo) {
+  async addFav(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, hike: trailInfo) {
+    e.stopPropagation()
     if (this.favorited.get(hike.id)) {
       this.favorited.set(hike.id, false)
       //where we would unfavorite
@@ -180,7 +181,7 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
           </div>
           <div style={{ float: 'right', width: '10%' }}>
             <Checkbox
-              onClick={() => this.addFav(args)}
+              onClick={e => this.addFav(e, args)}
               icon={<FavoriteBorder />}
               checkedIcon={<Favorite />}
               name="checkedH"
