@@ -2,6 +2,7 @@ import * as React from 'react'
 import { TrailDesc, TrailTitle } from '../../style/header'
 
 interface trailInfo {
+  id?: number
   title?: string
   description?: string
   distance?: string
@@ -37,7 +38,6 @@ function getStars(args: number | undefined) {
   console.log(str)
   return str
 }
-
 export function TrailInfoCard(args: trailInfo) {
   return (
     <div

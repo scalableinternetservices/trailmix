@@ -33,9 +33,11 @@ export const graphqlRoot: Resolvers<Context> = {
     self: (_, args, ctx) => ctx.user,
     hike: async (_, hikeId) => (await Hike.findOne({ where: { id: hikeId } })) || null,
     comment: async (_, commentId) => (await Comment.find({ where: { id: commentId } })) || null,
+    comments: () => Comment.find(),
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
     coordinates: (_, { zipcode }) => coordinateQuery(zipcode),
+    hikes: () => Hike.find(),
   },
   Mutation: {
     answerSurvey: async (_, { input }, ctx) => {
@@ -64,13 +66,43 @@ export const graphqlRoot: Resolvers<Context> = {
       const { id, name, text, date } = input
 
       const newComment = new Comment()
-      newComment.id = id
       newComment.text = text
       newComment.date = date
       newComment.name = name
+      newComment.likes = 0
+      const hike = await Hike.findOne({ where: { id: id } })
+      if (hike != null) {
+        newComment.hike = hike
+      }
 
       await newComment.save()
       ctx.pubsub.publish('ADD_HIKE_' + id, newComment)
+
+      return true
+    },
+    upvoteComment: async (_, { input }, ctx) => {
+      const { id, name, text, date } = input
+      if (id == null) {
+        return false
+      }
+      const com = check(await Comment.findOne({ where: { text: text, name: name, date: date } }))
+      com.likes = com.likes + 1
+
+      await com.save()
+      ctx.pubsub.publish('COMMENT_UPDATE_' + com.id, com)
+
+      return true
+    },
+    downvoteComment: async (_, { input }, ctx) => {
+      const { id, name, text, date } = input
+      if (id == null) {
+        return false
+      }
+      const com = check(await Comment.findOne({ where: { text: text, name: name, date: date } }))
+      com.likes = com.likes - 1
+
+      await com.save()
+      ctx.pubsub.publish('COMMENT_UPDATE_' + com.id, com)
 
       return true
     },
@@ -88,6 +120,36 @@ export const graphqlRoot: Resolvers<Context> = {
 
       await newHike.save()
       ctx.pubsub.publish('ADD_HIKE_' + id, newHike)
+
+      return true
+    },
+    addFavorite: async (_, { input }, ctx) => {
+      const { hike } = input
+      const user = ctx.user
+      if (user == null) {
+        return false
+      }
+      let found = await Hike.findOne({ where: { id: hike.id } })
+      if (found == null) {
+        const h = new Hike()
+        h.id = hike.id
+        h.name = hike.name
+        h.summary = hike.summary
+        h.stars = hike.stars
+        h.difficulty = hike.difficulty
+        h.location = hike.location
+        h.length = hike.length
+        found = h
+      }
+      if (user.favorites == undefined || user.favorites == null) {
+        user.favorites = [found]
+        return true
+      }
+      if (user.favorites.includes(found)) {
+        return false
+      }
+      user.favorites.push(found)
+      await user?.save()
 
       return true
     },

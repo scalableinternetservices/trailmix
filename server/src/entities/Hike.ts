@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
+import { Comment } from './Comment'
 
 @Entity()
 export class Hike extends BaseEntity {
@@ -22,4 +23,7 @@ export class Hike extends BaseEntity {
 
   @Column('float')
   length: number
+
+  @OneToMany(() => Comment, comment => comment.hike)
+  comment: Comment[]
 }

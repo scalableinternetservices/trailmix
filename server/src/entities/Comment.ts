@@ -1,8 +1,10 @@
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Hike } from './Hike'
+import { User } from './User'
 
 @Entity()
 export class Comment extends BaseEntity {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number
 
   @Column('text')
@@ -13,4 +15,13 @@ export class Comment extends BaseEntity {
 
   @Column('text')
   date: string
+
+  @ManyToOne(() => User, user => user.comment)
+  user: User
+
+  @ManyToOne(() => Hike, hike => hike.comment)
+  hike: Hike
+
+  @Column('integer')
+  likes: number
 }

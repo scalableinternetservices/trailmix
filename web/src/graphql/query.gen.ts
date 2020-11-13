@@ -11,6 +11,7 @@ export interface FetchUserContext_self {
   __typename: "User";
   id: number;
   name: string;
+  email: string;
   userType: UserType;
 }
 
@@ -164,11 +165,65 @@ export interface FetchSurveyVariables {
 // ====================================================
 
 export interface AddComment {
-  addHike: boolean;
+  addComment: boolean;
 }
 
 export interface AddCommentVariables {
   input: AddCommentInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: FetchComments
+// ====================================================
+
+export interface FetchComments_comments {
+  __typename: "Comment";
+  name: string;
+  text: string;
+  date: string;
+}
+
+export interface FetchComments {
+  comments: FetchComments_comments[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: UpvoteComment
+// ====================================================
+
+export interface UpvoteComment {
+  upvoteComment: boolean;
+}
+
+export interface UpvoteCommentVariables {
+  input: UpvoteInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: DownvoteComment
+// ====================================================
+
+export interface DownvoteComment {
+  downvoteComment: boolean;
+}
+
+export interface DownvoteCommentVariables {
+  input: DownvoteInput;
 }
 
 /* tslint:disable */
@@ -186,6 +241,44 @@ export interface AddHike {
 
 export interface AddHikeVariables {
   input: AddHikeInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL mutation operation: AddFavorite
+// ====================================================
+
+export interface AddFavorite {
+  addFavorite: boolean;
+}
+
+export interface AddFavoriteVariables {
+  input: AddFavoriteInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: FetchHikes
+// ====================================================
+
+export interface FetchHikes_hikes {
+  __typename: "Hike";
+  name: string;
+  summary: string;
+  length: number;
+  difficulty: string;
+}
+
+export interface FetchHikes {
+  hikes: FetchHikes_hikes[];
 }
 
 /* tslint:disable */
@@ -318,6 +411,10 @@ export interface AddCommentInput {
   date: string;
 }
 
+export interface AddFavoriteInput {
+  hike: AddHikeInput;
+}
+
 export interface AddHikeInput {
   id: number;
   name: string;
@@ -328,9 +425,23 @@ export interface AddHikeInput {
   length: number;
 }
 
+export interface DownvoteInput {
+  id: number;
+  text: string;
+  name: string;
+  date: string;
+}
+
 export interface SurveyInput {
   questionId: number;
   answer: string;
+}
+
+export interface UpvoteInput {
+  id: number;
+  text: string;
+  name: string;
+  date: string;
 }
 
 //==============================================================
