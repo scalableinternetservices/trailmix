@@ -1,6 +1,7 @@
 import { readFileSync } from 'fs'
 import { PubSub } from 'graphql-yoga'
 import path from 'path'
+import { Connection } from 'typeorm'
 import { check } from '../../../common/src/util'
 import { Comment } from '../entities/Comment'
 import { Hike } from '../entities/Hike'
@@ -32,7 +33,7 @@ export const graphqlRoot: Resolvers<Context> = {
   Query: {
     self: (_, args, ctx) => ctx.user,
     hike: async (_, hikeId) => (await Hike.findOne({ where: { id: hikeId } })) || null,
-    comment: async (_, commentId) => (await Comment.find({ where: { id: commentId } })) || null,
+    comment: async (_, hikeId) => (await Comment.find({ where: { hike: { id: hikeId } } })) || null,
     comments: () => Comment.find(),
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
@@ -144,15 +145,28 @@ export const graphqlRoot: Resolvers<Context> = {
         h.length = hike.length
         found = h
       }
+      if (found.favorites == undefined) {
+        const arr: User[] = []
+        found.favorites = arr
+      }
       if (user.favorites == undefined || user.favorites == null) {
-        user.favorites = [found]
+        console.log('first favorite for user: ' + user.name)
+        const arr: Hike[] = []
+        found.favorites.push(user)
+        arr.push(found)
+        user.favorites = arr
+        await found.save()
+        await user.save()
+        await Connection
+        console.log(user.favorites[0])
+        console.log(found.favorites[0])
         return true
       }
       if (user.favorites.includes(found)) {
         return false
       }
       user.favorites.push(found)
-      await user?.save()
+      await user.save()
 
       return true
     },

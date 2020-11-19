@@ -1,5 +1,6 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm'
 import { Comment } from './Comment'
+import { User } from './User'
 
 @Entity()
 export class Hike extends BaseEntity {
@@ -26,4 +27,7 @@ export class Hike extends BaseEntity {
 
   @OneToMany(() => Comment, comment => comment.hike)
   comment: Comment[]
+
+  @ManyToMany(() => User, user => user.id)
+  favorites: User[]
 }

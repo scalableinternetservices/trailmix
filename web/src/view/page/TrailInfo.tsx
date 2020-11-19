@@ -45,6 +45,7 @@ export function TrailInfoCard(args: trailInfo) {
       className="flex items-center pa2 hover-bg-light-green bg-washed-green"
       style={buttonStyle}
       onClick={args.onClick}
+      key={args.id}
     >
       <img src={args.icon ? args.icon : undefined} className="ph3" />
       <div className="flex flex-column">

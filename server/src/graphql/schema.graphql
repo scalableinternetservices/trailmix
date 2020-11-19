@@ -121,6 +121,7 @@ type Comment {
   name: String!
   date: String!
   likes: Int!
+  hike: Hike!
 }
 
 type SurveyAnswer {

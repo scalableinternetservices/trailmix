@@ -3,6 +3,8 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn
@@ -43,6 +45,7 @@ export class User extends BaseEntity implements GraphqlUser {
   @OneToMany(() => Comment, comment => comment.user)
   comment: Comment[]
 
-  @OneToMany(() => Hike, hike => hike.id)
+  @ManyToMany(() => Hike, hike => hike.id)
+  @JoinTable()
   favorites: Hike[]
 }

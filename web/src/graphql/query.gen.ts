@@ -181,11 +181,17 @@ export interface AddCommentVariables {
 // GraphQL query operation: FetchComments
 // ====================================================
 
+export interface FetchComments_comments_hike {
+  __typename: "Hike";
+  id: number;
+}
+
 export interface FetchComments_comments {
   __typename: "Comment";
   name: string;
   text: string;
   date: string;
+  hike: FetchComments_comments_hike;
 }
 
 export interface FetchComments {
@@ -405,6 +411,28 @@ export interface SurveyQuestion {
   prompt: string;
   choices: string[] | null;
   answers: SurveyQuestion_answers[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL fragment: Comment
+// ====================================================
+
+export interface Comment_hike {
+  __typename: "Hike";
+  id: number;
+}
+
+export interface Comment {
+  __typename: "Comment";
+  name: string;
+  text: string;
+  date: string;
+  hike: Comment_hike;
 }
 
 /* tslint:disable */

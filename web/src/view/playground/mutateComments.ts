@@ -8,7 +8,7 @@ import {
   DownvoteInput,
   UpvoteComment,
   UpvoteCommentVariables,
-  UpvoteInput,
+  UpvoteInput
 } from '../../graphql/query.gen'
 
 const addCommentMutation = gql`
@@ -24,13 +24,23 @@ export function addCommentToDB(client: ApolloClient<any>, input: AddCommentInput
   })
 }
 
+export const fragmentComment = gql`
+  fragment Comment on Comment {
+    name
+    text
+    date
+    hike {
+      id
+    }
+  }
+`
+
 export const fetchComments = gql`
   query FetchComments {
     comments {
-      name
-      text
-      date
+      ...Comment
     }
+    ${fragmentComment}
   }
 `
 const upvoteCommentMutation = gql`
