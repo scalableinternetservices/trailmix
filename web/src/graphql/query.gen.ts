@@ -266,6 +266,23 @@ export interface AddFavoriteVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: RemoveFavorite
+// ====================================================
+
+export interface RemoveFavorite {
+  removeFavorite: boolean;
+}
+
+export interface RemoveFavoriteVariables {
+  input: RemoveFavoriteInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FetchHikes
 // ====================================================
 
@@ -430,6 +447,10 @@ export interface DownvoteInput {
   text: string;
   name: string;
   date: string;
+}
+
+export interface RemoveFavoriteInput {
+  hike: AddHikeInput;
 }
 
 export interface SurveyInput {

@@ -40,6 +40,9 @@ type Mutation {
   # Adds a hike to the user's favorite list
   addFavorite(input: AddFavoriteInput!): Boolean!
 
+  # Removes a hike from the user's favorite list
+  removeFavorite(input: RemoveFavoriteInput!): Boolean!
+
   # Adds a hike to the database
   addHike(input: AddHikeInput!): Boolean!
 
@@ -155,6 +158,10 @@ input AddHikeInput {
 }
 
 input AddFavoriteInput {
+  hike: AddHikeInput!
+}
+
+input RemoveFavoriteInput {
   hike: AddHikeInput!
 }
 

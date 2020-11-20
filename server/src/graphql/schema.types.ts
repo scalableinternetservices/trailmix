@@ -73,6 +73,7 @@ export interface Mutation {
   upvoteComment: Scalars['Boolean']
   downvoteComment: Scalars['Boolean']
   addFavorite: Scalars['Boolean']
+  removeFavorite: Scalars['Boolean']
   addHike: Scalars['Boolean']
   answerSurvey: Scalars['Boolean']
   nextSurveyQuestion?: Maybe<Survey>
@@ -92,6 +93,10 @@ export interface MutationDownvoteCommentArgs {
 
 export interface MutationAddFavoriteArgs {
   input: AddFavoriteInput
+}
+
+export interface MutationRemoveFavoriteArgs {
+  input: RemoveFavoriteInput
 }
 
 export interface MutationAddHikeArgs {
@@ -132,6 +137,10 @@ export interface QueryHikeArgs {
 
 export interface QueryCommentArgs {
   id: Scalars['Int']
+}
+
+export interface RemoveFavoriteInput {
+  hike: AddHikeInput
 }
 
 export interface Subscription {
@@ -295,6 +304,7 @@ export type ResolversTypes = {
   DownvoteInput: DownvoteInput
   AddFavoriteInput: AddFavoriteInput
   AddHikeInput: AddHikeInput
+  RemoveFavoriteInput: RemoveFavoriteInput
   SurveyInput: SurveyInput
   Subscription: ResolverTypeWrapper<{}>
 }
@@ -319,6 +329,7 @@ export type ResolversParentTypes = {
   DownvoteInput: DownvoteInput
   AddFavoriteInput: AddFavoriteInput
   AddHikeInput: AddHikeInput
+  RemoveFavoriteInput: RemoveFavoriteInput
   SurveyInput: SurveyInput
   Subscription: {}
 }
@@ -386,6 +397,12 @@ export type MutationResolvers<
     ParentType,
     ContextType,
     RequireFields<MutationAddFavoriteArgs, 'input'>
+  >
+  removeFavorite?: Resolver<
+    ResolversTypes['Boolean'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRemoveFavoriteArgs, 'input'>
   >
   addHike?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationAddHikeArgs, 'input'>>
   answerSurvey?: Resolver<

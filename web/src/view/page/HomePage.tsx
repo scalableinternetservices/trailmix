@@ -5,7 +5,6 @@ import { H1, H2, H3 } from '../../style/header'
 import { Spacer } from '../../style/spacer'
 import { style } from '../../style/styled'
 import { BodyText } from '../../style/text'
-import { Link } from '../nav/Link'
 import { AppRouteParams } from '../nav/route'
 import { Page } from './Page'
 
@@ -53,52 +52,6 @@ export function HomePage(props: HomePageProps) {
                   </tr>
                 </tbody>
               </table>
-            </BodyText>
-          </Section>
-          <Section>
-            <H2>Resources</H2>
-            <Spacer $h4 />
-            <BodyText>
-              <ul className="ml4">
-                <li>
-                  <Link block href="https://www.typescriptlang.org/docs/handbook/intro.html">
-                    TypeScript handbook
-                  </Link>
-                  <Link block href="https://basarat.gitbook.io/typescript/">
-                    TypeScript deep-dive
-                  </Link>
-                </li>
-                <li>
-                  <Link block href="https://www.typescriptlang.org/play">
-                    TypeScript playground
-                  </Link>
-                </li>
-                <li>
-                  <Link block href="https://reactjs.org/tutorial/tutorial.html">
-                    React tutorial
-                  </Link>
-                </li>
-                <li>
-                  <Link block href="https://reactjs.org/docs/hello-world.html">
-                    React docs
-                  </Link>
-                </li>
-                <li>
-                  <Link block href="https://www.apollographql.com/docs/react/data/queries/">
-                    Apollo client docs
-                  </Link>
-                </li>
-                <li>
-                  <Link block href="https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch">
-                    <code>fetch</code> docs
-                  </Link>
-                </li>
-                <li>
-                  <Link block href="#">
-                    Project troubleshooting
-                  </Link>
-                </li>
-              </ul>
             </BodyText>
           </Section>
         </RContent>

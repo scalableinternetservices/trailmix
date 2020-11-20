@@ -153,6 +153,22 @@ export const graphqlRoot: Resolvers<Context> = {
 
       return true
     },
+    removeFavorite: async (_, { input }, ctx) => {
+      const { hike } = input
+      const user = ctx.user
+      if (user == null) {
+        return false
+      }
+      if (user.favorites == undefined || user.favorites == null) {
+        return false
+      }
+      const found = user.favorites.find(h => h.id === hike.id)
+      if (found) {
+        user.favorites = user.favorites.filter(h => h.id !== hike.id)
+      }
+      await user.save()
+      return true
+    },
   },
   Subscription: {
     surveyUpdates: {
