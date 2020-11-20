@@ -1,7 +1,6 @@
 import { readFileSync } from 'fs'
 import { PubSub } from 'graphql-yoga'
 import path from 'path'
-import { Connection } from 'typeorm'
 import { check } from '../../../common/src/util'
 import { Comment } from '../entities/Comment'
 import { Hike } from '../entities/Hike'
@@ -133,7 +132,7 @@ export const graphqlRoot: Resolvers<Context> = {
       if (user == null) {
         return false
       }
-      let found = await Hike.findOne({ where: { id: hike.id } })
+      let found = await Hike.findOne({ where: { id: hike.id }, relations: ['favorites'] })
       if (found == null) {
         const h = new Hike()
         h.id = hike.id
@@ -151,20 +150,21 @@ export const graphqlRoot: Resolvers<Context> = {
       }
       if (user.favorites == undefined || user.favorites == null) {
         console.log('first favorite for user: ' + user.name)
-        const arr: Hike[] = []
+
         found.favorites.push(user)
+
+        const arr: Hike[] = []
         arr.push(found)
         user.favorites = arr
+
         await found.save()
         await user.save()
-        await Connection
-        console.log(user.favorites[0])
-        console.log(found.favorites[0])
         return true
       }
       if (user.favorites.includes(found)) {
         return false
       }
+      console.log(found)
       user.favorites.push(found)
       await user.save()
 
@@ -172,18 +172,20 @@ export const graphqlRoot: Resolvers<Context> = {
     },
     removeFavorite: async (_, { input }, ctx) => {
       const { hike } = input
+      const foundHike = await Hike.findOne({ where: { id: hike.id }, relations: ['favorites'] })
       const user = ctx.user
-      if (user == null) {
+      if (user == null || foundHike == null) {
         return false
       }
-      if (user.favorites == undefined || user.favorites == null) {
+      if (foundHike.favorites == undefined || foundHike.favorites == null) {
+        console.log('empty')
         return false
       }
-      const found = user.favorites.find(h => h.id === hike.id)
+      const found = foundHike.favorites.find(u => u.id === user.id)
       if (found) {
-        user.favorites = user.favorites.filter(h => h.id !== hike.id)
+        foundHike.favorites = foundHike.favorites.filter(h => h.id != found.id)
       }
-      await user.save()
+      await foundHike.save()
       return true
     },
   },
