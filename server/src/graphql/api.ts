@@ -70,6 +70,9 @@ export const graphqlRoot: Resolvers<Context> = {
       newComment.date = date
       newComment.name = name
       newComment.likes = 0
+      if (ctx.user) {
+        newComment.user = ctx.user
+      }
       const hike = await Hike.findOne({ where: { id: id } })
       if (hike != null) {
         newComment.hike = hike
