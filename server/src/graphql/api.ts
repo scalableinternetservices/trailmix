@@ -149,8 +149,6 @@ export const graphqlRoot: Resolvers<Context> = {
         found.favorites = arr
       }
       if (user.favorites == undefined || user.favorites == null) {
-        console.log('first favorite for user: ' + user.name)
-
         found.favorites.push(user)
 
         const arr: Hike[] = []
@@ -164,7 +162,6 @@ export const graphqlRoot: Resolvers<Context> = {
       if (user.favorites.includes(found)) {
         return false
       }
-      console.log(found)
       user.favorites.push(found)
       await user.save()
 
@@ -178,7 +175,6 @@ export const graphqlRoot: Resolvers<Context> = {
         return false
       }
       if (foundHike.favorites == undefined || foundHike.favorites == null) {
-        console.log('empty')
         return false
       }
       const found = foundHike.favorites.find(u => u.id === user.id)
