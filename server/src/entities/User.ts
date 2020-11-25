@@ -7,12 +7,13 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm'
-import { User as GraphqlUser, UserType } from '../graphql/schema.types'
+import { Hike, Maybe, User as GraphqlUser, UserType } from '../graphql/schema.types'
 import { Comment } from './Comment'
-import { Hike } from './Hike'
 
 @Entity()
 export class User extends BaseEntity implements GraphqlUser {
+  __typename?: 'User' | undefined
+  favorites: Maybe<Hike>[]
   @PrimaryGeneratedColumn()
   id: number
 
@@ -42,7 +43,4 @@ export class User extends BaseEntity implements GraphqlUser {
 
   @OneToMany(() => Comment, comment => comment.user)
   comment: Comment[]
-
-  @OneToMany(() => Hike, hike => hike.id)
-  favorites: Hike[]
 }
