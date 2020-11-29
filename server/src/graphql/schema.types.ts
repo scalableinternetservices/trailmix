@@ -40,6 +40,7 @@ export interface Comment {
   name: Scalars['String']
   date: Scalars['String']
   likes: Scalars['Int']
+  hike?: Maybe<Hike>
 }
 
 export interface Coordinates {
@@ -332,6 +333,7 @@ export type CommentResolvers<
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   date?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   likes?: Resolver<ResolversTypes['Int'], ParentType, ContextType>
+  hike?: Resolver<Maybe<ResolversTypes['Hike']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 

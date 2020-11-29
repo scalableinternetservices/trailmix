@@ -39,6 +39,7 @@ export function AuthorComment(props: AuthorCommentProps) {
     props.setDatesCallback([d.toLocaleTimeString() + ', ' + d.toLocaleDateString(), ...props.dates])
     void addComment(comment, name, d, props.hikeid)
     console.log('added comment to db')
+    console.log(props.hikeid)
   }
 
   return (
