@@ -24,6 +24,17 @@ export function addCommentToDB(client: ApolloClient<any>, input: AddCommentInput
   })
 }
 
+export const fragmentComment = gql`
+  fragment Comment on Comment {
+    name
+    text
+    date
+    hike {
+      id
+    }
+  }
+`
+
 export const fetchComments = gql`
   query FetchComments {
     comments {
@@ -36,6 +47,7 @@ export const fetchComments = gql`
         id
       }
     }
+    ${fragmentComment}
   }
 `
 const upvoteCommentMutation = gql`

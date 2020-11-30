@@ -32,7 +32,7 @@ export const graphqlRoot: Resolvers<Context> = {
   Query: {
     self: (_, args, ctx) => ctx.user,
     hike: async (_, hikeId) => (await Hike.findOne({ where: { id: hikeId } })) || null,
-    comment: async (_, commentId) => (await Comment.find({ where: { id: commentId } })) || null,
+    comment: async (_, hikeId) => (await Comment.find({ where: { hike: { id: hikeId } } })) || null,
     comments: () => Comment.find(),
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
@@ -71,6 +71,9 @@ export const graphqlRoot: Resolvers<Context> = {
       newComment.name = name
       newComment.likes = 0
       newComment.hikeNum = id
+      if (ctx.user) {
+        newComment.user = ctx.user
+      }
       const hike = await Hike.findOne({ where: { id: id } })
       if (hike != null) {
         newComment.hike = hike
@@ -130,7 +133,7 @@ export const graphqlRoot: Resolvers<Context> = {
       if (user == null) {
         return false
       }
-      let found = await Hike.findOne({ where: { id: hike.id } })
+      let found = await Hike.findOne({ where: { id: hike.id }, relations: ['favorites'] })
       if (found == null) {
         const h = new Hike()
         h.id = hike.id
@@ -142,16 +145,44 @@ export const graphqlRoot: Resolvers<Context> = {
         h.length = hike.length
         found = h
       }
+      if (found.favorites == undefined) {
+        const arr: User[] = []
+        found.favorites = arr
+      }
       if (user.favorites == undefined || user.favorites == null) {
-        user.favorites = [found]
+        found.favorites.push(user)
+
+        const arr: Hike[] = []
+        arr.push(found)
+        user.favorites = arr
+
+        await found.save()
+        await user.save()
         return true
       }
       if (user.favorites.includes(found)) {
         return false
       }
       user.favorites.push(found)
-      await user?.save()
+      await user.save()
 
+      return true
+    },
+    removeFavorite: async (_, { input }, ctx) => {
+      const { hike } = input
+      const foundHike = await Hike.findOne({ where: { id: hike.id }, relations: ['favorites'] })
+      const user = ctx.user
+      if (user == null || foundHike == null) {
+        return false
+      }
+      if (foundHike.favorites == undefined || foundHike.favorites == null) {
+        return false
+      }
+      const found = foundHike.favorites.find(u => u.id === user.id)
+      if (found) {
+        foundHike.favorites = foundHike.favorites.filter(h => h.id != found.id)
+      }
+      await foundHike.save()
       return true
     },
   },

@@ -274,6 +274,23 @@ export interface AddFavoriteVariables {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: RemoveFavorite
+// ====================================================
+
+export interface RemoveFavorite {
+  removeFavorite: boolean;
+}
+
+export interface RemoveFavoriteVariables {
+  input: RemoveFavoriteInput;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL query operation: FetchHikes
 // ====================================================
 
@@ -403,6 +420,28 @@ export interface SurveyQuestion {
 // @generated
 // This file was automatically generated and should not be edited.
 
+// ====================================================
+// GraphQL fragment: Comment
+// ====================================================
+
+export interface Comment_hike {
+  __typename: "Hike";
+  id: number;
+}
+
+export interface Comment {
+  __typename: "Comment";
+  name: string;
+  text: string;
+  date: string;
+  hike: Comment_hike;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
 //==============================================================
 // START Enums and Input Objects
 //==============================================================
@@ -438,6 +477,10 @@ export interface DownvoteInput {
   text: string;
   name: string;
   date: string;
+}
+
+export interface RemoveFavoriteInput {
+  hike: AddHikeInput;
 }
 
 export interface SurveyInput {

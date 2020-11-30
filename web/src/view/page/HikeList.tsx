@@ -11,7 +11,7 @@ import { Component } from 'react'
 import { getApolloClient } from '../../graphql/apolloClient'
 import { TrailDesc, TrailTitle } from '../../style/header'
 import { AppRouteParams } from '../nav/route'
-import { favorite } from '../playground/mutateHikes'
+import { favorite, unfavorite } from '../playground/mutateHikes'
 import { CommentsSection } from './CommentSection'
 
 //const TD = style('td', 'mid-gray pa3 v-mid', { minWidth: '7em' })
@@ -136,12 +136,6 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
 
   async addFav(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, hike: trailInfo) {
     e.stopPropagation()
-    if (this.favorited.get(hike.id)) {
-      this.favorited.set(hike.id, false)
-      //where we would unfavorite
-      return
-    }
-    this.favorited.set(hike.id, true)
     if (
       hike.title == null ||
       hike.summary == null ||
@@ -152,7 +146,24 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
     ) {
       return
     }
-    void favorite(getApolloClient(), {
+    if (this.favorited.get(hike.id)) {
+      //where we unfavorite
+      await unfavorite(getApolloClient(), {
+        hike: {
+          id: hike.id,
+          name: hike.title,
+          summary: hike.summary,
+          length: hike.length,
+          difficulty: hike.difficulty,
+          location: hike.location,
+          stars: hike.stars,
+        },
+      })
+      this.favorited.set(hike.id, false)
+      return
+    }
+    //where we favorite
+    await favorite(getApolloClient(), {
       hike: {
         id: hike.id,
         name: hike.title,
@@ -163,6 +174,7 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
         stars: hike.stars,
       },
     })
+    this.favorited.set(hike.id, true)
   }
 
   TrailInfoCard(args: trailInfo) {
@@ -172,14 +184,15 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
         className="flex items-center pa2 hover-bg-light-green bg-washed-green"
         style={buttonStyle}
         onClick={() => this.togglePopup(args.title, 'open')}
+        key={args.id}
       >
         <img src={args.icon ? args.icon : undefined} className="ph3" />
-        <div>
+        <div style={{ width: '100%' }}>
           <div className="flex flex-column" style={{ float: 'left', width: '90%' }}>
             <TrailTitle className="pv2">{args.title}</TrailTitle>
             <TrailDesc className="pb2">{args.summary} </TrailDesc>
           </div>
-          <div style={{ float: 'right', width: '10%' }}>
+          <div style={{ float: 'right', width: '10%', marginLeft: 'auto', marginRight: 0 }}>
             <Checkbox
               onClick={e => this.addFav(e, args)}
               icon={<FavoriteBorder />}
