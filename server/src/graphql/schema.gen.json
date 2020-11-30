@@ -920,17 +920,29 @@
             "deprecationReason": null
           },
           {
-            "name": "hike",
+            "name": "hikeNum",
             "description": null,
             "args": [],
             "type": {
               "kind": "NON_NULL",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Hike",
+                "kind": "SCALAR",
+                "name": "Int",
                 "ofType": null
               }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hike",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Hike",
+              "ofType": null
             },
             "isDeprecated": false,
             "deprecationReason": null

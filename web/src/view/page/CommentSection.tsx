@@ -1,7 +1,10 @@
+import { useQuery } from '@apollo/client'
 import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
+import { FetchComments, FetchComments_comments } from '../../graphql/query.gen'
 import { Spacer } from '../../style/spacer'
 import { AppRouteParams } from '../nav/route'
+import { fetchComments } from '../playground/mutateComments'
 import { AuthorComment } from './AuthorComment'
 import { CommentCard } from './Comment'
 
@@ -10,6 +13,32 @@ interface CommentsProps extends RouteComponentProps, AppRouteParams {
   names: string[]
   dates: string[]
   hikeid: number
+}
+
+function getOldComments(id: number) {
+  const { data } = useQuery<FetchComments>(fetchComments, {
+    fetchPolicy: 'no-cache',
+  })
+  console.log('getting old comments')
+  if (data) {
+    console.log(data)
+    const comments = data.comments
+    comments.reverse()
+    const output: FetchComments_comments[] = []
+
+    comments.forEach(comment => {
+      if (comment.hikeNum == id) {
+        output.push(comment)
+      }
+    })
+
+    return output.map(comment => (
+      // eslint-disable-next-line react/jsx-key
+      <CommentCard message={comment.text} name={comment.name} time={comment.date} />
+    ))
+  } else {
+    return []
+  }
 }
 
 export function CommentsSection(props: CommentsProps) {
@@ -37,6 +66,7 @@ export function CommentsSection(props: CommentsProps) {
           // eslint-disable-next-line react/jsx-key
           <CommentCard message={comment} name={names[index]} time={dates[index]} />
         ))}
+        {getOldComments(props.hikeid)}
       </div>
       <Spacer $h4 />
     </div>

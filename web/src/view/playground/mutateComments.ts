@@ -38,9 +38,12 @@ export const fragmentComment = gql`
 export const fetchComments = gql`
   query FetchComments {
     comments {
-      ...Comment
+      id
+      name
+      text
+      date
+      hikeNum
     }
-    ${fragmentComment}
   }
 `
 const upvoteCommentMutation = gql`

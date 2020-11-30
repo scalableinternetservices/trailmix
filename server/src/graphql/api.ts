@@ -70,6 +70,7 @@ export const graphqlRoot: Resolvers<Context> = {
       newComment.date = date
       newComment.name = name
       newComment.likes = 0
+      newComment.hikeNum = id
       if (ctx.user) {
         newComment.user = ctx.user
       }

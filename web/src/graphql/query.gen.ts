@@ -181,17 +181,13 @@ export interface AddCommentVariables {
 // GraphQL query operation: FetchComments
 // ====================================================
 
-export interface FetchComments_comments_hike {
-  __typename: "Hike";
-  id: number;
-}
-
 export interface FetchComments_comments {
   __typename: "Comment";
+  id: number;
   name: string;
   text: string;
   date: string;
-  hike: FetchComments_comments_hike;
+  hikeNum: number;
 }
 
 export interface FetchComments {
@@ -432,7 +428,7 @@ export interface Comment {
   name: string;
   text: string;
   date: string;
-  hike: Comment_hike;
+  hike: Comment_hike | null;
 }
 
 /* tslint:disable */
