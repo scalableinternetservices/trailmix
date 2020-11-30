@@ -118,6 +118,7 @@ type Comment {
   name: String!
   date: String!
   likes: Int!
+  hikeNum: Int!
   hike: Hike
 }
 

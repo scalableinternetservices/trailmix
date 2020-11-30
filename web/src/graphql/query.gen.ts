@@ -192,6 +192,7 @@ export interface FetchComments_comments {
   name: string;
   text: string;
   date: string;
+  hikeNum: number;
   hike: FetchComments_comments_hike | null;
 }
 

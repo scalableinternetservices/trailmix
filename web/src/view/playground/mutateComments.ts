@@ -31,6 +31,7 @@ export const fetchComments = gql`
       name
       text
       date
+      hikeNum
       hike {
         id
       }

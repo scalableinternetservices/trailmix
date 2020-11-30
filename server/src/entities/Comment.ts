@@ -23,5 +23,8 @@ export class Comment extends BaseEntity {
   hike: Hike
 
   @Column('integer')
+  hikeNum: number
+
+  @Column('integer')
   likes: number
 }

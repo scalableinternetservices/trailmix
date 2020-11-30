@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client'
 import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
-import { FetchComments } from '../../graphql/query.gen'
+import { FetchComments, FetchComments_comments } from '../../graphql/query.gen'
 import { Spacer } from '../../style/spacer'
 import { AppRouteParams } from '../nav/route'
 import { fetchComments } from '../playground/mutateComments'
@@ -15,21 +15,34 @@ interface CommentsProps extends RouteComponentProps, AppRouteParams {
   hikeid: number
 }
 
+function getOldComments(id: number) {
+  const { data } = useQuery<FetchComments>(fetchComments, {
+    fetchPolicy: 'no-cache',
+  })
+  if (data) {
+    const comments = data.comments
+    comments.reverse()
+    const output: FetchComments_comments[] = []
+
+    comments.forEach(comment => {
+      if (comment.hikeNum == id) {
+        output.push(comment)
+      }
+    })
+
+    return output.map(comment => (
+      // eslint-disable-next-line react/jsx-key
+      <CommentCard message={comment.text} name={comment.name} time={comment.date} />
+    ))
+  } else {
+    return []
+  }
+}
+
 export function CommentsSection(props: CommentsProps) {
   const [comments, setComments] = React.useState<string[]>(props.comments)
   const [names, setNames] = React.useState<string[]>(props.names)
   const [dates, setDates] = React.useState<string[]>(props.dates)
-  //const [hikeid, setHikeId] = React.useState<number>(props.hikeid)
-
-  const { data } = useQuery<FetchComments>(fetchComments)
-  console.log(data)
-  if (data) {
-    data.comments.forEach(comment => {
-      comments.push(comment.text)
-      names.push(comment.name)
-      dates.push(comment.date)
-    })
-  }
 
   return (
     <div>
@@ -51,6 +64,7 @@ export function CommentsSection(props: CommentsProps) {
           // eslint-disable-next-line react/jsx-key
           <CommentCard message={comment} name={names[index]} time={dates[index]} />
         ))}
+        {getOldComments(props.hikeid)}
       </div>
       <Spacer $h4 />
     </div>
