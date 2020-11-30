@@ -19,7 +19,9 @@ function getOldComments(id: number) {
   const { data } = useQuery<FetchComments>(fetchComments, {
     fetchPolicy: 'no-cache',
   })
+  console.log('getting old comments')
   if (data) {
+    console.log(data)
     const comments = data.comments
     comments.reverse()
     const output: FetchComments_comments[] = []

@@ -63,7 +63,7 @@ function GetComments({ children }: any) {
   console.log(data)
   if (data) {
     idArr.forEach(function (id) {
-      const d = data.comments.filter(c => c.hike.id !== id)
+      const d = data.comments.filter(c => c.hikeNum !== id)
       if (d !== null) {
         const com_arr: string[] = []
         const names_arr: string[] = []

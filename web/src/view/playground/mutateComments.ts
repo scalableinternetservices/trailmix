@@ -43,11 +43,7 @@ export const fetchComments = gql`
       text
       date
       hikeNum
-      hike {
-        id
-      }
     }
-    ${fragmentComment}
   }
 `
 const upvoteCommentMutation = gql`
