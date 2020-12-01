@@ -25,6 +25,12 @@ export class Hike extends BaseEntity {
   @Column('float')
   length: number
 
+  @Column('float')
+  lat: number
+
+  @Column('float')
+  lon: number
+
   @OneToMany(() => Comment, comment => comment.hike)
   comment: Comment[]
 

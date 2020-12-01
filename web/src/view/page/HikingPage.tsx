@@ -110,6 +110,8 @@ export default class HikingPage extends Component<HikesPageProps> {
       location: hike.location,
       difficulty: hike.difficulty,
       length: hike.length,
+      lat: hike.lat,
+      lon: hike.lon,
     })
   }
 

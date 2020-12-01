@@ -157,6 +157,8 @@ input AddHikeInput {
   difficulty: String!
   location: String!
   length: Float!
+  lat: Float!
+  lon: Float!
 }
 
 input AddFavoriteInput {
