@@ -110,6 +110,8 @@ export default class HikingPage extends Component<HikesPageProps> {
       location: hike.location,
       difficulty: hike.difficulty,
       length: hike.length,
+      latitude: hike.latitude,
+      longitude: hike.longitude,
     })
   }
 
@@ -153,16 +155,15 @@ export default class HikingPage extends Component<HikesPageProps> {
               stars: entry.stars,
               starVotes: entry.starVotes,
               location: entry.location,
+              latitude: entry.latitude,
+              longitude: entry.longitude,
               conditionStatus: entry.conditionStatus,
               conditionDetails: entry.conditionDetails,
               conditionDate: entry.conditionDate,
-              lat: entry.latitude,
-              lon: entry.longitude,
               comments: comArr,
               names: nameArr,
               dates: dateArr,
             }
-            void this.addHikeInformation(a)
             array.push(a)
           }
           this.setState({
@@ -171,6 +172,10 @@ export default class HikingPage extends Component<HikesPageProps> {
           })
         })
         .catch(error => console.error(error))
+      for (const trail of this.state.trails) {
+        console.log(trail)
+        void this.addHikeInformation(trail)
+      }
     }
   }
   handleZipChange(event: any) {

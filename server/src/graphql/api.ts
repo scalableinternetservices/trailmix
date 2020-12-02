@@ -111,7 +111,7 @@ export const graphqlRoot: Resolvers<Context> = {
       return true
     },
     addHike: async (_, { input }, ctx) => {
-      const { id, name, summary, stars, difficulty, location, length } = input
+      const { id, name, summary, stars, difficulty, location, length, latitude, longitude } = input
 
       const newHike = new Hike()
       newHike.id = id
@@ -121,6 +121,8 @@ export const graphqlRoot: Resolvers<Context> = {
       newHike.difficulty = difficulty
       newHike.location = location
       newHike.length = length
+      newHike.latitude = latitude
+      newHike.longitude = longitude
 
       await newHike.save()
       ctx.pubsub.publish('ADD_HIKE_' + id, newHike)
@@ -143,6 +145,8 @@ export const graphqlRoot: Resolvers<Context> = {
         h.difficulty = hike.difficulty
         h.location = hike.location
         h.length = hike.length
+        h.latitude = hike.latitude
+        h.longitude = hike.longitude
         found = h
       }
       if (found.favorites == undefined) {

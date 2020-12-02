@@ -28,11 +28,11 @@ export interface Trail {
   stars: number
   starVotes: number
   location: string
+  latitude: number
+  longitude: number
   conditionStatus: string
   conditionDetails: string
   conditionDate: string
-  lat: number
-  lon: number
   comments: string[]
   names: string[]
   dates: string[]
@@ -46,6 +46,8 @@ interface trailInfo {
   difficulty?: string
   stars?: number
   location?: string
+  latitude?: number
+  longitude?: number
   conditionStatus?: string
   conditionDetails?: string
   conditionDate?: string
@@ -142,7 +144,9 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
       hike.length == null ||
       hike.difficulty == null ||
       hike.location == null ||
-      hike.stars == null
+      hike.stars == null ||
+      hike.latitude == null ||
+      hike.longitude == null
     ) {
       return
     }
@@ -156,6 +160,8 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
           length: hike.length,
           difficulty: hike.difficulty,
           location: hike.location,
+          latitude: hike.latitude,
+          longitude: hike.longitude,
           stars: hike.stars,
         },
       })
@@ -171,6 +177,8 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
         length: hike.length,
         difficulty: hike.difficulty,
         location: hike.location,
+        latitude: hike.latitude,
+        longitude: hike.longitude,
         stars: hike.stars,
       },
     })
@@ -231,6 +239,8 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
         conditionStatus: item.conditionStatus,
         conditionDetails: item.conditionDetails,
         conditionDate: item.conditionDate,
+        latitude: item.latitude,
+        longitude: item.longitude,
         comments: item.comments,
         names: item.names,
         dates: item.dates,
