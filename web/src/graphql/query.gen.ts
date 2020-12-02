@@ -290,14 +290,46 @@ export interface RemoveFavoriteVariables {
 
 export interface FetchHikes_hikes {
   __typename: "Hike";
+  id: number;
   name: string;
   summary: string;
   length: number;
   difficulty: string;
+  location: string;
+  stars: number;
 }
 
 export interface FetchHikes {
   hikes: FetchHikes_hikes[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: FetchHikesCoordinates
+// ====================================================
+
+export interface FetchHikesCoordinates_hikes {
+  __typename: "Hike";
+  id: number;
+  name: string;
+  summary: string;
+  length: number;
+  difficulty: string;
+  location: string;
+  stars: number;
+}
+
+export interface FetchHikesCoordinates {
+  hikes: FetchHikesCoordinates_hikes[];
+}
+
+export interface FetchHikesCoordinatesVariables {
+  latitude: number;
+  longitude: number;
 }
 
 /* tslint:disable */

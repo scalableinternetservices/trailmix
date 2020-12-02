@@ -6,13 +6,19 @@ import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
 import { Component } from 'react'
 import { getApolloClient } from '../../graphql/apolloClient'
-import { FetchComments, FetchLatLon, FetchLatLonVariables } from '../../graphql/query.gen'
+import {
+  FetchComments,
+  FetchHikesCoordinates,
+  FetchHikesCoordinatesVariables,
+  FetchLatLon,
+  FetchLatLonVariables
+} from '../../graphql/query.gen'
 import { H2 } from '../../style/header'
 import { Spacer } from '../../style/spacer'
 import { IntroText } from '../../style/text'
 import { AppRouteParams } from '../nav/route'
 import { fetchComments } from '../playground/mutateComments'
-import { addHikeToDB } from '../playground/mutateHikes'
+import { addHikeToDB, fetchHikesCoordinates } from '../playground/mutateHikes'
 import { fetchLatLon } from './fetchLatLon'
 import { default as HikeList, Trail } from './HikeList'
 import { Page } from './Page'
@@ -20,8 +26,8 @@ import { Page } from './Page'
 interface HikesPageProps extends RouteComponentProps, AppRouteParams {}
 
 let zipcode: number
-let lat: number
-let lon: number
+let latitude: number
+let longitude: number
 let getHikesButton = false
 let idArr: number[] = []
 let com_map: Map<number, string[]>
@@ -35,8 +41,8 @@ function GetLatLon({ children }: any) {
     })
     console.log(idArr)
     if (data && data.coordinates) {
-      lat = data.coordinates.lat
-      lon = data.coordinates.lon
+      latitude = data.coordinates.lat
+      longitude = data.coordinates.lon
       getHikesButton = true
     } else if (loading) {
       return null
@@ -47,11 +53,50 @@ function GetLatLon({ children }: any) {
       <div>
         <Spacer $h4 />
         <IntroText>
-          You are near latitude {lat} and longitude {lon}.
+          You are near latitude {latitude} and longitude {longitude}.
         </IntroText>
         <GetComments>{({ data, error, loading }: any) => console.log(data)}</GetComments>
       </div>
     )
+  } else {
+    return null
+  }
+}
+
+function GetHikesCoords({ children }: any) {
+  const { data } = useQuery<FetchHikesCoordinates, FetchHikesCoordinatesVariables>(fetchHikesCoordinates, {
+    variables: { latitude, longitude },
+  })
+  console.log(idArr)
+  if (data && data.hikes) {
+    const d = data.hikes
+    const comArr: string[] = []
+    const nameArr: string[] = []
+    const dateArr: string[] = []
+    const array: Trail[] = []
+
+    d.forEach(function (arrayItem) {
+      const a: Trail = {
+        id: arrayItem.id.toString(),
+        name: arrayItem.name,
+        length: arrayItem.length,
+        summary: arrayItem.summary,
+        difficulty: arrayItem.difficulty,
+        stars: arrayItem.stars,
+        starVotes: 0,
+        location: arrayItem.location,
+        latitude: 0,
+        longitude: 0,
+        conditionStatus: '',
+        conditionDetails: '',
+        conditionDate: '',
+        comments: comArr,
+        names: nameArr,
+        dates: dateArr,
+      }
+      array.push(a)
+    })
+    return array
   } else {
     return null
   }
@@ -120,61 +165,73 @@ export default class HikingPage extends Component<HikesPageProps> {
     this.setState({ loading: true })
     const key = '200944544-1e585b592713e202989908ebc84f8478'
 
-    if (lat && lon) {
-      await fetch(
-        'https://www.hikingproject.com/data/get-trails?lat=' + lat + '&lon=' + lon + '&maxDistance=10&key=' + key
-      )
-        .then(response => {
-          return response.text()
+    if (latitude && longitude) {
+      const hikes = GetHikesCoords()
+      console.log('here')
+      console.log(hikes)
+      if (hikes) {
+        this.setState({
+          trails: hikes,
+          loading: false,
         })
-        .then(hikes => {
-          const jsonObj = JSON.parse(hikes)
-          const array: Trail[] = []
-          for (const entry of jsonObj.trails) {
-            if (entry.id != null && entry.id != undefined) {
-              idArr.push(entry.id)
-            }
-            let comArr = com_map.get(entry.id)
-            let nameArr = name_map.get(entry.id)
-            let dateArr = date_map.get(entry.id)
-            if (comArr == null) {
-              comArr = []
-            }
-            if (nameArr == null) {
-              nameArr = []
-            }
-            if (dateArr == null) {
-              dateArr = []
-            }
-            const a: Trail = {
-              id: entry.id,
-              name: entry.name,
-              length: entry.length,
-              summary: entry.summary,
-              difficulty: entry.difficulty,
-              stars: entry.stars,
-              starVotes: entry.starVotes,
-              location: entry.location,
-              latitude: entry.latitude,
-              longitude: entry.longitude,
-              conditionStatus: entry.conditionStatus,
-              conditionDetails: entry.conditionDetails,
-              conditionDate: entry.conditionDate,
-              comments: comArr,
-              names: nameArr,
-              dates: dateArr,
-            }
-            array.push(a)
-          }
-          this.setState({
-            trails: array,
-            loading: false,
+      } else {
+        await fetch(
+          'https://www.hikingproject.com/data/get-trails?lat=' +
+            latitude +
+            '&lon=' +
+            longitude +
+            '&maxDistance=10&key=' +
+            key
+        )
+          .then(response => {
+            return response.text()
           })
-        })
-        .catch(error => console.error(error))
-      for (const trail of this.state.trails) {
-        console.log(trail)
-        void this.addHikeInformation(trail)
+          .then(hikes => {
+            const jsonObj = JSON.parse(hikes)
+            const array: Trail[] = []
+            for (const entry of jsonObj.trails) {
+              if (entry.id != null && entry.id != undefined) {
+                idArr.push(entry.id)
+              }
+              let comArr = com_map.get(entry.id)
+              let nameArr = name_map.get(entry.id)
+              let dateArr = date_map.get(entry.id)
+              if (comArr == null) {
+                comArr = []
+              }
+              if (nameArr == null) {
+                nameArr = []
+              }
+              if (dateArr == null) {
+                dateArr = []
+              }
+              const a: Trail = {
+                id: entry.id,
+                name: entry.name,
+                length: entry.length,
+                summary: entry.summary,
+                difficulty: entry.difficulty,
+                stars: entry.stars,
+                starVotes: entry.starVotes,
+                location: entry.location,
+                latitude: entry.latitude,
+                longitude: entry.longitude,
+                conditionStatus: entry.conditionStatus,
+                conditionDetails: entry.conditionDetails,
+                conditionDate: entry.conditionDate,
+                comments: comArr,
+                names: nameArr,
+                dates: dateArr,
+              }
+              void this.addHikeInformation(a)
+              array.push(a)
+            }
+            this.setState({
+              trails: array,
+              loading: false,
+            })
+          })
+          .catch(error => console.error(error))
       }
     }
   }
@@ -184,7 +241,7 @@ export default class HikingPage extends Component<HikesPageProps> {
   handleLatLonChange(event: any) {
     getHikesButton = true
     zipcode = Number(this.state.zip)
-    this.setState({ lat: lat, lon: lon })
+    this.setState({ lat: latitude, lon: longitude })
     event.preventDefault()
   }
   render() {
