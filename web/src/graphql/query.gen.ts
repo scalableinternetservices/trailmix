@@ -464,8 +464,8 @@ export interface AddHikeInput {
   difficulty: string;
   location: string;
   length: number;
-  lat: number;
-  lon: number;
+  latitude: number;
+  longitude: number;
 }
 
 export interface DownvoteInput {

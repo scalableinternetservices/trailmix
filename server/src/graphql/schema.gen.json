@@ -479,6 +479,38 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "latitude",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Float",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "longitude",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Float",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -1539,7 +1571,7 @@
             "defaultValue": null
           },
           {
-            "name": "lat",
+            "name": "latitude",
             "description": null,
             "type": {
               "kind": "NON_NULL",
@@ -1553,7 +1585,7 @@
             "defaultValue": null
           },
           {
-            "name": "lon",
+            "name": "longitude",
             "description": null,
             "type": {
               "kind": "NON_NULL",

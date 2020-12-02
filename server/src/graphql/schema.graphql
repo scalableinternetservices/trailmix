@@ -113,6 +113,8 @@ type Hike {
   difficulty: String!
   location: String!
   length: Float!
+  latitude: Float!
+  longitude: Float!
 }
 
 type Comment {
@@ -157,8 +159,8 @@ input AddHikeInput {
   difficulty: String!
   location: String!
   length: Float!
-  lat: Float!
-  lon: Float!
+  latitude: Float!
+  longitude: Float!
 }
 
 input AddFavoriteInput {
