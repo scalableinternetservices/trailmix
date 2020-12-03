@@ -38,13 +38,19 @@ export function addHikeToDB(client: ApolloClient<any>, input: AddHikeInput) {
 export const fetchHikes = gql`
   query FetchHikes {
     hikes {
+      id
       name
       summary
       length
       difficulty
+      location
+      stars
+      latitude
+      longitude
     }
   }
 `
+
 export function favorite(client: ApolloClient<any>, input: AddFavoriteInput) {
   return client.mutate<AddFavorite, AddFavoriteVariables>({
     mutation: addFavorite,

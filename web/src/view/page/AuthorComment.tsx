@@ -31,14 +31,20 @@ export function AuthorComment(props: AuthorCommentProps) {
   const [name, setName] = useState('')
   const [comment, setComment] = useState('')
 
-  function submitComment() {
-    const d = new Date()
+  function isEmptyOrSpaces(str: string) {
+    return str === null || str.match(/^ *$/) !== null
+  }
 
-    props.setCommentsCallback([comment, ...props.comments])
-    props.setNamesCallback([name, ...props.names])
-    props.setDatesCallback([d.toLocaleTimeString() + ', ' + d.toLocaleDateString(), ...props.dates])
-    void addComment(comment, name, d, props.hikeid)
-    console.log('added comment to db')
+  function submitComment() {
+    if (!isEmptyOrSpaces(comment)) {
+      const d = new Date()
+
+      props.setCommentsCallback([comment, ...props.comments])
+      props.setNamesCallback([name, ...props.names])
+      props.setDatesCallback([d.toLocaleTimeString() + ', ' + d.toLocaleDateString(), ...props.dates])
+      void addComment(comment, name, d, props.hikeid)
+      console.log('added comment to db')
+    }
   }
 
   return (

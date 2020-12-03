@@ -7,12 +7,32 @@
 // GraphQL query operation: FetchUserContext
 // ====================================================
 
+export interface FetchUserContext_self_favorites {
+  __typename: "Hike";
+  name: string;
+  length: number;
+  difficulty: string;
+  stars: number;
+  summary: string;
+}
+
+export interface FetchUserContext_self_comment {
+  __typename: "Comment";
+  id: number;
+  name: string;
+  text: string;
+  date: string;
+  likes: number;
+}
+
 export interface FetchUserContext_self {
   __typename: "User";
   id: number;
   name: string;
   email: string;
   userType: UserType;
+  favorites: (FetchUserContext_self_favorites | null)[];
+  comment: (FetchUserContext_self_comment | null)[];
 }
 
 export interface FetchUserContext {
@@ -183,9 +203,11 @@ export interface AddCommentVariables {
 
 export interface FetchComments_comments {
   __typename: "Comment";
+  id: number;
   name: string;
   text: string;
   date: string;
+  hikeNum: number;
 }
 
 export interface FetchComments {
@@ -288,10 +310,15 @@ export interface RemoveFavoriteVariables {
 
 export interface FetchHikes_hikes {
   __typename: "Hike";
+  id: number;
   name: string;
   summary: string;
   length: number;
   difficulty: string;
+  location: string;
+  stars: number;
+  latitude: number;
+  longitude: number;
 }
 
 export interface FetchHikes {
@@ -412,6 +439,28 @@ export interface SurveyQuestion {
 // @generated
 // This file was automatically generated and should not be edited.
 
+// ====================================================
+// GraphQL fragment: Comment
+// ====================================================
+
+export interface Comment_hike {
+  __typename: "Hike";
+  id: number;
+}
+
+export interface Comment {
+  __typename: "Comment";
+  name: string;
+  text: string;
+  date: string;
+  hike: Comment_hike | null;
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
 //==============================================================
 // START Enums and Input Objects
 //==============================================================
@@ -439,6 +488,8 @@ export interface AddHikeInput {
   stars: number;
   difficulty: string;
   location: string;
+  latitude: number;
+  longitude: number;
   length: number;
 }
 

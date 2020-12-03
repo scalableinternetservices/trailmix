@@ -1,5 +1,6 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, ManyToMany, OneToMany, PrimaryColumn } from 'typeorm'
 import { Comment } from './Comment'
+import { User } from './User'
 
 @Entity()
 export class Hike extends BaseEntity {
@@ -24,6 +25,15 @@ export class Hike extends BaseEntity {
   @Column('float')
   length: number
 
+  @Column('float')
+  latitude: number
+
+  @Column('float')
+  longitude: number
+
   @OneToMany(() => Comment, comment => comment.hike)
   comment: Comment[]
+
+  @ManyToMany(() => User, user => user.id, { eager: false })
+  favorites: User[]
 }

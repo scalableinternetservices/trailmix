@@ -30,10 +30,29 @@ interface Context {
 
 export const graphqlRoot: Resolvers<Context> = {
   Query: {
-    self: (_, args, ctx) => ctx.user,
+    self: async (_, args, ctx) => {
+      if (ctx.user == null) {
+        return null
+      }
+      const user = await User.findOne({ where: { id: ctx.user.id }, relations: ['favorites'] })
+      if (user == null || user == undefined) {
+        return null
+      }
+      return user
+    },
     hike: async (_, hikeId) => (await Hike.findOne({ where: { id: hikeId } })) || null,
-    comment: async (_, commentId) => (await Comment.find({ where: { id: commentId } })) || null,
-    comments: () => Comment.find(),
+    comment: async (_, hikeId) => (await Comment.find({ where: { hike: { id: hikeId } } })) || null,
+    comments: async (_, args, ctx) => {
+      if (ctx.user == null) {
+        return []
+      }
+
+      const commentUser = (await Comment.find({ where: { user: ctx.user } })) || null
+      if (commentUser == null || commentUser == undefined) {
+        return []
+      }
+      return commentUser.slice(-5) //last five elements
+    },
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
     coordinates: (_, { zipcode }) => coordinateQuery(zipcode),
@@ -70,6 +89,10 @@ export const graphqlRoot: Resolvers<Context> = {
       newComment.date = date
       newComment.name = name
       newComment.likes = 0
+      newComment.hikeNum = id
+      if (ctx.user) {
+        newComment.user = ctx.user
+      }
       const hike = await Hike.findOne({ where: { id: id } })
       if (hike != null) {
         newComment.hike = hike
@@ -107,7 +130,7 @@ export const graphqlRoot: Resolvers<Context> = {
       return true
     },
     addHike: async (_, { input }, ctx) => {
-      const { id, name, summary, stars, difficulty, location, length } = input
+      const { id, name, summary, stars, difficulty, location, length, latitude, longitude } = input
 
       const newHike = new Hike()
       newHike.id = id
@@ -117,6 +140,8 @@ export const graphqlRoot: Resolvers<Context> = {
       newHike.difficulty = difficulty
       newHike.location = location
       newHike.length = length
+      newHike.latitude = latitude
+      newHike.longitude = longitude
 
       await newHike.save()
       ctx.pubsub.publish('ADD_HIKE_' + id, newHike)
@@ -125,10 +150,14 @@ export const graphqlRoot: Resolvers<Context> = {
     },
     addFavorite: async (_, { input }, ctx) => {
       const { hike } = input
-      const user = ctx.user
+      if (ctx.user == null || ctx.user == undefined) {
+        return false
+      }
+      const user = await User.findOne({ where: { id: ctx.user.id }, relations: ['favorites'] })
       if (user == null) {
         return false
       }
+      console.log(user.favorites)
       let found = await Hike.findOne({ where: { id: hike.id } })
       if (found == null) {
         const h = new Hike()
@@ -139,32 +168,36 @@ export const graphqlRoot: Resolvers<Context> = {
         h.difficulty = hike.difficulty
         h.location = hike.location
         h.length = hike.length
+        h.latitude = hike.latitude
+        h.longitude = hike.longitude
         found = h
       }
-      if (user.favorites == undefined || user.favorites == null) {
-        user.favorites = [found]
-        return true
-      }
-      if (user.favorites.includes(found)) {
-        return false
+      if (user.favorites == undefined) {
+        const arr: Hike[] = []
+        user.favorites = arr
       }
       user.favorites.push(found)
-      await user?.save()
+      console.log(user.favorites)
+      await user.save()
 
       return true
     },
     removeFavorite: async (_, { input }, ctx) => {
       const { hike } = input
-      const user = ctx.user
-      if (user == null) {
+      const foundHike = await Hike.findOne({ where: { id: hike.id } })
+      if (ctx.user == null || ctx.user == undefined) {
+        return false
+      }
+      const user = await User.findOne({ where: { id: ctx.user.id }, relations: ['favorites'] })
+      if (user == null || foundHike == null) {
         return false
       }
       if (user.favorites == undefined || user.favorites == null) {
         return false
       }
-      const found = user.favorites.find(h => h.id === hike.id)
+      const found = user.favorites.find(u => u.id === foundHike.id)
       if (found) {
-        user.favorites = user.favorites.filter(h => h.id !== hike.id)
+        user.favorites = user.favorites.filter(h => h.id != found.id)
       }
       await user.save()
       return true

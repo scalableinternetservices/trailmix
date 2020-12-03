@@ -63,6 +63,7 @@ type User {
   email: String!
   name: String!
   favorites: [Hike]!
+  comment: [Comment]!
 }
 
 enum UserType {
@@ -112,6 +113,8 @@ type Hike {
   stars: Float!
   difficulty: String!
   location: String!
+  latitude: Float!
+  longitude: Float!
   length: Float!
 }
 
@@ -121,6 +124,8 @@ type Comment {
   name: String!
   date: String!
   likes: Int!
+  hikeNum: Int!
+  hike: Hike
 }
 
 type SurveyAnswer {
@@ -154,6 +159,8 @@ input AddHikeInput {
   stars: Float!
   difficulty: String!
   location: String!
+  latitude: Float!
+  longitude: Float!
   length: Float!
 }
 
