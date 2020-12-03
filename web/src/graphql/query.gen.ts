@@ -7,12 +7,18 @@
 // GraphQL query operation: FetchUserContext
 // ====================================================
 
+export interface FetchUserContext_self_favorites {
+  __typename: "Hike";
+  name: string;
+}
+
 export interface FetchUserContext_self {
   __typename: "User";
   id: number;
   name: string;
   email: string;
   userType: UserType;
+  favorites: (FetchUserContext_self_favorites | null)[];
 }
 
 export interface FetchUserContext {

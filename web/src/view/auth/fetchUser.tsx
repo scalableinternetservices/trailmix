@@ -7,6 +7,9 @@ export const fetchUser = gql`
       name
       email
       userType
+      favorites {
+        name
+      }
     }
   }
 `

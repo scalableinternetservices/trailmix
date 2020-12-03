@@ -30,7 +30,16 @@ interface Context {
 
 export const graphqlRoot: Resolvers<Context> = {
   Query: {
-    self: (_, args, ctx) => ctx.user,
+    self: async (_, args, ctx) => {
+      if (ctx.user == null) {
+        return null
+      }
+      const user = await User.findOne({ where: { id: ctx.user.id }, relations: ['favorites'] })
+      if (user == null || undefined) {
+        return null
+      }
+      return user
+    },
     hike: async (_, hikeId) => (await Hike.findOne({ where: { id: hikeId } })) || null,
     comment: async (_, hikeId) => (await Comment.find({ where: { hike: { id: hikeId } } })) || null,
     comments: () => Comment.find(),
@@ -131,11 +140,15 @@ export const graphqlRoot: Resolvers<Context> = {
     },
     addFavorite: async (_, { input }, ctx) => {
       const { hike } = input
-      const user = ctx.user
+      if (ctx.user == null || ctx.user == undefined) {
+        return false
+      }
+      const user = await User.findOne({ where: { id: ctx.user.id }, relations: ['favorites'] })
       if (user == null) {
         return false
       }
-      let found = await Hike.findOne({ where: { id: hike.id }, relations: ['favorites'] })
+      console.log(user.favorites)
+      let found = await Hike.findOne({ where: { id: hike.id } })
       if (found == null) {
         const h = new Hike()
         h.id = hike.id
@@ -149,16 +162,16 @@ export const graphqlRoot: Resolvers<Context> = {
         h.longitude = hike.longitude
         found = h
       }
-      if (found.favorites == undefined) {
-        const arr: User[] = []
-        found.favorites = arr
-      }
-      if (user.favorites == undefined || user.favorites == null) {
-        found.favorites.push(user)
-
+      if (user.favorites == undefined) {
         const arr: Hike[] = []
-        arr.push(found)
         user.favorites = arr
+      }
+      if (found.favorites == undefined || found.favorites == null) {
+        user.favorites.push(found)
+
+        const arr: User[] = []
+        arr.push(user)
+        found.favorites = arr
 
         await found.save()
         await user.save()
@@ -174,19 +187,22 @@ export const graphqlRoot: Resolvers<Context> = {
     },
     removeFavorite: async (_, { input }, ctx) => {
       const { hike } = input
-      const foundHike = await Hike.findOne({ where: { id: hike.id }, relations: ['favorites'] })
-      const user = ctx.user
+      const foundHike = await Hike.findOne({ where: { id: hike.id } })
+      if (ctx.user == null || ctx.user == undefined) {
+        return false
+      }
+      const user = await User.findOne({ where: { id: ctx.user.id }, relations: ['favorites'] })
       if (user == null || foundHike == null) {
         return false
       }
-      if (foundHike.favorites == undefined || foundHike.favorites == null) {
+      if (user.favorites == undefined || user.favorites == null) {
         return false
       }
-      const found = foundHike.favorites.find(u => u.id === user.id)
+      const found = user.favorites.find(u => u.id === foundHike.id)
       if (found) {
-        foundHike.favorites = foundHike.favorites.filter(h => h.id != found.id)
+        user.favorites = user.favorites.filter(h => h.id != found.id)
       }
-      await foundHike.save()
+      await user.save()
       return true
     },
   },
