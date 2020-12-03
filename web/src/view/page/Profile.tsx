@@ -35,9 +35,15 @@ const FavHikes: Function = (): JSX.Element[] | JSX.Element => {
 }
 
 const RecentComments: Function = (): JSX.Element[] | JSX.Element => {
-  const { data } = useQuery<FetchComments>(fetchComments)
-  if (data) {
-    return data.comments.map(comment => <CommentCard name={comment.name} message={comment.text} time={comment.date} />)
+  const { data } = useQuery<FetchComments>(fetchComments, { fetchPolicy: 'network-only' })
+  if (data && data.comments) {
+    return data.comments.map(comment =>
+      comment ? (
+        <CommentCard name={comment.name} message={comment.text} time={comment.date} />
+      ) : (
+        <BodyText>No recent comments yet!</BodyText>
+      )
+    )
   }
   return <BodyText>No recent comments yet!</BodyText>
 }

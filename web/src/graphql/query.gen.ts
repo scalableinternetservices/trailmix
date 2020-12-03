@@ -16,6 +16,15 @@ export interface FetchUserContext_self_favorites {
   summary: string;
 }
 
+export interface FetchUserContext_self_comment {
+  __typename: "Comment";
+  id: number;
+  name: string;
+  text: string;
+  date: string;
+  likes: number;
+}
+
 export interface FetchUserContext_self {
   __typename: "User";
   id: number;
@@ -23,6 +32,7 @@ export interface FetchUserContext_self {
   email: string;
   userType: UserType;
   favorites: (FetchUserContext_self_favorites | null)[];
+  comment: (FetchUserContext_self_comment | null)[];
 }
 
 export interface FetchUserContext {

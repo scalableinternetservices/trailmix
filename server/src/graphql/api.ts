@@ -35,14 +35,26 @@ export const graphqlRoot: Resolvers<Context> = {
         return null
       }
       const user = await User.findOne({ where: { id: ctx.user.id }, relations: ['favorites'] })
-      if (user == null || undefined) {
+      if (user == null || user == undefined) {
         return null
       }
       return user
     },
     hike: async (_, hikeId) => (await Hike.findOne({ where: { id: hikeId } })) || null,
     comment: async (_, hikeId) => (await Comment.find({ where: { hike: { id: hikeId } } })) || null,
-    comments: () => Comment.find(),
+    comments: async (_, args, ctx) => {
+      if (ctx.user == null) {
+        return []
+      }
+      const commentUser = (await Comment.find()).filter(comment => (comment.id = ctx.user!.id))
+      console.log('commentUser')
+      console.log(commentUser)
+      if (commentUser == null || commentUser == undefined) {
+        return []
+      }
+      const sortedComments = commentUser.sort((a: Comment, b: Comment) => Number(a.date) - Number(b.date))
+      return sortedComments.slice(0, 5) //arbitrary only most recent 5 comments show up
+    },
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
     coordinates: (_, { zipcode }) => coordinateQuery(zipcode),

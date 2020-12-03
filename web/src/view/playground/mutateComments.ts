@@ -8,7 +8,7 @@ import {
   DownvoteInput,
   UpvoteComment,
   UpvoteCommentVariables,
-  UpvoteInput
+  UpvoteInput,
 } from '../../graphql/query.gen'
 
 const addCommentMutation = gql`
