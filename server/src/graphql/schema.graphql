@@ -63,6 +63,7 @@ type User {
   email: String!
   name: String!
   favorites: [Hike]!
+  comment: [Comment]!
 }
 
 enum UserType {

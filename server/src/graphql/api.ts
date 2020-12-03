@@ -35,14 +35,24 @@ export const graphqlRoot: Resolvers<Context> = {
         return null
       }
       const user = await User.findOne({ where: { id: ctx.user.id }, relations: ['favorites'] })
-      if (user == null || undefined) {
+      if (user == null || user == undefined) {
         return null
       }
       return user
     },
     hike: async (_, hikeId) => (await Hike.findOne({ where: { id: hikeId } })) || null,
     comment: async (_, hikeId) => (await Comment.find({ where: { hike: { id: hikeId } } })) || null,
-    comments: () => Comment.find(),
+    comments: async (_, args, ctx) => {
+      if (ctx.user == null) {
+        return []
+      }
+
+      const commentUser = (await Comment.find({ where: { user: ctx.user } })) || null
+      if (commentUser == null || commentUser == undefined) {
+        return []
+      }
+      return commentUser.slice(-5) //last five elements
+    },
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),
     coordinates: (_, { zipcode }) => coordinateQuery(zipcode),

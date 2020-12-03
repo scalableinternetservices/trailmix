@@ -10,6 +10,19 @@
 export interface FetchUserContext_self_favorites {
   __typename: "Hike";
   name: string;
+  length: number;
+  difficulty: string;
+  stars: number;
+  summary: string;
+}
+
+export interface FetchUserContext_self_comment {
+  __typename: "Comment";
+  id: number;
+  name: string;
+  text: string;
+  date: string;
+  likes: number;
 }
 
 export interface FetchUserContext_self {
@@ -19,6 +32,7 @@ export interface FetchUserContext_self {
   email: string;
   userType: UserType;
   favorites: (FetchUserContext_self_favorites | null)[];
+  comment: (FetchUserContext_self_comment | null)[];
 }
 
 export interface FetchUserContext {
