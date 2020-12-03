@@ -166,21 +166,8 @@ export const graphqlRoot: Resolvers<Context> = {
         const arr: Hike[] = []
         user.favorites = arr
       }
-      if (found.favorites == undefined || found.favorites == null) {
-        user.favorites.push(found)
-
-        const arr: User[] = []
-        arr.push(user)
-        found.favorites = arr
-
-        await found.save()
-        await user.save()
-        return true
-      }
-      if (user.favorites.includes(found)) {
-        return false
-      }
       user.favorites.push(found)
+      console.log(user.favorites)
       await user.save()
 
       return true
