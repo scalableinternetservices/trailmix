@@ -45,20 +45,8 @@ export const fetchHikes = gql`
       difficulty
       location
       stars
-    }
-  }
-`
-
-export const fetchHikesCoordinates = gql`
-  query FetchHikesCoordinates($latitude: Int!, $longitude: Int!) {
-    hikes(latitude: $latitude, longitude: $longitude) {
-      id
-      name
-      summary
-      length
-      difficulty
-      location
-      stars
+      latitude
+      longitude
     }
   }
 `

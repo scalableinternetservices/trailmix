@@ -297,39 +297,12 @@ export interface FetchHikes_hikes {
   difficulty: string;
   location: string;
   stars: number;
+  latitude: number;
+  longitude: number;
 }
 
 export interface FetchHikes {
   hikes: FetchHikes_hikes[];
-}
-
-/* tslint:disable */
-/* eslint-disable */
-// @generated
-// This file was automatically generated and should not be edited.
-
-// ====================================================
-// GraphQL query operation: FetchHikesCoordinates
-// ====================================================
-
-export interface FetchHikesCoordinates_hikes {
-  __typename: "Hike";
-  id: number;
-  name: string;
-  summary: string;
-  length: number;
-  difficulty: string;
-  location: string;
-  stars: number;
-}
-
-export interface FetchHikesCoordinates {
-  hikes: FetchHikesCoordinates_hikes[];
-}
-
-export interface FetchHikesCoordinatesVariables {
-  latitude: number;
-  longitude: number;
 }
 
 /* tslint:disable */
@@ -495,9 +468,9 @@ export interface AddHikeInput {
   stars: number;
   difficulty: string;
   location: string;
-  length: number;
   latitude: number;
   longitude: number;
+  length: number;
 }
 
 export interface DownvoteInput {

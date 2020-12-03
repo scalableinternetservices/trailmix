@@ -32,9 +32,9 @@ export interface AddHikeInput {
   stars: Scalars['Float']
   difficulty: Scalars['String']
   location: Scalars['String']
-  length: Scalars['Float']
   latitude: Scalars['Float']
   longitude: Scalars['Float']
+  length: Scalars['Float']
 }
 
 export interface Comment {
@@ -70,9 +70,9 @@ export interface Hike {
   stars: Scalars['Float']
   difficulty: Scalars['String']
   location: Scalars['String']
-  length: Scalars['Float']
   latitude: Scalars['Float']
   longitude: Scalars['Float']
+  length: Scalars['Float']
 }
 
 export interface Mutation {
@@ -376,9 +376,9 @@ export type HikeResolvers<
   stars?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
   difficulty?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   location?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  length?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
   latitude?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
   longitude?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
+  length?: Resolver<ResolversTypes['Float'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
