@@ -310,10 +310,15 @@ export interface RemoveFavoriteVariables {
 
 export interface FetchHikes_hikes {
   __typename: "Hike";
+  id: number;
   name: string;
   summary: string;
   length: number;
   difficulty: string;
+  location: string;
+  stars: number;
+  latitude: number;
+  longitude: number;
 }
 
 export interface FetchHikes {
@@ -483,9 +488,9 @@ export interface AddHikeInput {
   stars: number;
   difficulty: string;
   location: string;
-  length: number;
   latitude: number;
   longitude: number;
+  length: number;
 }
 
 export interface DownvoteInput {

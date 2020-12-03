@@ -6,13 +6,13 @@ import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
 import { Component } from 'react'
 import { getApolloClient } from '../../graphql/apolloClient'
-import { FetchComments, FetchLatLon, FetchLatLonVariables } from '../../graphql/query.gen'
+import { FetchComments, FetchHikes, FetchLatLon, FetchLatLonVariables } from '../../graphql/query.gen'
 import { H2 } from '../../style/header'
 import { Spacer } from '../../style/spacer'
 import { IntroText } from '../../style/text'
 import { AppRouteParams } from '../nav/route'
 import { fetchComments } from '../playground/mutateComments'
-import { addHikeToDB } from '../playground/mutateHikes'
+import { addHikeToDB, fetchHikes } from '../playground/mutateHikes'
 import { fetchLatLon } from './fetchLatLon'
 import { default as HikeList, Trail } from './HikeList'
 import { Page } from './Page'
@@ -20,23 +20,30 @@ import { Page } from './Page'
 interface HikesPageProps extends RouteComponentProps, AppRouteParams {}
 
 let zipcode: number
-let lat: number
-let lon: number
+let latitude: number
+let longitude: number
 let getHikesButton = false
 let idArr: number[] = []
 let com_map: Map<number, string[]>
 let name_map: Map<number, string[]>
 let date_map: Map<number, string[]>
+let trails: Trail[] = []
+let new_coord: boolean
+let local_load: boolean
 
 function GetLatLon({ children }: any) {
   if (zipcode) {
     const { data, error, loading } = useQuery<FetchLatLon, FetchLatLonVariables>(fetchLatLon, {
       variables: { zipcode },
     })
-    console.log(idArr)
     if (data && data.coordinates) {
-      lat = data.coordinates.lat
-      lon = data.coordinates.lon
+      if (data.coordinates.lat == latitude && data.coordinates.lon == longitude) {
+        new_coord = false
+        return null
+      }
+      new_coord = true
+      latitude = data.coordinates.lat
+      longitude = data.coordinates.lon
       getHikesButton = true
     } else if (loading) {
       return null
@@ -47,9 +54,10 @@ function GetLatLon({ children }: any) {
       <div>
         <Spacer $h4 />
         <IntroText>
-          You are near latitude {lat} and longitude {lon}.
+          You are near latitude {latitude} and longitude {longitude}.
         </IntroText>
         <GetComments>{({ data, error, loading }: any) => console.log(data)}</GetComments>
+        <GetHikesCoords>{({ data, error, loading }: any) => console.log(data)}</GetHikesCoords>
       </div>
     )
   } else {
@@ -57,10 +65,58 @@ function GetLatLon({ children }: any) {
   }
 }
 
+function GetHikesCoords({ children }: any) {
+  const { data } = useQuery<FetchHikes>(fetchHikes)
+
+  if (data && data.hikes) {
+    local_load = true
+    trails = []
+    const margin = 0.25
+    const d = data.hikes.filter(
+      // eslint-disable-next-line prettier/prettier
+      hike => (Math.abs(latitude - hike.latitude) < margin) && (Math.abs(longitude - hike.longitude) < margin)
+    )
+
+    if (d.length > 0) {
+      console.log('Entries found in database:')
+      console.log(d)
+
+      const comArr: string[] = []
+      const nameArr: string[] = []
+      const dateArr: string[] = []
+
+      d.forEach(function (arrayItem) {
+        const a: Trail = {
+          id: arrayItem.id.toString(),
+          name: arrayItem.name,
+          length: arrayItem.length,
+          summary: arrayItem.summary,
+          difficulty: arrayItem.difficulty,
+          stars: arrayItem.stars,
+          starVotes: 0,
+          location: arrayItem.location,
+          latitude: 0,
+          longitude: 0,
+          conditionStatus: '',
+          conditionDetails: '',
+          conditionDate: '',
+          comments: comArr,
+          names: nameArr,
+          dates: dateArr,
+        }
+        trails.push(a)
+      })
+    } else {
+      local_load = false
+      console.log('No found in database:')
+      console.log(d)
+    }
+  }
+  return null
+}
+
 function GetComments({ children }: any) {
-  console.log(idArr)
   const { data } = useQuery<FetchComments>(fetchComments)
-  console.log(data)
   if (data) {
     idArr.forEach(function (id) {
       const d = data.comments.filter(c => c.hikeNum !== id)
@@ -77,7 +133,6 @@ function GetComments({ children }: any) {
         name_map.set(id, names_arr)
         date_map.set(id, dates_arr)
       }
-      console.log(d)
     })
     idArr = []
   }
@@ -87,7 +142,7 @@ function GetComments({ children }: any) {
 export default class HikingPage extends Component<HikesPageProps> {
   constructor(props: HikesPageProps) {
     super(props)
-    this.state = { trails: [], zip: '', loading: false }
+    this.state = { zip: '', loading: false }
     this.getHikes = this.getHikes.bind(this)
     this.handleZipChange = this.handleZipChange.bind(this)
     this.handleLatLonChange = this.handleLatLonChange.bind(this)
@@ -96,7 +151,6 @@ export default class HikingPage extends Component<HikesPageProps> {
     date_map = new Map<number, string[]>()
   }
   state = {
-    trails: [],
     zip: '',
     loading: false,
   }
@@ -120,9 +174,21 @@ export default class HikingPage extends Component<HikesPageProps> {
     this.setState({ loading: true })
     const key = '200944544-1e585b592713e202989908ebc84f8478'
 
-    if (lat && lon) {
+    if (local_load) {
+      this.setState({
+        loading: false,
+      })
+    }
+
+    if (latitude && longitude && new_coord && !local_load) {
+      console.log('API fetch')
       await fetch(
-        'https://www.hikingproject.com/data/get-trails?lat=' + lat + '&lon=' + lon + '&maxDistance=10&key=' + key
+        'https://www.hikingproject.com/data/get-trails?lat=' +
+          latitude +
+          '&lon=' +
+          longitude +
+          '&maxDistance=10&key=' +
+          key
       )
         .then(response => {
           return response.text()
@@ -164,18 +230,17 @@ export default class HikingPage extends Component<HikesPageProps> {
               names: nameArr,
               dates: dateArr,
             }
+            void this.addHikeInformation(a)
             array.push(a)
           }
+          trails = array
+          console.log('Hikes fetched:')
+          console.log(trails)
           this.setState({
-            trails: array,
             loading: false,
           })
         })
         .catch(error => console.error(error))
-      for (const trail of this.state.trails) {
-        console.log(trail)
-        void this.addHikeInformation(trail)
-      }
     }
   }
   handleZipChange(event: any) {
@@ -184,11 +249,11 @@ export default class HikingPage extends Component<HikesPageProps> {
   handleLatLonChange(event: any) {
     getHikesButton = true
     zipcode = Number(this.state.zip)
-    this.setState({ lat: lat, lon: lon })
+    this.setState({ lat: latitude, lon: longitude })
     event.preventDefault()
   }
   render() {
-    const hikes = this.state.trails
+    const hikes = trails
     let progress = null
     if (this.state.loading) {
       progress = <LinearProgress />
