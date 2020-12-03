@@ -46,14 +46,12 @@ export const graphqlRoot: Resolvers<Context> = {
       if (ctx.user == null) {
         return []
       }
-      const commentUser = (await Comment.find()).filter(comment => (comment.id = ctx.user!.id))
-      console.log('commentUser')
-      console.log(commentUser)
+
+      const commentUser = (await Comment.find({ where: { user: ctx.user } })) || null
       if (commentUser == null || commentUser == undefined) {
         return []
       }
-      const sortedComments = commentUser.sort((a: Comment, b: Comment) => Number(a.date) - Number(b.date))
-      return sortedComments.slice(0, 5) //arbitrary only most recent 5 comments show up
+      return commentUser.slice(-5) //last five elements
     },
     survey: async (_, { surveyId }) => (await Survey.findOne({ where: { id: surveyId } })) || null,
     surveys: () => Survey.find(),

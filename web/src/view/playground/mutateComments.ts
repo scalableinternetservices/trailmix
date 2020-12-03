@@ -43,6 +43,7 @@ export const fetchComments = gql`
       text
       date
       hikeNum
+      likes
     }
   }
 `

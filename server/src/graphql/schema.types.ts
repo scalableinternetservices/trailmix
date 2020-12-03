@@ -203,6 +203,7 @@ export interface User {
   email: Scalars['String']
   name: Scalars['String']
   favorites: Array<Maybe<Hike>>
+  comment: Array<Maybe<Comment>>
 }
 
 export enum UserType {
@@ -298,12 +299,12 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']>
   Hike: ResolverTypeWrapper<Hike>
   Float: ResolverTypeWrapper<Scalars['Float']>
+  Comment: ResolverTypeWrapper<Comment>
   Survey: ResolverTypeWrapper<Survey>
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   SurveyQuestion: ResolverTypeWrapper<SurveyQuestion>
   SurveyAnswer: ResolverTypeWrapper<SurveyAnswer>
   Coordinates: ResolverTypeWrapper<Coordinates>
-  Comment: ResolverTypeWrapper<Comment>
   Mutation: ResolverTypeWrapper<{}>
   AddCommentInput: AddCommentInput
   UpvoteInput: UpvoteInput
@@ -323,12 +324,12 @@ export type ResolversParentTypes = {
   String: Scalars['String']
   Hike: Hike
   Float: Scalars['Float']
+  Comment: Comment
   Survey: Survey
   Boolean: Scalars['Boolean']
   SurveyQuestion: SurveyQuestion
   SurveyAnswer: SurveyAnswer
   Coordinates: Coordinates
-  Comment: Comment
   Mutation: {}
   AddCommentInput: AddCommentInput
   UpvoteInput: UpvoteInput
@@ -510,6 +511,7 @@ export type UserResolvers<
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   favorites?: Resolver<Array<Maybe<ResolversTypes['Hike']>>, ParentType, ContextType>
+  comment?: Resolver<Array<Maybe<ResolversTypes['Comment']>>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>
 }
 
