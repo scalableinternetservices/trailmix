@@ -10,6 +10,10 @@
 export interface FetchUserContext_self_favorites {
   __typename: "Hike";
   name: string;
+  length: number;
+  difficulty: string;
+  stars: number;
+  summary: string;
 }
 
 export interface FetchUserContext_self {

@@ -18,28 +18,28 @@ interface ProfilePageProps extends RouteComponentProps, AppRouteParams {
   user: FetchUserContext_self
 }
 
-const FavHikes: Function = (): JSX.Element[] => {
-  //TODO: Isolate favorited hikes to per-user
-  const { data } = useQuery<FetchUserContext>(fetchUser)
+const FavHikes: Function = (): JSX.Element[] | JSX.Element => {
+  const { data } = useQuery<FetchUserContext>(fetchUser, { fetchPolicy: 'network-only' })
   if (data && data.self && data.self.favorites) {
     return data.self.favorites.map(hike => (
       <TrailInfoCard
         title={hike!.name}
-        // description={hike.summary}
-        // distance={String(hike.length)}
-        // difficulty={hike.difficulty}
+        description={hike!.summary}
+        distance={String(hike!.length)}
+        difficulty={hike!.difficulty}
+        stars={hike!.stars}
       />
     ))
   }
-  return []
+  return <BodyText>No favorite hikes yet! Click the heart button when you search for hikes to add some!</BodyText>
 }
 
-const RecentComments: Function = (): JSX.Element[] => {
+const RecentComments: Function = (): JSX.Element[] | JSX.Element => {
   const { data } = useQuery<FetchComments>(fetchComments)
   if (data) {
     return data.comments.map(comment => <CommentCard name={comment.name} message={comment.text} time={comment.date} />)
   }
-  return []
+  return <BodyText>No recent comments yet!</BodyText>
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -57,11 +57,6 @@ export function Profile(props: ProfilePageProps) {
             <Spacer $h4 />
             <FavHikes />
           </Section>
-          {/* <Section>
-            <H2>My Recent Comments</H2>
-            <Spacer $h4 />
-            <RecentComments />
-          </Section> */}
         </LContent>
         <RContent>
           <Section>

@@ -9,6 +9,10 @@ export const fetchUser = gql`
       userType
       favorites {
         name
+        length
+        difficulty
+        stars
+        summary
       }
     }
   }
