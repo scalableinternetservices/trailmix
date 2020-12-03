@@ -2,14 +2,14 @@ import { useQuery } from '@apollo/client'
 import { RouteComponentProps } from '@reach/router'
 import * as React from 'react'
 import { ColorName, Colors } from '../../../../common/src/colors'
-import { FetchComments, FetchHikes, FetchUserContext_self } from '../../graphql/query.gen'
+import { FetchComments, FetchUserContext, FetchUserContext_self } from '../../graphql/query.gen'
 import { H1, H2, H3 } from '../../style/header'
 import { Spacer } from '../../style/spacer'
 import { style } from '../../style/styled'
 import { BodyText } from '../../style/text'
+import { fetchUser } from '../auth/fetchUser'
 import { AppRouteParams } from '../nav/route'
 import { fetchComments } from '../playground/mutateComments'
-import { fetchHikes } from '../playground/mutateHikes'
 import { CommentCard } from './Comment'
 import { Page } from './Page'
 import { TrailInfoCard } from './TrailInfo'
@@ -20,14 +20,14 @@ interface ProfilePageProps extends RouteComponentProps, AppRouteParams {
 
 const FavHikes: Function = (): JSX.Element[] => {
   //TODO: Isolate favorited hikes to per-user
-  const { data } = useQuery<FetchHikes>(fetchHikes)
-  if (data) {
-    return data.hikes.map(hike => (
+  const { data } = useQuery<FetchUserContext>(fetchUser)
+  if (data && data.self && data.self.favorites) {
+    return data.self.favorites.map(hike => (
       <TrailInfoCard
-        title={hike.name}
-        description={hike.summary}
-        distance={String(hike.length)}
-        difficulty={hike.difficulty}
+        title={hike!.name}
+        // description={hike.summary}
+        // distance={String(hike.length)}
+        // difficulty={hike.difficulty}
       />
     ))
   }
