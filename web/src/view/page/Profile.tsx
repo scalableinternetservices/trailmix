@@ -19,7 +19,7 @@ interface ProfilePageProps extends RouteComponentProps, AppRouteParams {
 }
 
 const FavHikes: Function = (): JSX.Element[] | JSX.Element => {
-  const { data } = useQuery<FetchUserContext>(fetchUser, { fetchPolicy: 'network-only' })
+  const { data } = useQuery<FetchUserContext>(fetchUser, { fetchPolicy: 'cache-and-network' })
   if (data && data.self && data.self.favorites) {
     return data.self.favorites.map(hike => (
       <TrailInfoCard
@@ -35,7 +35,7 @@ const FavHikes: Function = (): JSX.Element[] | JSX.Element => {
 }
 
 const RecentComments: Function = (): JSX.Element[] | JSX.Element => {
-  const { data } = useQuery<FetchComments>(fetchComments, { fetchPolicy: 'network-only' })
+  const { data } = useQuery<FetchComments>(fetchComments, { fetchPolicy: 'cache-and-network' })
   if (data && data.comments) {
     return data.comments.map(comment =>
       comment ? (

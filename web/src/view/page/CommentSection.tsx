@@ -17,7 +17,7 @@ interface CommentsProps extends RouteComponentProps, AppRouteParams {
 
 function getOldComments(id: number) {
   const { data } = useQuery<FetchComments>(fetchComments, {
-    fetchPolicy: 'no-cache',
+    fetchPolicy: 'network-only',
   })
   console.log('getting old comments')
   if (data) {
