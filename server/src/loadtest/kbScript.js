@@ -30,8 +30,9 @@ export const options = {
 }
 
 export default function () {
-  recordRates('http://localhost:3000')
+  //recordRates('http://localhost:3000')
   // recordRates(
+  const getApp = http.get('http://localhost:3000')
   const resp = http.post(
     'http://localhost:3000/graphql',
     '{"operationName":"FetchLatLon","variables":{"zipcode":90024},"query":"query FetchLatLon($zipcode: Int!) {\n  coordinates(zipcode: $zipcode) {\n    lat\n    lon\n    __typename\n  }\n}\n"}',
@@ -41,8 +42,39 @@ export default function () {
       },
     }
   )
+  const hikes = http.post(
+    'http://localhost:3000/graphql',
+    '{"operationName":"FetchHikes","variables":{"zipcode":90024},"query":"query FetchHikes {↵  hikes {↵    id↵    name↵    summary↵    length↵    difficulty↵    location↵    stars↵    latitude↵    longitude↵    __typename↵  }↵}↵"}',
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+  const comments = http.post(
+    'http://localhost:3000/graphql',
+    '{"operationName":"AddComment","input: {id: 7002910, name: "test", text: "test 1", date: "9:48:27 PM, 12/3/2020"},"query":"mutation AddComment($input: AddCommentInput!) {↵  addComment(input: $input)↵}↵"}',
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+  const comments2 = http.post(
+    'http://localhost:3000/graphql',
+    '{"operationName":"AddComment","input: {id: 7002910, name: "test", text: "test 2", date: "9:49:27 PM, 12/3/2020"},"query":"mutation AddComment($input: AddCommentInput!) {↵  addComment(input: $input)↵}↵"}',
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+  const fetchAllComments = http.post(
+    'http://localhost:3000/graphql',
+    '{"operationName":"FetchComments","variables": "{}","query":"query FetchComments {↵  comments {↵    id↵    name↵    text↵    date↵    hikeNum↵    likes↵    __typename↵  }↵}↵"}'
+  )
   // )
-  sleep(Math.random() * 3)
+  // sleep(Math.random() * 3)
 }
 
 const count200 = new Counter('status_code_2xx')
