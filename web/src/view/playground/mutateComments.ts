@@ -43,10 +43,23 @@ export const fetchComments = gql`
       text
       date
       hikeNum
+    }
+  }
+`
+
+export const fetchMyComments = gql`
+  query FetchMyComments {
+    mycomments {
+      id
+      name
+      text
+      date
+      hikeNum
       likes
     }
   }
 `
+
 const upvoteCommentMutation = gql`
   mutation UpvoteComment($input: UpvoteInput!) {
     upvoteComment(input: $input)

@@ -126,6 +126,7 @@ export interface Query {
   hike?: Maybe<Hike>
   comment: Array<Comment>
   comments: Array<Comment>
+  mycomments: Array<Comment>
   hikes: Array<Hike>
 }
 
@@ -451,6 +452,7 @@ export type QueryResolvers<
   hike?: Resolver<Maybe<ResolversTypes['Hike']>, ParentType, ContextType, RequireFields<QueryHikeArgs, 'id'>>
   comment?: Resolver<Array<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<QueryCommentArgs, 'id'>>
   comments?: Resolver<Array<ResolversTypes['Comment']>, ParentType, ContextType>
+  mycomments?: Resolver<Array<ResolversTypes['Comment']>, ParentType, ContextType>
   hikes?: Resolver<Array<ResolversTypes['Hike']>, ParentType, ContextType>
 }
 

@@ -16,15 +16,6 @@ export interface FetchUserContext_self_favorites {
   summary: string;
 }
 
-export interface FetchUserContext_self_comment {
-  __typename: "Comment";
-  id: number;
-  name: string;
-  text: string;
-  date: string;
-  likes: number;
-}
-
 export interface FetchUserContext_self {
   __typename: "User";
   id: number;
@@ -32,7 +23,6 @@ export interface FetchUserContext_self {
   email: string;
   userType: UserType;
   favorites: (FetchUserContext_self_favorites | null)[];
-  comment: (FetchUserContext_self_comment | null)[];
 }
 
 export interface FetchUserContext {
@@ -212,6 +202,29 @@ export interface FetchComments_comments {
 
 export interface FetchComments {
   comments: FetchComments_comments[];
+}
+
+/* tslint:disable */
+/* eslint-disable */
+// @generated
+// This file was automatically generated and should not be edited.
+
+// ====================================================
+// GraphQL query operation: FetchMyComments
+// ====================================================
+
+export interface FetchMyComments_mycomments {
+  __typename: "Comment";
+  id: number;
+  name: string;
+  text: string;
+  date: string;
+  hikeNum: number;
+  likes: number;
+}
+
+export interface FetchMyComments {
+  mycomments: FetchMyComments_mycomments[];
 }
 
 /* tslint:disable */

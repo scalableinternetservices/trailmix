@@ -24,6 +24,7 @@ type Query {
   hike(id: Int!): Hike
   comment(id: Int!): [Comment!]!
   comments: [Comment!]!
+  mycomments: [Comment!]!
   hikes: [Hike!]!
 }
 

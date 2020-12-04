@@ -22,8 +22,9 @@ function getOldComments(id: number) {
   console.log('getting old comments')
   if (data) {
     console.log(data)
-    const comments = data.comments
-    comments.reverse()
+    const commentsOld = data.comments
+    const comments = [...commentsOld].reverse()
+    //comments.reverse()
     const output: FetchComments_comments[] = []
 
     comments.forEach(comment => {
