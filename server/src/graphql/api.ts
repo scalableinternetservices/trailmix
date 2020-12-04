@@ -42,7 +42,8 @@ export const graphqlRoot: Resolvers<Context> = {
     },
     hike: async (_, hikeId) => (await Hike.findOne({ where: { id: hikeId } })) || null,
     comment: async (_, hikeId) => (await Comment.find({ where: { hike: { id: hikeId } } })) || null,
-    comments: async (_, args, ctx) => {
+    comments: () => Comment.find(),
+    mycomments: async (_, args, ctx) => {
       if (ctx.user == null) {
         return []
       }

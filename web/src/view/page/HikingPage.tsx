@@ -35,6 +35,7 @@ function GetLatLon({ children }: any) {
   if (zipcode) {
     const { data, error, loading } = useQuery<FetchLatLon, FetchLatLonVariables>(fetchLatLon, {
       variables: { zipcode },
+      fetchPolicy: 'cache-first',
     })
     if (data && data.coordinates) {
       if (data.coordinates.lat == latitude && data.coordinates.lon == longitude) {
@@ -66,7 +67,7 @@ function GetLatLon({ children }: any) {
 }
 
 function GetHikesCoords({ children }: any) {
-  const { data } = useQuery<FetchHikes>(fetchHikes)
+  const { data } = useQuery<FetchHikes>(fetchHikes, { fetchPolicy: 'cache-first' })
 
   if (data && data.hikes) {
     local_load = true
@@ -74,7 +75,7 @@ function GetHikesCoords({ children }: any) {
     const margin = 0.25
     const d = data.hikes.filter(
       // eslint-disable-next-line prettier/prettier
-      hike => (Math.abs(latitude - hike.latitude) < margin) && (Math.abs(longitude - hike.longitude) < margin)
+      hike => Math.abs(latitude - hike.latitude) < margin && Math.abs(longitude - hike.longitude) < margin
     )
 
     if (d.length > 0) {
@@ -116,7 +117,7 @@ function GetHikesCoords({ children }: any) {
 }
 
 function GetComments({ children }: any) {
-  const { data } = useQuery<FetchComments>(fetchComments)
+  const { data } = useQuery<FetchComments>(fetchComments, { fetchPolicy: 'cache-and-network' })
   if (data) {
     idArr.forEach(function (id) {
       const d = data.comments.filter(c => c.hikeNum !== id)

@@ -17,13 +17,14 @@ interface CommentsProps extends RouteComponentProps, AppRouteParams {
 
 function getOldComments(id: number) {
   const { data } = useQuery<FetchComments>(fetchComments, {
-    fetchPolicy: 'no-cache',
+    fetchPolicy: 'network-only',
   })
   console.log('getting old comments')
   if (data) {
     console.log(data)
-    const comments = data.comments
-    comments.reverse()
+    const commentsOld = data.comments
+    const comments = [...commentsOld].reverse()
+    //comments.reverse()
     const output: FetchComments_comments[] = []
 
     comments.forEach(comment => {
