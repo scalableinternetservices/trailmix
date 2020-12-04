@@ -26,7 +26,7 @@ module "webserver" {
   # redis_host = module.redis.host
 
   services      = "BACKGROUND"
-  honeycomb_key = <insert key here>
+  honeycomb_key = "d43d03acae92e89c5c79dc0e7804f844"
 
   # ws_url = module.websocket_api.url
 }
@@ -44,7 +44,7 @@ module "rest_api" {
 # module "lambda" {
 #   source = "./modules/lambda"
 
-#   honeycomb_key = <insert key here>
+#   honeycomb_key = 'd43d03acae92e89c5c79dc0e7804f844'
 
 #   mysql_host = module.mysql.host
 #   redis_host = module.redis.host

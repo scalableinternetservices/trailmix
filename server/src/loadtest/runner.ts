@@ -35,7 +35,7 @@ export async function loadTest(script?: UserScript, phases?: ArrivalPhase[]) {
 }
 
 function runArrivalPhase(i: number, { rate, duration }: ArrivalPhase, script?: UserScript) {
-  return new Promise(resolve => {
+  return new Promise<void>(resolve => {
     console.log(`[load] starting arrival phase ${i}: ${rate} users/sec for ${duration}`)
     let batchNum = 0
     let successTotal = 0
