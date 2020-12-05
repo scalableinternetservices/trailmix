@@ -33,6 +33,36 @@ export default function () {
   //recordRates('http://localhost:3000')
   // recordRates(
   const getApp = http.get('http://localhost:3000')
+
+  const createUser = http.post(
+    'http://localhost:3000/auth/createUser',
+    '{"email":"abcd@test.com","name":"Joe Bruin"}',
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+  //get profile page info
+  const profilePage = http.post(
+    'http://localhost:3000/graphql',
+    '{"operationName":"FetchUserContext","variables":"{}","query":"query FetchUserContext {↵  self {↵    id↵    name↵    email↵    userType↵    favorites {↵      name↵      length↵      difficulty↵      stars↵      summary↵      __typename↵    }↵    __typename↵  }↵}↵"}',
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+
+  const profilePageFavs = http.post(
+    'http://localhost:3000/graphql',
+    '{"operationName":"FetchMyComments","variables":"{}","query":"query FetchMyComments {↵  mycomments {↵    id↵    name↵    text↵    date↵    hikeNum↵    likes↵    __typename↵  }↵}↵"}',
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
   const resp = http.post(
     'http://localhost:3000/graphql',
     '{"operationName":"FetchLatLon","variables":{"zipcode":90024},"query":"query FetchLatLon($zipcode: Int!) {\n  coordinates(zipcode: $zipcode) {\n    lat\n    lon\n    __typename\n  }\n}\n"}',
