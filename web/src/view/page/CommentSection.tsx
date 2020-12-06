@@ -12,6 +12,7 @@ interface CommentsProps extends RouteComponentProps, AppRouteParams {
   comments: string[]
   names: string[]
   dates: string[]
+  likes: number[]
   hikeid: number
 }
 
@@ -35,7 +36,7 @@ function getOldComments(id: number) {
 
     return output.map(comment => (
       // eslint-disable-next-line react/jsx-key
-      <CommentCard message={comment.text} name={comment.name} time={comment.date} />
+      <CommentCard message={comment.text} name={comment.name} time={comment.date} likes={comment.likes} />
     ))
   } else {
     return []
@@ -46,6 +47,7 @@ export function CommentsSection(props: CommentsProps) {
   const [comments, setComments] = React.useState<string[]>(props.comments)
   const [names, setNames] = React.useState<string[]>(props.names)
   const [dates, setDates] = React.useState<string[]>(props.dates)
+  const [likes, setLikes] = React.useState<number[]>(props.likes)
 
   return (
     <div>
@@ -65,7 +67,13 @@ export function CommentsSection(props: CommentsProps) {
       <div>
         {comments.map((comment, index) => (
           // eslint-disable-next-line react/jsx-key
-          <CommentCard message={comment} name={names[index]} time={dates[index]} />
+          <CommentCard
+            message={comment}
+            name={names[index]}
+            time={dates[index]}
+            setLikesCallback={setLikes}
+            likes={likes[index]}
+          />
         ))}
         {getOldComments(props.hikeid)}
       </div>

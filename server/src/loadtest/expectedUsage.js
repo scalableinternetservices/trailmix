@@ -25,16 +25,17 @@ export default function () {
       'http://localhost:3000/graphql',
       '{"operationName":"AddHike","variables":{"input":{"id":' +
         i +
-        ',"name":"Hollywood Sign and Bronson Caves","stars":4.4,"summary":"A popular route to the Hollywood Sign that offers plenty of great views along the way.","location":"Hollywood Hills West, California","difficulty":"blue","length":6.6,"latitude":3,"longitude":3}},"query":"mutation AddHike($input: AddHikeInput!) {addHike(input: $input)}"}',
+        ',"name":"Hollywood Reservoir Loop","stars":4.3,"summary":"A paved loop around the entire Hollywood Reservoir.","location":"Universal City, California","difficulty":"green","length":3.4,"latitude":34.1287,"longitude":-118.3363}},"query":"mutation AddHike($input: AddHikeInput!) {  addHike(input: $input) } "}',
       {
         headers: {
           'Content-Type': 'application/json',
         },
       }
     )
+    sleep(0.5)
   }
   //load comments
-
+  sleep(1)
   //add comment
   http.post(
     'http://localhost:3000/graphql',
@@ -60,7 +61,7 @@ export default function () {
     'http://localhost:3000/graphql',
     '{"operationName":"AddHike","variables":{"input":{"id":' +
       1 +
-      ',"name":"Hollywood Sign and Bronson Caves","stars":4.4,"summary":"A popular route to the Hollywood Sign that offers plenty of great views along the way.","location":"Hollywood Hills West, California","difficulty":"blue","length":6.6,"latitude":3,"longitude":3}},"query":"mutation AddHike($input: AddHikeInput!) {  addHike(input: $input)}"}',
+      ',"name":"Hollywood Reservoir Loop","stars":4.3,"summary":"A paved loop around the entire Hollywood Reservoir.","location":"Universal City, California","difficulty":"green","length":3.4,"latitude":34.1287,"longitude":-118.3363}},"query":"mutation AddHike($input: AddHikeInput!) {  addHike(input: $input) } "}',
     {
       headers: {
         'Content-Type': 'application/json',

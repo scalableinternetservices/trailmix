@@ -8,7 +8,7 @@ import {
   DownvoteInput,
   UpvoteComment,
   UpvoteCommentVariables,
-  UpvoteInput,
+  UpvoteInput
 } from '../../graphql/query.gen'
 
 const addCommentMutation = gql`
@@ -42,6 +42,7 @@ export const fetchComments = gql`
       name
       text
       date
+      likes
       hikeNum
     }
   }

@@ -197,6 +197,7 @@ export interface FetchComments_comments {
   name: string;
   text: string;
   date: string;
+  likes: number;
   hikeNum: number;
 }
 
