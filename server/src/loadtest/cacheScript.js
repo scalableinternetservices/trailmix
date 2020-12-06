@@ -32,11 +32,20 @@ export default function () {
   http.get('http://127.0.0.1:3000/app')
 
   sleep(1)
-  http.get('http://127.0.0.1:3000/app/hiking')
+  http.get('http://127.0.0.1:3000/app/playground/login')
+
+  sleep(1)
+  http.get('http://127.0.0.1:3000/app/playground/signup')
+
+  http.post('http://localhost:3000/auth/createUser', '{"email":"abcd@test.com","name":"Joe Bruin"}', {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
 
   http.post(
-    'http://127.0.0.1:3000/graphql',
-    '{"operationName":"FetchLatLon","variables":{"zipcode":90024},"query":"query FetchLatLon($zipcode: Int!) {\n  coordinates(zipcode: $zipcode) {\n    lat\n    lon\n    __typename\n  }\n}\n"}',
+    'http://localhost:3000/graphql?opName=FetchUserContext',
+    '{"operationName":"FetchUserContext","variables":{},"query":"query FetchUserContext {\n  self {\n    id\n    name\n    email\n    userType\n    favorites {\n      name\n      length\n      difficulty\n      stars\n      summary\n      __typename\n    }\n    __typename\n  }\n}\n"}',
     {
       headers: {
         'Content-Type': 'application/json',
@@ -45,48 +54,8 @@ export default function () {
   )
 
   http.post(
-    'http://127.0.0.1:3000/graphql',
-    '{"operationName":"FetchComments","variables":{},"query":"query FetchComments {\n  comments {\n    id\n    name\n    text\n    date\n    hikeNum\n    __typename\n  }\n}\n"}',
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  )
-
-  http.post(
-    'http://127.0.0.1:3000/graphql',
-    '{"operationName":"FetchHikes","variables":{},"query":"query FetchHikes {\n  hikes {\n    id\n    name\n    summary\n    length\n    difficulty\n    location\n    stars\n    latitude\n    longitude\n    __typename\n  }\n}\n"}',
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  )
-
-  http.post(
-    'http://127.0.0.1:3000/graphql',
-    '{"operationName":"FetchLatLon","variables":{"zipcode":94544},"query":"query FetchLatLon($zipcode: Int!) {\n  coordinates(zipcode: $zipcode) {\n    lat\n    lon\n    __typename\n  }\n}\n"}',
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  )
-
-  http.post(
-    'http://127.0.0.1:3000/graphql',
-    '{"operationName":"FetchComments","variables":{},"query":"query FetchComments {\n  comments {\n    id\n    name\n    text\n    date\n    hikeNum\n    __typename\n  }\n}\n"}',
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  )
-
-  http.post(
-    'http://127.0.0.1:3000/graphql',
-    '{"operationName":"FetchHikes","variables":{},"query":"query FetchHikes {\n  hikes {\n    id\n    name\n    summary\n    length\n    difficulty\n    location\n    stars\n    latitude\n    longitude\n    __typename\n  }\n}\n"}',
+    'http://localhost:3000/graphql?opName=FetchMyComments',
+    '{"operationName":"FetchMyComments","variables":{},"query":"query FetchMyComments {\n  mycomments {\n    id\n    name\n    text\n    date\n    hikeNum\n    likes\n    __typename\n  }\n}\n"}',
     {
       headers: {
         'Content-Type': 'application/json',
