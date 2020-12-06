@@ -36,6 +36,7 @@ export interface Trail {
   comments: string[]
   names: string[]
   dates: string[]
+  likes: number[]
 }
 
 interface trailInfo {
@@ -56,6 +57,7 @@ interface trailInfo {
   comments: string[]
   names: string[]
   dates: string[]
+  likes: number[]
 }
 
 interface trailStyle {
@@ -219,7 +221,13 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
               This {args.length}-mile hike, located in {args.location}, has {args.difficulty}-level difficulty and is
               currently rated {args.stars} stars.
             </Typography>
-            <CommentsSection hikeid={args.id} comments={args.comments} names={args.names} dates={args.dates} />
+            <CommentsSection
+              hikeid={args.id}
+              comments={args.comments}
+              names={args.names}
+              dates={args.dates}
+              likes={args.likes}
+            />
           </DialogContent>
         </Dialog>
       </div>
@@ -244,6 +252,7 @@ export default class HikeList extends Component<HikingListProps, { open: boolean
         comments: item.comments,
         names: item.names,
         dates: item.dates,
+        likes: item.likes,
       })
     })
   }

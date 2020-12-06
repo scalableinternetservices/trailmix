@@ -27,6 +27,7 @@ let idArr: number[] = []
 let com_map: Map<number, string[]>
 let name_map: Map<number, string[]>
 let date_map: Map<number, string[]>
+let like_map: Map<number, number[]>
 let trails: Trail[] = []
 let new_coord: boolean
 let local_load: boolean
@@ -85,6 +86,7 @@ function GetHikesCoords({ children }: any) {
       const comArr: string[] = []
       const nameArr: string[] = []
       const dateArr: string[] = []
+      const likeArr: number[] = []
 
       d.forEach(function (arrayItem) {
         const a: Trail = {
@@ -104,6 +106,7 @@ function GetHikesCoords({ children }: any) {
           comments: comArr,
           names: nameArr,
           dates: dateArr,
+          likes: likeArr,
         }
         trails.push(a)
       })
@@ -125,14 +128,17 @@ function GetComments({ children }: any) {
         const com_arr: string[] = []
         const names_arr: string[] = []
         const dates_arr: string[] = []
+        const like_arr: number[] = []
         d.forEach(function (arrayItem) {
           com_arr.push(arrayItem.text)
           names_arr.push(arrayItem.name)
           dates_arr.push(arrayItem.date)
+          like_arr.push(arrayItem.likes)
         })
         com_map.set(id, com_arr)
         name_map.set(id, names_arr)
         date_map.set(id, dates_arr)
+        like_map.set(id, like_arr)
       }
     })
     idArr = []
@@ -204,6 +210,7 @@ export default class HikingPage extends Component<HikesPageProps> {
             let comArr = com_map.get(entry.id)
             let nameArr = name_map.get(entry.id)
             let dateArr = date_map.get(entry.id)
+            let likeArr = like_map.get(entry.id)
             if (comArr == null) {
               comArr = []
             }
@@ -212,6 +219,9 @@ export default class HikingPage extends Component<HikesPageProps> {
             }
             if (dateArr == null) {
               dateArr = []
+            }
+            if (likeArr == null) {
+              likeArr = []
             }
             const a: Trail = {
               id: entry.id,
@@ -230,6 +240,7 @@ export default class HikingPage extends Component<HikesPageProps> {
               comments: comArr,
               names: nameArr,
               dates: dateArr,
+              likes: likeArr,
             }
             void this.addHikeInformation(a)
             array.push(a)
