@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs'
 import { PubSub } from 'graphql-yoga'
+import { Redis } from 'ioredis'
 import path from 'path'
 import { check } from '../../../common/src/util'
 import { Comment } from '../entities/Comment'
@@ -26,6 +27,7 @@ interface Context {
   request: Request
   response: Response
   pubsub: PubSub
+  redis: Redis
 }
 
 export const graphqlRoot: Resolvers<Context> = {
@@ -94,6 +96,27 @@ export const graphqlRoot: Resolvers<Context> = {
       if (ctx.user) {
         newComment.user = ctx.user
       }
+
+      console.log('here in the addComment thing')
+      console.log(id)
+
+      const nameResponse = await ctx.redis.set(id.toString() + 'name', newComment.name)
+      const textResponse = await ctx.redis.set(id.toString() + 'text', newComment.text)
+      const dateResponse = await ctx.redis.set(id.toString() + 'text', newComment.date)
+      const likesResponse = await ctx.redis.set(id.toString() + 'text', newComment.likes)
+      const hieNumResponse = await ctx.redis.set(id.toString() + 'text', newComment.hikeNum)
+      const userResponse = await ctx.redis.set(id.toString() + 'text', newComment.user.id)
+
+      console.log(nameResponse)
+      console.log(textResponse)
+      console.log(dateResponse)
+      console.log(likesResponse)
+      console.log(hieNumResponse)
+      console.log(userResponse)
+
+      const nameGet = await ctx.redis.get(id.toString() + 'name')
+      console.log(nameGet)
+
       const hike = await Hike.findOne({ where: { id: id } })
       if (hike != null) {
         newComment.hike = hike
