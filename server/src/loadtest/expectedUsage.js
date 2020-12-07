@@ -35,6 +35,10 @@ export default function () {
     sleep(0.5)
   }
   //load comments
+  http.post(
+    'http://localhost:3000/graphql',
+    '{"operationName":"FetchComments","variables": "{}","query":"query FetchComments {↵  comments {↵    id↵    name↵    text↵    date↵    hikeNum↵    likes↵    __typename↵  }↵}↵"}'
+  )
   sleep(1)
   //add comment
   http.post(
@@ -46,6 +50,7 @@ export default function () {
       },
     }
   )
+  sleep(1)
   //upvote a comment
   http.post(
     'http://localhost:3000/graphql',
@@ -56,6 +61,7 @@ export default function () {
       },
     }
   )
+  sleep(1)
   //add a favorite hike
   http.post(
     'http://localhost:3000/graphql',
