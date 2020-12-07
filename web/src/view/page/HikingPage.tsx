@@ -156,6 +156,7 @@ export default class HikingPage extends Component<HikesPageProps> {
     com_map = new Map<number, string[]>()
     name_map = new Map<number, string[]>()
     date_map = new Map<number, string[]>()
+    like_map = new Map<number, number[]>()
   }
   state = {
     zip: '',
