@@ -6,10 +6,11 @@ import { Spacer } from '../../style/spacer'
 import { style } from '../../style/styled'
 import { BodyText } from '../../style/text'
 import { AppRouteParams } from '../nav/route'
+//import { hikingCollage } from './hikingCollage.png'
 import { Page } from './Page'
-
 interface HomePageProps extends RouteComponentProps, AppRouteParams {}
 
+//const collage = require('./hikingCollage')
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function HomePage(props: HomePageProps) {
   return (
@@ -18,6 +19,7 @@ export function HomePage(props: HomePageProps) {
         <H1>Trailmix</H1>
         <H3>Scalable Internet Services Project</H3>
         <H3>UCLA, Fall 2020</H3>
+        {/* <img src={hikingCollage} alt="collage" /> */}
       </Hero>
       <Content>
         <LContent>
