@@ -9,8 +9,8 @@ resource "aws_db_instance" "db" {
   deletion_protection     = false
   skip_final_snapshot     = true
   kms_key_id              = aws_kms_key.db_key.arn
-  allocated_storage       = 10
-  max_allocated_storage   = 20
+  allocated_storage       = 30
+  max_allocated_storage   = 40
   storage_type            = "gp2"
   storage_encrypted       = true
   engine                  = "mysql"

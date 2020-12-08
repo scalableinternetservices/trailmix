@@ -4,7 +4,7 @@ resource "aws_ecs_task_definition" "appserver" {
   execution_role_arn       = var.execution_role
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  cpu                      = var.cpu
+  cpu                      = 2048
   memory                   = var.memory
 
   container_definitions = <<DEFINITION
@@ -66,7 +66,7 @@ resource "aws_ecs_service" "appserver" {
   #   aws_ecs_task_definition.appserver.revision,
   #   data.aws_ecs_task_definition.appserver.revision,
   # )}"
-  desired_count = "1"
+  desired_count = "2"
   launch_type   = "FARGATE"
 
   network_configuration {

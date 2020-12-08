@@ -41,11 +41,11 @@ module "rest_api" {
 #   appserver_host = module.webserver.host
 # }
 
-# module "lambda" {
-#   source = "./modules/lambda"
+module "lambda" {
+  source = "./modules/lambda"
 
-#   honeycomb_key = 'd43d03acae92e89c5c79dc0e7804f844'
+  honeycomb_key = "d43d03acae92e89c5c79dc0e7804f844"
 
-#   mysql_host = module.mysql.host
-#   redis_host = module.redis.host
-# }
+  mysql_host = module.mysql.host
+#  redis_host = module.redis.host
+}
