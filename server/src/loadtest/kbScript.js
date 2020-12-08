@@ -34,15 +34,15 @@ export default function () {
   // recordRates(
   const getApp = http.get('http://localhost:3000')
 
-  const createUser = http.post(
-    'http://localhost:3000/auth/createUser',
-    '{"email":"abcd@test.com","name":"Joe Bruin"}',
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  )
+  // const createUser = http.post(
+  //   'http://localhost:3000/auth/createUser',
+  //   '{"email":"abcd@test.com","name":"Joe Bruin"}',
+  //   {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   }
+  // )
   //get profile page info
   // const profilePage = http.post(
   //   'http://localhost:3000/graphql',
@@ -81,28 +81,40 @@ export default function () {
   //     },
   //   }
   // )
-  const comments = http.post(
-    'http://localhost:3000/graphql',
-    '{"operationName":"AddComment","input: {id: 7002910, name: "test", text: "test 1", date: "9:48:27 PM, 12/3/2020"},"query":"mutation AddComment($input: AddCommentInput!) {\n  addComment(input: $input)\n}\n"}',
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
+  let mutation = `
+    mutation AddComment{
+      addComment(input: {id: 7002910, name: "test", text: "test 1", date: "9:48:27 PM, 12/3/2020"})
     }
-  )
-  const comments2 = http.post(
-    'http://localhost:3000/graphql',
-    '{"operationName":"AddComment","input: {id: 7002910, name: "test", text: "test 2", date: "9:49:27 PM, 12/3/2020"},"query":"mutation AddComment($input: AddCommentInput!) {\n  addComment(input: $input)\n}\n"}',
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
+  `
+  let mutation2 = `
+    mutation AddComment{
+      addComment(input: {id: 7002910, name: "test", text: "test 2", date: "9:49:27 PM, 12/3/2020"})
     }
-  )
-  const fetchAllComments = http.post(
-    'http://localhost:3000/graphql',
-    '{"operationName":"FetchComments","variables": "{}","query":"query FetchComments {\n  comments {\n    id\n    name\n    text\n    date\n    hikeNum\n    likes\n    __typename\n  }\n}\n"}'
-  )
+  `
+  let mutation3 = `
+    query FetchComments {
+      comments {
+        id,
+        name,
+        text
+      }
+    }
+  `
+  const comments = http.post('http://localhost:3000/graphql', JSON.stringify(mutation), {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  const comments2 = http.post('http://localhost:3000/graphql', JSON.stringify(mutation2), {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  const fetchAllComments = http.post('http://localhost:3000/graphql', JSON.stringify(mutation3), {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
   // )
   // sleep(Math.random() * 3)
 }
