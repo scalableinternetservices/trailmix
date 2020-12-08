@@ -44,7 +44,16 @@ export const graphqlRoot: Resolvers<Context> = {
     },
     hike: async (_, hikeId) => (await Hike.findOne({ where: { id: hikeId } })) || null,
     comment: async (_, hikeId) => (await Comment.find({ where: { hike: { id: hikeId } } })) || null,
-    comments: () => Comment.find(),
+    comments: async (_, args, ctx) => {
+      console.log('in redis exists thing')
+      const redisOut = await ctx.redis.lrange('comments', 0, -1)
+      console.log(redisOut)
+      if (redisOut.length > 0) return redisOut.map(c => JSON.parse(c))
+      console.log('out of redis thing')
+      const getComments = Comment.find()
+      ;(await getComments).forEach(c => ctx.redis.rpush('comments', JSON.stringify(c)))
+      return Comment.find()
+    },
     mycomments: async (_, args, ctx) => {
       if (ctx.user == null) {
         return []
@@ -97,26 +106,6 @@ export const graphqlRoot: Resolvers<Context> = {
         newComment.user = ctx.user
       }
 
-      console.log('here in the addComment thing')
-      console.log(id)
-
-      const nameResponse = await ctx.redis.set(id.toString() + 'name', newComment.name)
-      const textResponse = await ctx.redis.set(id.toString() + 'text', newComment.text)
-      const dateResponse = await ctx.redis.set(id.toString() + 'text', newComment.date)
-      const likesResponse = await ctx.redis.set(id.toString() + 'text', newComment.likes)
-      const hieNumResponse = await ctx.redis.set(id.toString() + 'text', newComment.hikeNum)
-      const userResponse = await ctx.redis.set(id.toString() + 'text', newComment.user.id)
-
-      console.log(nameResponse)
-      console.log(textResponse)
-      console.log(dateResponse)
-      console.log(likesResponse)
-      console.log(hieNumResponse)
-      console.log(userResponse)
-
-      const nameGet = await ctx.redis.get(id.toString() + 'name')
-      console.log(nameGet)
-
       const hike = await Hike.findOne({ where: { id: id } })
       if (hike != null) {
         newComment.hike = hike
@@ -124,6 +113,8 @@ export const graphqlRoot: Resolvers<Context> = {
 
       await newComment.save()
       ctx.pubsub.publish('ADD_HIKE_' + id, newComment)
+
+      void (await ctx.redis.rpush('comments', JSON.stringify(newComment)))
 
       return true
     },
