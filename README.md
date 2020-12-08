@@ -1,11 +1,11 @@
 # trailmix
 
-Welcome to Trailmix!
+Welcome to Trailmix! Trailmix is a web application that allows hiking lovers to discover, celebrate, and discuss different hikes wherever they go, combining both the features of a hiking database and a community forum. It’s the perfect way to find new adventures and connect activities with friends in an active, socially-distanced way.
 
 ## Team Members
 | Shikha Mody | Armaan Singh  | Jivan Gubbi | Hayley Martinez |
 | ----------- | ----------- |  ----------- |  ----------- |
-| <img src="https://avatars0.githubusercontent.com/u/43181799?s=400&u=4c9690cbc75def031b9530aaf8c1d283026a382f&v=4" height=100px width=100px/> | <img src="https://avatars3.githubusercontent.com/u/10168472?s=460&u=0e1346c353b3c1b5449ccd0f21bac89279a63cde&v=4" width=100px height=100px> | <img src="https://avatars2.githubusercontent.com/u/42520224?s=460&u=8947c5a4689c08d7d496d3750a42ac78d9fb8ea8&v=4" height=100px width=100px/> | <img src="https://avatars2.githubusercontent.com/u/38091293?s=460&u=143343fbefce138e488191e22569fe1d88529d72&v=4" height=100px width=100px/> |
+| <img src="https://avatars0.githubusercontent.com/u/43181799?s=400&u=4c9690cbc75def031b9530aaf8c1d283026a382f&v=4" height=150px width=150px/> | <img src="https://avatars3.githubusercontent.com/u/10168472?s=460&u=0e1346c353b3c1b5449ccd0f21bac89279a63cde&v=4" width=150px height=150px> | <img src="https://avatars2.githubusercontent.com/u/42520224?s=460&u=8947c5a4689c08d7d496d3750a42ac78d9fb8ea8&v=4" height=150px width=150px/> | <img src="https://avatars2.githubusercontent.com/u/38091293?s=460&u=143343fbefce138e488191e22569fe1d88529d72&v=4" height=150px width=150px/> |
 
 ## Dependencies
 
