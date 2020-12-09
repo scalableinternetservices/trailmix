@@ -7,7 +7,7 @@ import {
   ManyToMany,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  UpdateDateColumn
 } from 'typeorm'
 import { User as GraphqlUser, UserType } from '../graphql/schema.types'
 import { Comment } from './Comment'
@@ -43,10 +43,10 @@ export class User extends BaseEntity implements GraphqlUser {
   })
   name: string
 
-  @OneToMany(() => Comment, comment => comment.user, { eager: true })
+  @OneToMany(() => Comment, comment => comment.user, { lazy: true })
   comment: Comment[]
 
-  @ManyToMany(() => Hike, hike => hike.id, { eager: true })
+  @ManyToMany(() => Hike, hike => hike.id, { lazy: true })
   @JoinTable()
   favorites: Hike[]
 }
