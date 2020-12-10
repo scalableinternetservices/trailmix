@@ -46,7 +46,7 @@ export class User extends BaseEntity implements GraphqlUser {
   @OneToMany(() => Comment, comment => comment.user, { lazy: true })
   comment: Comment[]
 
-  @ManyToMany(() => Hike, hike => hike.id, { lazy: true })
+  @ManyToMany(() => Hike, hike => hike.id, { eager: true })
   @JoinTable()
   favorites: Hike[]
 }
