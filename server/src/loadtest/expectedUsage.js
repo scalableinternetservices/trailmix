@@ -10,34 +10,39 @@ import { sleep } from 'k6'
 //to run this script, use the command: k6 run server/src/loadtest/expectedUsage.js
 
 export let options = {
-  vus: 10, //number of virtual users
+  vus: 200, //number of virtual users
   duration: '30s', //duration of load test
 }
 
 export default function () {
   //normal person workflow
   //load app
-  http.get('http://127.0.0.1:3000/app')
+  http.get('https://trailmix.cloudcity.computer/app/index')
   sleep(1)
   //run a query which hits data api and adds 10 hikes to the db
   for (let i = 0; i < 10; i++) {
     http.post(
-      'http://localhost:3000/graphql',
+      'https://trailmix.cloudcity.computer/graphql',
       '{"operationName":"AddHike","variables":{"input":{"id":' +
         i +
-        ',"name":"Hollywood Sign and Bronson Caves","stars":4.4,"summary":"A popular route to the Hollywood Sign that offers plenty of great views along the way.","location":"Hollywood Hills West, California","difficulty":"blue","length":6.6}},"query":"mutation AddHike($input: AddHikeInput!) {addHike(input: $input)}"}',
+        ',"name":"Hollywood Reservoir Loop","stars":4.3,"summary":"A paved loop around the entire Hollywood Reservoir.","location":"Universal City, California","difficulty":"green","length":3.4,"latitude":34.1287,"longitude":-118.3363}},"query":"mutation AddHike($input: AddHikeInput!) {  addHike(input: $input) } "}',
       {
         headers: {
           'Content-Type': 'application/json',
         },
       }
     )
+    sleep(0.5)
   }
   //load comments
-
+  http.post(
+    'https://trailmix.cloudcity.computer/graphql',
+    '{"operationName":"FetchComments","variables": "{}","query":"query FetchComments {↵  comments {↵    id↵    name↵    text↵    date↵    hikeNum↵    likes↵    __typename↵  }↵}↵"}'
+  )
+  sleep(1)
   //add comment
   http.post(
-    'http://localhost:3000/graphql',
+    'https://trailmix.cloudcity.computer/graphql',
     '{"operationName":"AddComment","variables":{"input":{"id":1,"name":"name1","text":"test1","date":"11:59:10 AM, 11/23/2020"}},"query":"mutation AddComment($input: AddCommentInput!) {  addComment(input: $input)}"}',
     {
       headers: {
@@ -45,9 +50,10 @@ export default function () {
       },
     }
   )
+  sleep(1)
   //upvote a comment
   http.post(
-    'http://localhost:3000/graphql',
+    'https://trailmix.cloudcity.computer/graphql',
     '{"operationName":"UpvoteComment","variables":{"input":{"name":"name1","text":"test1","date":"11:59:10 AM, 11/23/2020","id":1}},"query":"mutation UpvoteComment($input: UpvoteInput!) {  upvoteComment(input: $input)}"}',
     {
       headers: {
@@ -55,12 +61,13 @@ export default function () {
       },
     }
   )
+  sleep(1)
   //add a favorite hike
   http.post(
-    'http://localhost:3000/graphql',
+    'https://trailmix.cloudcity.computer/graphql',
     '{"operationName":"AddHike","variables":{"input":{"id":' +
       1 +
-      ',"name":"Hollywood Sign and Bronson Caves","stars":4.4,"summary":"A popular route to the Hollywood Sign that offers plenty of great views along the way.","location":"Hollywood Hills West, California","difficulty":"blue","length":6.6}},"query":"mutation AddHike($input: AddHikeInput!) {  addHike(input: $input)}"}',
+      ',"name":"Hollywood Reservoir Loop","stars":4.3,"summary":"A paved loop around the entire Hollywood Reservoir.","location":"Universal City, California","difficulty":"green","length":3.4,"latitude":34.1287,"longitude":-118.3363}},"query":"mutation AddHike($input: AddHikeInput!) {  addHike(input: $input) } "}',
     {
       headers: {
         'Content-Type': 'application/json',

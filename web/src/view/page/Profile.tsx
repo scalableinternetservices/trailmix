@@ -39,7 +39,7 @@ const RecentComments: Function = (): JSX.Element[] | JSX.Element => {
   if (data && data.mycomments) {
     return data.mycomments.map(comment =>
       comment ? (
-        <CommentCard name={comment.name} message={comment.text} time={comment.date} />
+        <CommentCard name={comment.name} message={comment.text} time={comment.date} likes={comment.likes} />
       ) : (
         <BodyText>No recent comments yet!</BodyText>
       )

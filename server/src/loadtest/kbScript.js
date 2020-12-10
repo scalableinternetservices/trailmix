@@ -32,39 +32,9 @@ export const options = {
 export default function () {
   //recordRates('http://localhost:3000')
   // recordRates(
-  const getApp = http.get('http://localhost:3000')
-
-  const createUser = http.post(
-    'http://localhost:3000/auth/createUser',
-    '{"email":"abcd@test.com","name":"Joe Bruin"}',
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  )
-  //get profile page info
-  const profilePage = http.post(
-    'http://localhost:3000/graphql',
-    '{"operationName":"FetchUserContext","variables":"{}","query":"query FetchUserContext {↵  self {↵    id↵    name↵    email↵    userType↵    favorites {↵      name↵      length↵      difficulty↵      stars↵      summary↵      __typename↵    }↵    __typename↵  }↵}↵"}',
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  )
-
-  const profilePageFavs = http.post(
-    'http://localhost:3000/graphql',
-    '{"operationName":"FetchMyComments","variables":"{}","query":"query FetchMyComments {↵  mycomments {↵    id↵    name↵    text↵    date↵    hikeNum↵    likes↵    __typename↵  }↵}↵"}',
-    {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }
-  )
+  const getApp = http.get('https://trailmix.cloudcity.computer/app/index')
   const resp = http.post(
-    'http://localhost:3000/graphql',
+    'https://trailmix.cloudcity.computer/graphql',
     '{"operationName":"FetchLatLon","variables":{"zipcode":90024},"query":"query FetchLatLon($zipcode: Int!) {\n  coordinates(zipcode: $zipcode) {\n    lat\n    lon\n    __typename\n  }\n}\n"}',
     {
       headers: {
@@ -73,7 +43,7 @@ export default function () {
     }
   )
   const hikes = http.post(
-    'http://localhost:3000/graphql',
+    'https://trailmix.cloudcity.computer/graphql',
     '{"operationName":"FetchHikes","variables":{"zipcode":90024},"query":"query FetchHikes {↵  hikes {↵    id↵    name↵    summary↵    length↵    difficulty↵    location↵    stars↵    latitude↵    longitude↵    __typename↵  }↵}↵"}',
     {
       headers: {
@@ -82,7 +52,7 @@ export default function () {
     }
   )
   const comments = http.post(
-    'http://localhost:3000/graphql',
+    'https://trailmix.cloudcity.computer/graphql',
     '{"operationName":"AddComment","input: {id: 7002910, name: "test", text: "test 1", date: "9:48:27 PM, 12/3/2020"},"query":"mutation AddComment($input: AddCommentInput!) {↵  addComment(input: $input)↵}↵"}',
     {
       headers: {
@@ -91,7 +61,7 @@ export default function () {
     }
   )
   const comments2 = http.post(
-    'http://localhost:3000/graphql',
+    'https://trailmix.cloudcity.computer/graphql',
     '{"operationName":"AddComment","input: {id: 7002910, name: "test", text: "test 2", date: "9:49:27 PM, 12/3/2020"},"query":"mutation AddComment($input: AddCommentInput!) {↵  addComment(input: $input)↵}↵"}',
     {
       headers: {
@@ -100,7 +70,7 @@ export default function () {
     }
   )
   const fetchAllComments = http.post(
-    'http://localhost:3000/graphql',
+    'https://trailmix.cloudcity.computer/graphql',
     '{"operationName":"FetchComments","variables": "{}","query":"query FetchComments {↵  comments {↵    id↵    name↵    text↵    date↵    hikeNum↵    likes↵    __typename↵  }↵}↵"}'
   )
   // )
