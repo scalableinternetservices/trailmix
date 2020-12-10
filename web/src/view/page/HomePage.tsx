@@ -16,8 +16,7 @@ export function HomePage(props: HomePageProps) {
     <Page>
       <Hero>
         <H1>Trailmix</H1>
-        <H3>Scalable Internet Services Project</H3>
-        <H3>UCLA, Fall 2020</H3>
+        <H3>Hike and Have Fun!</H3>
       </Hero>
       <Content>
         <LContent>
@@ -29,6 +28,13 @@ export function HomePage(props: HomePageProps) {
             <BodyText>
               Instructions: Input zip code -- get hikes nearby -- go on hikes! -- leave comments with your feedback!
             </BodyText>
+          </Section>
+          <Section>
+            <img
+              className="mw-50"
+              src="https://cdn.pixabay.com/photo/2015/03/26/09/52/hiking-690479_960_720.jpg"
+              alt="logo"
+            />
           </Section>
         </LContent>
         <RContent>
@@ -53,6 +59,11 @@ export function HomePage(props: HomePageProps) {
                 </tbody>
               </table>
             </BodyText>
+          </Section>
+          <Section>
+            <BodyText>Scalable Internet Services</BodyText>
+            <Spacer $h4 />
+            <BodyText>UCLA, Fall 2020</BodyText>
           </Section>
         </RContent>
       </Content>
